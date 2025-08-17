@@ -8,7 +8,13 @@ import { SiZalo } from "react-icons/si";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F0F1F4] text-[#363F69] pt-8 px-6 md:px-20">
+    <footer
+      className="bg-[#F0F1F4] text-[#363F69] pt-8 px-6 md:px-20"
+      style={{
+        backgroundImage:
+          "url('https://softdreams.vn/wp-content/themes/softdreams/assets/img/footer-bg.png')",
+      }}
+    >
       {/* Logo */}
       <div className="flex justify-center md:justify-start mb-6">
         <img
@@ -85,84 +91,89 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Social icons */}
-      <div className="flex justify-center gap-6 mt-10 text-2xl text-gray-600">
-        <a
-          href={profile.social.facebook}
-          target="_blank"
-          rel="noreferrer"
-          className="hover:text-blue-600"
-        >
-          <FaFacebook />
-        </a>
-        <a
-          href={profile.social.youtube}
-          target="_blank"
-          rel="noreferrer"
-          className="hover:text-red-600"
-        >
-          <FaYoutube />
-        </a>
-        <a
-          href={profile.social.twitter}
-          target="_blank"
-          rel="noreferrer"
-          className="hover:text-black"
-        >
-          <FaXTwitter />
-        </a>
-        <a
-          href={profile.social.zalo}
-          target="_blank"
-          rel="noreferrer"
-          className="hover:text-blue-500"
-        >
-          <SiZalo />
-        </a>
-        <a
-          href={profile.social.tiktok}
-          target="_blank"
-          rel="noreferrer"
-          className="hover:text-black"
-        >
-          <FaTiktok />
-        </a>
-      </div>
+      {/* Bottom Section */}
+      <div className="mt-10 border-t border-gray-300 pt-6 px-6 mb-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          {/* Social icons */}
+          <div className="flex justify-center gap-6 text-2xl text-gray-600">
+            <a
+              href={profile.social.facebook}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-blue-600"
+            >
+              <FaFacebook />
+            </a>
+            <a
+              href={profile.social.youtube}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-red-600"
+            >
+              <FaYoutube />
+            </a>
+            <a
+              href={profile.social.twitter}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-black"
+            >
+              <FaXTwitter />
+            </a>
+            <a
+              href={profile.social.zalo}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-blue-500"
+            >
+              <SiZalo />
+            </a>
+            <a
+              href={profile.social.tiktok}
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-black"
+            >
+              <FaTiktok />
+            </a>
+          </div>
 
-      {/* Policy links */}
-      <div className="flex flex-col md:flex-row justify-center gap-4 mt-6 text-sm text-gray-600 text-center">
-        <Link to="/dieu-khoan" className="hover:text-blue-500">
-          Điều khoản sử dụng
-        </Link>
-        <Link to="/bao-mat" className="hover:text-blue-500">
-          Chính sách bảo mật
-        </Link>
-        <Link to="/sla" className="hover:text-blue-500">
-          Cam kết SLA
-        </Link>
-        <Link to="/faq" className="hover:text-blue-500">
-          Câu hỏi thường gặp
-        </Link>
-      </div>
+          {/* Policy links */}
+          <div className="flex flex-col md:flex-row justify-center gap-4 text-sm text-gray-600 text-center">
+            <Link to="/dieu-khoan" className="hover:text-blue-500">
+              Điều khoản sử dụng
+            </Link>
+            <Link to="/bao-mat" className="hover:text-blue-500">
+              Chính sách bảo mật
+            </Link>
+            <Link to="/sla" className="hover:text-blue-500">
+              Cam kết SLA
+            </Link>
+            <Link to="/faq" className="hover:text-blue-500">
+              Câu hỏi thường gặp
+            </Link>
+          </div>
 
-      {/* App badges */}
-      <div className="flex justify-center gap-4 mt-6">
-        <img
-          src="https://easybooks.vn/wp-content/uploads/2025/02/apk.png"
-          alt="Google Play"
-          className="h-10"
-        />
-        <img
-          src="https://easybooks.vn/wp-content/uploads/2025/02/ios.png"
-          alt="App Store"
-          className="h-10"
-        />
+          {/* App badges */}
+          <div className="flex justify-center gap-4">
+            <img
+              src="https://easybooks.vn/wp-content/uploads/2025/02/apk.png"
+              alt="Google Play"
+              className="h-10"
+            />
+            <img
+              src="https://easybooks.vn/wp-content/uploads/2025/02/ios.png"
+              alt="App Store"
+              className="h-10"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Copyright */}
-      <p className="text-center text-sm text-gray-500 mt-6 pb-4">
+      {/* <p className="text-center text-sm text-gray-500 mt-6 pb-4">
         © {new Date().getFullYear()} {profile.companyName}. All rights reserved.
-      </p>
+      </p> */}
     </footer>
   );
 }
