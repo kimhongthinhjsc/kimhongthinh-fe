@@ -18,8 +18,11 @@ const Contact = lazy(() => import("../pages/Contact/Contact"));
 const NewsPage = lazy(() => import("../pages/NewsPage/NewsPage"));
 const CareersPage = lazy(() => import("../pages/CareersPage/CareersPage"));
 const EventsPage = lazy(() => import("../pages/EventsPage/EventsPage"));
+const LoginAdmin = lazy(() => import("../pages/admin/LoginAdmin/LoginAdmin"));
 
 
+//Admin
+const Dashboard = lazy(() => import("../pages/admin/Dashboard/Dashboard"));
 const Auth = () => {
   return (
     <Routes>
@@ -85,6 +88,24 @@ const Auth = () => {
         element={
           <Suspense fallback={<div></div>}>
             <EventsPage />
+          </Suspense>
+        }
+      />
+
+      <Route
+        path="/admin/login"
+        element={
+          <Suspense fallback={<div></div>}>
+            <LoginAdmin />
+          </Suspense>
+        }
+      />
+
+      <Route
+        path="/admin/dashboard/*"
+        element={
+          <Suspense fallback={<div></div>}>
+            <Dashboard />
           </Suspense>
         }
       />
