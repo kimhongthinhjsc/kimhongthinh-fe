@@ -24,6 +24,18 @@ export default function CompanyInfo() {
     }
   };
 
+  // Xử lý thay đổi Logo (file upload)
+  const handleLogoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file); // preview
+      setFormData({
+        ...formData,
+        logo: imageUrl,
+      });
+    }
+  };
+
   // Reset form
   const handleReset = () => {
     setFormData(defaultProfile);
@@ -38,6 +50,24 @@ export default function CompanyInfo() {
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold">Chỉnh sửa thông tin công ty</h1>
+
+      {/* Logo */}
+      <div>
+        <label className="block font-semibold mb-2">Logo</label>
+        {formData.logo && (
+          <img
+            src={formData.logo}
+            alt="Company Logo"
+            className="h-20 object-contain mb-2 border p-1 rounded"
+          />
+        )}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleLogoChange}
+          className="w-full border rounded p-2"
+        />
+      </div>
 
       {/* Fanpage & Slogan */}
       <div>
@@ -189,5 +219,4 @@ export default function CompanyInfo() {
       </div>
     </div>
   );
-  
 }

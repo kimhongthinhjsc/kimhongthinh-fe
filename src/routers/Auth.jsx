@@ -19,7 +19,9 @@ const NewsPage = lazy(() => import("../pages/NewsPage/NewsPage"));
 const CareersPage = lazy(() => import("../pages/CareersPage/CareersPage"));
 const EventsPage = lazy(() => import("../pages/EventsPage/EventsPage"));
 const LoginAdmin = lazy(() => import("../pages/admin/LoginAdmin/LoginAdmin"));
-
+const ProductDetail = lazy(() =>
+  import("../pages/ProductDetail/ProductDetail")
+);
 
 //Admin
 const Dashboard = lazy(() => import("../pages/admin/Dashboard/Dashboard"));
@@ -93,6 +95,16 @@ const Auth = () => {
       />
 
       <Route
+        path="/san-pham/:id"
+        element={
+          <Suspense fallback={<div></div>}>
+            <ProductDetail />
+          </Suspense>
+        }
+      />
+
+      {/* Admin */}
+      <Route
         path="/admin/login"
         element={
           <Suspense fallback={<div></div>}>
@@ -110,7 +122,6 @@ const Auth = () => {
         }
       />
     </Routes>
-    
   );
 };
 
