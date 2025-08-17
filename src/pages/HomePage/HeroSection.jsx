@@ -1,33 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import Counter from "~/components/Counter/Counter";
-export default function Section1() {
-  const stats = [
-    {
-      img: "https://softdreams.vn/wp-content/themes/softdreams/assets/img/header-box-icon1.png",
-      number: 13,
-      suffix: "+",
-      text: <>Năm kinh nghiệm <br /> trong lĩnh vực CNTT</>,
-    },
-    {
-      img: "https://softdreams.vn/wp-content/themes/softdreams/assets/img/header-box-icon2.png",
-      number: 400,
-      suffix: "+",
-      text: <>Nhân sự làm việc <br /> tại Hà Nội và Hồ Chí Minh</>,
-    },
-    {
-      img: "https://softdreams.vn/wp-content/themes/softdreams/assets/img/header-box-icon3.png",
-      number: 6000,
-      suffix: "+",
-      text: <>Đại lý &amp; CTV <br /> trên toàn quốc</>,
-    },
-    {
-      img: "https://softdreams.vn/wp-content/themes/softdreams/assets/img/header-box-icon4.png",
-      number: 350000,
-      suffix: "+",
-      text: <>Doanh nghiệp &amp; Hộ kinh doanh <br /> tin dùng sản phẩm</>,
-    },
-  ];
+import stats from "~/mock/HeroSection";
 
+export default function HeroSection() {
   return (
     <section
       id="sec1"
@@ -48,7 +23,10 @@ export default function Section1() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12" data-aos="fade-up">
+        <div
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12"
+          data-aos="fade-up"
+        >
           {stats.map((item, i) => (
             <div
               key={i}
@@ -59,7 +37,9 @@ export default function Section1() {
                 <Counter target={item.number} />
                 {item.suffix}
               </div>
-              <div className="text-sm">{item.text}</div>
+              <div className="text-sm md:text-base whitespace-pre-line">
+                {item.text}
+              </div>
             </div>
           ))}
         </div>
@@ -75,11 +55,11 @@ export default function Section1() {
               </div>
             </div>
             <div className="text-base leading-relaxed">
-              Softdreams là công ty công nghệ chuyên cung cấp các phần mềm thông minh giúp
-              tự động hóa trong quản trị doanh nghiệp. Với hơn 11 năm kinh nghiệm, công ty
-              đã phát triển thành công 12+ sản phẩm trong hệ sinh thái gồm: EasyInvoice,
-              EasyCA, EasyBooks, EasyHRM, EasyPos, EasyDocs, EasyTransport, EasyPIT,
-              EasyTicket, EasyKYC,...
+              Softdreams là công ty công nghệ chuyên cung cấp các phần mềm thông minh
+              giúp tự động hóa trong quản trị doanh nghiệp. Với hơn 11 năm kinh nghiệm,
+              công ty đã phát triển thành công 12+ sản phẩm trong hệ sinh thái gồm:
+              EasyInvoice, EasyCA, EasyBooks, EasyHRM, EasyPos, EasyDocs, EasyTransport,
+              EasyPIT, EasyTicket, EasyKYC,...
               <a
                 href="https://softdreams.vn/cong-ty"
                 className="mt-4 inline-flex items-center gap-2 text-blue-400 hover:underline"
@@ -90,7 +70,7 @@ export default function Section1() {
           </div>
         </div>
       </div>
-      {/* overlay để dễ đọc chữ trên ảnh */}
+      {/* overlay */}
       <div className="absolute inset-0 bg-black/40"></div>
     </section>
   );

@@ -1,10 +1,15 @@
-// src/pages/admin/Dashboard/Services.jsx
 import React, { useState } from "react";
 import servicesMock from "~/mock/services";
 
 export default function Services() {
   const [services, setServices] = useState(servicesMock);
   const [newService, setNewService] = useState({ title: "", image: "", link: "" });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
+  const totalPages = Math.ceil(services.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentServices = services.slice(startIndex, startIndex + itemsPerPage);
 
   const handleChange = (index, key, value) => {
     setServices((prev) =>
@@ -23,6 +28,7 @@ export default function Services() {
     }
     setServices([...services, newService]);
     setNewService({ title: "", image: "", link: "" });
+    setCurrentPage(totalPages);
   };
 
   const handleSave = () => {
@@ -32,6 +38,7 @@ export default function Services() {
 
   const handleReset = () => {
     setServices(servicesMock);
+    setCurrentPage(1);
   };
 
   return (
@@ -72,8 +79,8 @@ export default function Services() {
 
       {/* Danh sách dịch vụ */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {services.map((service, index) => (
-          <div key={index} className="border rounded p-4 space-y-2 shadow">
+        {currentServices.map((service, index) => (
+          <div key={startIndex + index} className="border rounded p-4 space-y-2 shadow">
             <img
               src={service.image}
               alt={service.title}
@@ -82,23 +89,23 @@ export default function Services() {
             <input
               type="text"
               value={service.title}
-              onChange={(e) => handleChange(index, "title", e.target.value)}
+              onChange={(e) => handleChange(startIndex + index, "title", e.target.value)}
               className="border rounded p-2 w-full"
             />
             <input
               type="text"
               value={service.image}
-              onChange={(e) => handleChange(index, "image", e.target.value)}
+              onChange={(e) => handleChange(startIndex + index, "image", e.target.value)}
               className="border rounded p-2 w-full"
             />
             <input
               type="text"
               value={service.link}
-              onChange={(e) => handleChange(index, "link", e.target.value)}
+              onChange={(e) => handleChange(startIndex + index, "link", e.target.value)}
               className="border rounded p-2 w-full"
             />
             <button
-              onClick={() => handleDelete(index)}
+              onClick={() => handleDelete(startIndex + index)}
               className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
             >
               Xoá
@@ -107,11 +114,39 @@ export default function Services() {
         ))}
       </div>
 
+      {/* Pagination */}
+      <div className="flex justify-center gap-2">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((p) => p - 1)}
+          className="px-3 py-1 border rounded disabled:opacity-50"
+        >
+          &lt;
+        </button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`px-3 py-1 border rounded ${
+              currentPage === i + 1 ? "bg-blue-600 text-white" : ""
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((p) => p + 1)}
+          className="px-3 py-1 border rounded disabled:opacity-50"
+        >
+          &gt;
+        </button>
+      </div>
+
       {/* Nút hành động */}
       <div className="flex gap-4">
         <button
           onClick={handleSave}
-          
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
           Lưu thay đổi
