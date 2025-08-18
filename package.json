@@ -7,9 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "server": "node server/server.js",
+    "server": "node server/server.js",         
     "preview": "vite preview",
-    "start": "concurrently \"yarn server\" \"yarn dev\""
+    "start": "concurrently \"yarn server\" \"yarn dev\"",
+    "vercel-build": "vite build"               
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
