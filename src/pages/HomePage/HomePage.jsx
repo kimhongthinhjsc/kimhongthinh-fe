@@ -11,24 +11,30 @@ import { useEffect, useState } from "react";
 import { fetchHomeData } from "~/services/publicAPI";
 export default function HomePage() {
   const [homeData, setHomeData] = useState(null);
+ const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       const data = await fetchHomeData();
       setHomeData(data);
+      setLoading(false);
     };
     loadData();
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <FramePage>
       <HeroSection data={homeData?.hero}/>
-      <Ecosystem />
-      <Testimonial />
-      <CulturePeople />
-      <Partners />
-      <News />
-      <ContactHotline />
+      <Ecosystem data={homeData?.ecosystem} />
+      <Testimonial data={homeData?.testimonial} />
+      <CulturePeople data={homeData?.culture} />
+      <Partners data={homeData?.partners} />
+      <News data={homeData?.news} />
+      <ContactHotline data={homeData?.contactHotline} />
     </FramePage>
   );
 }

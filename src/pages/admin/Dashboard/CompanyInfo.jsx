@@ -43,7 +43,7 @@ export default function CompanyInfo() {
 
   // Giả lập lưu (sau này call API)
   const handleSave = () => {
-    console.log("Dữ liệu lưu:", formData);
+
     alert("Đã lưu thông tin công ty (demo, chưa gọi API)");
   };
 

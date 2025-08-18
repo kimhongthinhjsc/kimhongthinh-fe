@@ -1,6 +1,7 @@
 import React from "react";
 
-export default function Testimonial() {
+export default function Testimonial({ data }) {
+
   return (
     <section className="bg-gray-50 py-16 px-6 md:px-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -15,19 +16,16 @@ export default function Testimonial() {
           </div>
 
           <p className="text-gray-700 text-base md:text-lg leading-relaxed relative z-10">
-            Mỗi một sản phẩm chúng tôi tạo ra đều là những đứa con tinh thần của
-            toàn bộ công ty. Chúng tôi yêu sản phẩm như chính những đứa con của
-            mình để không ngừng khiến chúng trở nên hoàn thiện hơn. Tình yêu đó
-            luôn được thắp sáng tới khắp nhân viên của công ty từ đội phần mềm,
-            đội kinh doanh tới đội hỗ trợ triển khai.
+            {data.content ||
+              "Nội dung chia sẻ từ khách hàng / lãnh đạo sẽ hiển thị ở đây..."}
           </p>
 
           <div className="mt-8 relative z-10">
             <p className="text-gray-900 font-semibold text-lg">
-              Ông Vũ Văn Luật
+              {data.author || "Tên người phát biểu"}
             </p>
             <p className="text-gray-500 text-sm">
-              Chủ tịch HĐQT - Giám đốc điều hành
+              {data.position || "Chức danh / vai trò"}
             </p>
           </div>
 
@@ -42,8 +40,11 @@ export default function Testimonial() {
           <div className="absolute -inset-2 bg-gradient-to-tr from-[#a8a8a8] to-[#fbfbfb] rounded-2xl blur-lg opacity-30 group-hover:opacity-40 transition"></div>
           <img
             className="relative rounded-2xl max-h-[400px] object-contain shadow-lg transition-transform duration-500 group-hover:scale-105"
-            src="https://softdreams.vn/wp-content/themes/softdreams/assets/img/sec3-anhLuat.png"
-            alt="Ông Vũ Văn Luật"
+            src={
+              data.image ||
+              "https://via.placeholder.com/400x400?text=No+Image"
+            }
+            alt={data.author || "Người phát biểu"}
           />
         </div>
       </div>
