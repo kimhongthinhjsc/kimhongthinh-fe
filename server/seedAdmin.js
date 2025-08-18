@@ -32,7 +32,7 @@ const createAdmin = async () => {
   try {
     const username = "superadmin";
     const email = "admin@example.com";
-    const plainPassword = "ChangeMe123"; // nhớ đổi cho an toàn
+    const plainPassword = "123456"; // nhớ đổi cho an toàn
     const role = "superadmin";
 
     // Kiểm tra xem đã có admin này chưa
