@@ -6,26 +6,24 @@ export default function EditableImage({
   src,
   onChange,
   label = "Ảnh",
-  className = "",
+  className = "w-20 h-20", // default size nhỏ
 }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className={`flex flex-col gap-2 ${className}`}>
-      <div className="text-sm font-semibold">{label}</div>
-
+    <div className="flex flex-col gap-2">
       {/* Ảnh + nút sửa */}
-      <div className="relative w-20 h-20">
+      <div className={`relative ${className}`}>
         <img
-          src={src || "https://via.placeholder.com/120x120?text=No+Image"}
+          src={src || "https://via.placeholder.com/300x200?text=No+Image"}
           alt="preview"
-          className="w-20 h-20 object-contain rounded border bg-white"
+          className="w-full h-full object-cover rounded border bg-white"
         />
         <button
           onClick={() => setOpen(true)}
-          className="absolute bottom-1 right-1 bg-white rounded-full p-1 shadow hover:bg-gray-100"
+          className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow hover:bg-gray-100"
         >
-          <Pencil size={14} className="text-gray-600" />
+          <Pencil size={16} className="text-gray-600" />
         </button>
       </div>
 
@@ -46,9 +44,9 @@ export default function EditableImage({
             {/* Preview ảnh */}
             <div className="mb-4 flex justify-center">
               <img
-                src={src || "https://via.placeholder.com/200x200?text=No+Image"}
+                src={src || "https://via.placeholder.com/400x300?text=No+Image"}
                 alt="preview"
-                className="w-40 h-40 object-contain rounded border bg-gray-50"
+                className="max-h-[300px] object-contain rounded border bg-gray-50"
               />
             </div>
 
