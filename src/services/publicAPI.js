@@ -1,7 +1,6 @@
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL
 
-// GET list products (hỗ trợ filter)
 export const fetchProducts = async (page = 1, limit = 12, categoryId, subcategoryId) => {
   try {
     const params = { page, limit };
@@ -16,7 +15,6 @@ export const fetchProducts = async (page = 1, limit = 12, categoryId, subcategor
   }
 };
 
-// GET list categories
 export const fetchCategories = async () => {
   try {
     const res = await axios.get(`${API_URL}/categories`);
@@ -31,3 +29,11 @@ export const fetchProductById = async (id) => {
   const res = await axios.get(`${API_URL}/products/${id}`);
   return res.data;
 };
+
+
+// GET dữ liệu home
+export const fetchHomeData = async () => {
+  const res = await axios.get(`${API_URL}/home`);
+  return res.data;
+};
+

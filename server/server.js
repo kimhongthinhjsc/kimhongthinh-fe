@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js"
+import homeRoutes from "./routes/home.js";
 import cors from "cors";
 
 dotenv.config();
@@ -23,6 +24,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/home", homeRoutes);
+
 
 // const PORT = process.env.PORT || 5000;
 app.listen(process.env.PORT, process.env.HOST, () => console.log(`🚀 Server running on http://${process.env.HOST}:${process.env.PORT}/`));
