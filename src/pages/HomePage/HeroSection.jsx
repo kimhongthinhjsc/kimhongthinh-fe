@@ -1,33 +1,37 @@
-import { ArrowRight } from "lucide-react";
 import Counter from "~/components/Counter/Counter";
-import stats from "~/mock/HeroSection";
 
-export default function HeroSection() {
+export default function HeroSection({ data }) {
+  if (!data) return null; // chưa có data thì không render
+
   return (
     <section
       id="sec1"
       className="section-gap relative bg-cover bg-center bg-no-repeat text-white"
       style={{
-        backgroundImage:
-          "url('https://softdreams.vn/wp-content/themes/softdreams/assets/img/banner.png')",
+        backgroundImage: `url('${data.background}')`,
       }}
     >
       <div className="container mx-auto px-4 relative z-10">
-        <div data-aos="fade-right" className="text-3xl md:text-5xl font-bold mb-4">
-          Chuyển đổi số <br /> QUẢN TRỊ DOANH NGHIỆP
-        </div>
+        {/* Title */}
+        <div
+          data-aos="fade-right"
+          className="text-3xl md:text-5xl font-bold mb-4"
+          dangerouslySetInnerHTML={{ __html: data.title }}
+        />
 
-        <div data-aos="fade-left" className="text-base md:text-lg mb-8">
-          Chúng tôi cung cấp hệ sinh thái phần mềm giúp doanh nghiệp <br />
-          dễ dàng chuyển đổi số quản trị và vận hành
-        </div>
+        {/* Subtitle */}
+        <div
+          data-aos="fade-left"
+          className="text-base md:text-lg mb-8"
+          dangerouslySetInnerHTML={{ __html: data.subtitle }}
+        />
 
         {/* Stats */}
         <div
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12"
           data-aos="fade-up"
         >
-          {stats.map((item, i) => (
+          {data.stats?.map((item, i) => (
             <div
               key={i}
               className="flex flex-col items-center text-center bg-black/30 p-4 rounded-xl"
@@ -49,19 +53,15 @@ export default function HeroSection() {
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <div className="text-2xl font-bold">
-                SOFTDREAMS
+                {data.sloganTitle}
                 <hr className="border-t border-white my-2" />
-                Nâng tầm quản trị doanh nghiệp
+                {data.sloganDesc}
               </div>
             </div>
             <div className="text-base leading-relaxed">
-              Softdreams là công ty công nghệ chuyên cung cấp các phần mềm thông minh
-              giúp tự động hóa trong quản trị doanh nghiệp. Với hơn 11 năm kinh nghiệm,
-              công ty đã phát triển thành công 12+ sản phẩm trong hệ sinh thái gồm:
-              EasyInvoice, EasyCA, EasyBooks, EasyHRM, EasyPos, EasyDocs, EasyTransport,
-              EasyPIT, EasyTicket, EasyKYC,...
+              {data.sloganContent}
               <a
-                href="https://softdreams.vn/cong-ty"
+                href={data.link}
                 className="mt-4 inline-flex items-center gap-2 text-blue-400 hover:underline"
               >
                 Đọc thêm <i className="fa-solid fa-arrow-right"></i>

@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import functionAdmin from "~/models/funcionAdmin";
 
 // Lazy load các trang con
-const DashboardHome = lazy(() => import("./Home"));
+const DashboardHome = lazy(() => import("./DashboardHome/DashboardHome"));
 const DashboardIntroduce = lazy(() => import("./Introduce"));
 const DashboardProducts = lazy(() => import("./Products"));
 const DashboardServices = lazy(() => import("./Services"));
