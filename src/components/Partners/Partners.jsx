@@ -2,7 +2,8 @@ import React from "react";
 import partners from "~/mock/Partners";
 import "./Partners.scss"; // Import your custom styles
 
-export default function Partners() {
+export default function Partners({ data }) {
+    if (!data) return null;
   return (
     <section className=" bg-gray-50 py-12 px-4 md:px-8 overflow-hidden">
       <div className="w-full text-center">

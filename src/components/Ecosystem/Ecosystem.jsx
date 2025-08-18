@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function Ecosystem({data}) {
+    if (!data) return null;
   return (
     <section className=" py-12 px-6 md:px-20">
       <div className="max-w-7xl mx-auto text-center">
