@@ -11,7 +11,7 @@ export default function AdminLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/login", { email, password });
+      const res = await axios.post("/api/v1/auth/login", { email, password });
 
       // Lưu token
       localStorage.setItem("accessToken", res.data.accessToken);
