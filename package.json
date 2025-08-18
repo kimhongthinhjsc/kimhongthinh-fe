@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "server": "node server/server.js",         
     "preview": "vite preview",
-    "start": "yarn server yarn dev",
+    "start": "concurrently \"yarn server\" \"yarn dev\"",
     "vercel-build": "vite build"               
   },
   "dependencies": {
