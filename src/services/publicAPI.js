@@ -1,48 +1,33 @@
 import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL
 
-// GET list products
-export const fetchProducts = async (page = 1, limit = 12) => {
+// GET list products (hỗ trợ filter)
+export const fetchProducts = async (page = 1, limit = 12, categoryId, subcategoryId) => {
   try {
-    const res = await fetch(`${API_URL}/products?page=${page}&limit=${limit}`);
-    if (!res.ok) throw new Error("Lỗi khi fetch products");
-    return await res.json(); // { products, totalPages }
+    const params = { page, limit };
+    if (categoryId) params.categoryId = categoryId;
+    if (subcategoryId) params.subcategoryId = subcategoryId;
+
+    const res = await axios.get(`${API_URL}/products`, { params });
+    return res.data; // { products, totalPages, currentPage }
   } catch (error) {
     console.error("❌ fetchProducts error:", error);
-    return { products: [], totalPages: 1 };
+    return { products: [], totalPages: 1, currentPage: 1 };
   }
 };
 
-// POST: thêm sản phẩm
-export const addProduct = async (product) => {
+// GET list categories
+export const fetchCategories = async () => {
   try {
-    const res = await fetch(`${API_URL}/products`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product),
-    });
-    if (!res.ok) throw new Error("Lỗi khi thêm sản phẩm");
-    return await res.json();
+    const res = await axios.get(`${API_URL}/categories`);
+    return res.data; // giả sử trả về mảng categories
   } catch (error) {
-    console.error("❌ addProduct error:", error);
-    return null;
-  }
-};
-
-
-// DELETE: xoá sản phẩm
-export const deleteProduct = async (id) => {
-  try {
-    const res = await fetch(`${API_URL}/products/${id}`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Lỗi khi xoá sản phẩm");
-    return true;
-  } catch (error) {
-    console.error("❌ deleteProduct error:", error);
-    return false;
+    console.error("❌ fetchCategories error:", error);
+    return [];
   }
 };
 
 export const fetchProductById = async (id) => {
-  const res = await axios.get(`/api/products/${id}`);
+  const res = await axios.get(`${API_URL}/products/${id}`);
   return res.data;
 };
