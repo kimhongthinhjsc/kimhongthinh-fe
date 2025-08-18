@@ -1,4 +1,3 @@
-// server/app.js
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -10,6 +9,7 @@ import cors from "cors";
 dotenv.config();
 const app = express();
 app.use(express.json());
+
 app.use(cors());
 
 // Kết nối MongoDB
@@ -22,4 +22,5 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/products", productRoutes);
 
-export default app;
+// const PORT = process.env.PORT || 5000;
+app.listen(process.env.PORT, process.env.HOST, () => console.log(`🚀 Server running on http://${process.env.HOST}:${process.env.PORT}/`));
