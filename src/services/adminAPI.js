@@ -32,6 +32,7 @@ export const deleteProduct = async (id) => {
 };
 
 
+
 //Home
 
 
@@ -40,5 +41,12 @@ export const updateHomeData = async (data) => {
   const res = await axios.put(`${API_URL}/home`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
+  return res.data;
+};
+
+
+// Đăng nhập admin
+export const loginAdmin = async (email, password) => {
+  const res = await axios.post(`${API_URL}/auth/login`, { email, password });
   return res.data;
 };
