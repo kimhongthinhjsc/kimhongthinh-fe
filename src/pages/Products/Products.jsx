@@ -1,28 +1,71 @@
 import React, { useEffect, useState } from "react";
 import FramePage from "~/components/FramePage/FramePage";
 import Pagination from "~/components/Pagination/Pagination";
-import { fetchProducts } from "~/services/publicAPI";
+import { fetchProducts, fetchCategories } from "~/services/publicAPI";
 import { Link } from "react-router-dom";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 12;
 
   useEffect(() => {
+    const loadCategories = async () => {
+      const data = await fetchCategories();
+      setCategories(data.categories || []); // đảm bảo là mảng
+    };
+    loadCategories();
+  }, []);
+
+  useEffect(() => {
     const loadProducts = async () => {
-      const data = await fetchProducts(currentPage, limit);
+      const data = await fetchProducts(currentPage, limit, selectedCategory);
       setProducts(data.products);
       setTotalPages(data.totalPages);
     };
-
     loadProducts();
-  }, [currentPage]);
+  }, [currentPage, selectedCategory]);
 
   return (
     <FramePage>
       <div className="bg-blue-50 p-6">
+        {/* Bộ lọc loại sản phẩm */}
+        <div className="mb-6 flex flex-wrap gap-3">
+          <button
+            onClick={() => {
+              setSelectedCategory(null);
+              setCurrentPage(1);
+            }}
+            className={`px-4 py-2 rounded-full font-medium border transition ${
+              !selectedCategory
+                ? "bg-orange-500 text-white border-orange-500"
+                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+            }`}
+          >
+            Tất cả
+          </button>
+          {categories.map(({ _id, name }) => (
+            <button
+              key={_id}
+              onClick={() => {
+                setSelectedCategory(_id);
+                setCurrentPage(1);
+              }}
+              className={`px-4 py-2 rounded-full font-medium border transition ${
+                selectedCategory === _id
+                  ? "bg-orange-500 text-white border-orange-500"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+              }`}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+
+        {/* Danh sách sản phẩm */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map(({ _id, name, image, bestSeller }) => (
             <div

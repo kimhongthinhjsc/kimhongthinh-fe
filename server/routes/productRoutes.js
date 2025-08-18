@@ -12,21 +12,40 @@ router.get("/", async (req, res) => {
     const limit = parseInt(req.query.limit) || 12;
     const skip = (page - 1) * limit;
 
-    const total = await Product.countDocuments();
+    const filter = {};
 
-    const products = await Product.find()
-      .select("_id name price bestSeller brand images")
+    // nếu có categoryId thì lọc theo category
+    if (req.query.categoryId) {
+      filter.categoryId = req.query.categoryId;
+    }
+
+    // nếu có subcategoryId thì lọc theo subcategory
+    if (req.query.subcategoryId) {
+      filter.subcategoryId = req.query.subcategoryId;
+    }
+
+    const total = await Product.countDocuments(filter);
+
+    const products = await Product.find(filter)
+      .select("_id name price bestSeller brand images categoryId subcategoryId")
       .skip(skip)
       .limit(limit)
+      .populate("categoryId", "name slug")     // lấy thông tin category
+      .populate("subcategoryId", "name slug") // lấy thông tin subcategory
       .lean();
 
-    // chỉ lấy ảnh đầu tiên, và chuyển thành string
     const formattedProducts = products.map((p) => ({
       _id: p._id,
       name: p.name,
       price: p.price,
       bestSeller: p.bestSeller,
       brand: p.brand,
+      category: p.categoryId
+        ? { _id: p.categoryId._id, name: p.categoryId.name }
+        : null,
+      subcategory: p.subcategoryId
+        ? { _id: p.subcategoryId._id, name: p.subcategoryId.name }
+        : null,
       image: p.images?.length ? p.images[0] : null,
     }));
 

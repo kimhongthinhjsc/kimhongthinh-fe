@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchProducts, addProduct } from "~/services/publicAPI";
+import { fetchProducts } from "~/services/publicAPI";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -28,11 +28,8 @@ export default function Products() {
       alert("Vui lòng nhập đầy đủ thông tin");
       return;
     }
-    const created = await addProduct(newProduct);
-    if (created) {
-      setNewProduct({ name: "", image: "", bestSeller: false });
-      loadProducts();
-    }
+   
+    
   };
 
   const handleChange = async (id, key, value) => {

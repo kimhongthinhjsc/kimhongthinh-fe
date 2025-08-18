@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js"
 import cors from "cors";
 
 dotenv.config();
@@ -21,6 +22,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/categories", categoryRoutes);
 
 // const PORT = process.env.PORT || 5000;
 app.listen(process.env.PORT, process.env.HOST, () => console.log(`🚀 Server running on http://${process.env.HOST}:${process.env.PORT}/`));
