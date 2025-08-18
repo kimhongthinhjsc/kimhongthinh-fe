@@ -1,7 +1,8 @@
 import React from "react";
 import newsList from "~/mock/NewsList.js";
 
-export default function News() {
+export default function News({ data }) {
+    if (!data) return null;
   return (
     <section className=" py-12 px-4 md:px-10 lg:px-20">
       <div className="max-w-7xl mx-auto">

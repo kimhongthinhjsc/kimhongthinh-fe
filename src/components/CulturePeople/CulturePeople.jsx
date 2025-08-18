@@ -1,6 +1,7 @@
 import React from "react";
 
-export default function CulturePeople() {
+export default function CulturePeople({ data }) {
+    if (!data) return null;
   const images = [
     "https://picsum.photos/400?random=1",
     "https://picsum.photos/400?random=2",

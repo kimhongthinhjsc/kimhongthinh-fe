@@ -2,6 +2,7 @@ import React from "react";
 import { Phone, Headphones, MessageCircle } from "lucide-react";
 
 export default function ContactHotline({ data }) {
+    if (!data) return null;
   const renderIcon = (icon) => {
     switch (icon) {
       case "phone":

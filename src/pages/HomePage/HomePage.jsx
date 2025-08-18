@@ -22,9 +22,7 @@ export default function HomePage() {
     loadData();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+
 
   return (
     <FramePage>
