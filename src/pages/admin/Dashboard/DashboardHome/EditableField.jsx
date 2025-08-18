@@ -13,24 +13,26 @@ export default function EditableField({ value, onChange, multiline = false }) {
   const handleBlur = () => setEditing(false);
 
   return (
-    <span className="relative inline-flex items-center group cursor-pointer min-w-[50px]">
+    <div className="relative group cursor-pointer break-words translate-x-0">
       {/* Text hiển thị */}
-      <span
-        className={`${editing ? "invisible" : "visible"} transition`}
-        onClick={() => setEditing(true)}
-      >
-        {value || "..."}
-        <span className="ml-1 text-gray-400 group-hover:text-blue-500">
-          <i className="fa fa-pen text-xs"></i>
-        </span>
-      </span>
+      {!editing && (
+        <div
+          className="inline-block break-words"
+          onClick={() => setEditing(true)}
+        >
+          {value || ""}
+          <span className="ml-1 text-gray-400 group-hover:text-blue-500">
+            <i className="fa fa-pen text-xs"></i>
+          </span>
+        </div>
+      )}
 
-      {/* Input / Textarea chồng lên */}
+      {/* Input / Textarea khi edit */}
       {editing &&
         (multiline ? (
           <textarea
             ref={inputRef}
-            className="absolute left-0 top-0 w-full bg-transparent border-b border-gray-300 focus:border-blue-500 focus:outline-none text-black resize-none"
+            className="w-full bg-transparent border-b border-gray-300 focus:border-blue-500 focus:outline-none  resize-none break-words"
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onBlur={handleBlur}
@@ -39,12 +41,12 @@ export default function EditableField({ value, onChange, multiline = false }) {
         ) : (
           <input
             ref={inputRef}
-            className="absolute left-0 top-0 w-full bg-transparent border-b border-gray-300 focus:border-blue-500 focus:outline-none text-black"
+            className="w-full bg-transparent border-b border-gray-300 focus:border-blue-500 focus:outline-none break-words"
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onBlur={handleBlur}
           />
         ))}
-    </span>
+    </div>
   );
 }

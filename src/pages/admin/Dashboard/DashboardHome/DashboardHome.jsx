@@ -5,6 +5,8 @@ import { updateHomeData } from "~/services/adminAPI";
 import EditHeroSection from "./EditHeroSection";
 import EditEcosystemSection from "./EditEcosystemSection";
 import EditTestimonial from "./EditTestimonial";
+import EditCulturePeople from "./EditCulturePeople";
+import EditContact from "./EditContact";
 
 export default function DashboardHome() {
   const [homeData, setHomeData] = useState(null); // dữ liệu đang chỉnh sửa
@@ -44,13 +46,15 @@ export default function DashboardHome() {
   if (loading) return <div>Đang tải...</div>;
 
   return (
-    <div className="p-6">
+    <div className=" ">
       <h1 className="text-2xl font-bold mb-4">Quản trị trang chủ</h1>
 
       {/* Background / Hero Section */}
       <EditHeroSection data={homeData} onChange={handleChange} />
       <EditEcosystemSection data={homeData} onChange={handleChange} />
       <EditTestimonial data={homeData} onChange={handleChange} />
+      <EditCulturePeople data={homeData} onChange={handleChange} />
+      <EditContact data={homeData} onChange={handleChange} />
       <div className="flex gap-4 mt-4">
         <button
           onClick={handleSave}

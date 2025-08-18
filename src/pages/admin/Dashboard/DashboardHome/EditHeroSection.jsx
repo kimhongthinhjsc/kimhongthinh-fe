@@ -40,7 +40,7 @@ export default function EditHeroSection({ data, onChange }) {
 
   return (
     <section
-      className="relative bg-cover bg-center bg-no-repeat text-white rounded-xl overflow-hidden"
+      className="relative w-full bg-cover bg-center bg-no-repeat text-white rounded-xl overflow-hidden"
       style={{ backgroundImage: `url('${hero.background || ""}')` }}
     >
       {/* overlay tối để thấy chữ rõ hơn */}
@@ -50,13 +50,13 @@ export default function EditHeroSection({ data, onChange }) {
         {/* Background URL */}
         <div className="mb-4 bg-white/10 backdrop-blur-sm rounded-lg p-3 inline-flex items-center gap-3">
           <span className="text-sm opacity-80">Ảnh nền:</span>
-          <EditableField
+          {/* <EditableField
             value={hero.background}
             onChange={(val) => setHero({ background: val })}
             type="url"
             placeholder="Dán URL ảnh nền..."
             className="min-w-[320px]"
-          />
+          /> */}
         </div>
 
         {/* Title */}
@@ -135,12 +135,12 @@ export default function EditHeroSection({ data, onChange }) {
           ))}
         </div>
 
-        <button
+        {/* <button
           onClick={addStat}
           className="mb-10 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded"
         >
           + Thêm box thống kê
-        </button>
+        </button> */}
 
         {/* Slogan */}
         <div className="bg-white/10 rounded-xl p-5 backdrop-blur-sm border border-white/10">
@@ -172,7 +172,7 @@ export default function EditHeroSection({ data, onChange }) {
                   onChange={(val) => setHero({ link: val })}
                   type="url"
                   placeholder="https://..."
-                  className="min-w-[320px]"
+                  className="w-full sm:min-w-[240px]"
                 />
               </div>
             </div>

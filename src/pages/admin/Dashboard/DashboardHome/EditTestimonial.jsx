@@ -13,49 +13,51 @@ export default function EditTestimonial({ data, onChange }) {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-xl p-6 mt-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <div className="bg-white shadow-xl rounded-2xl p-10 mt-6 border border-gray-100">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         {/* Cột trái: nội dung */}
-        <div className="bg-gray-50 rounded-xl p-6 relative">
-          <div className="absolute -top-4 -left-4 text-[#EF5627] opacity-20 text-5xl">
+        <div className="relative">
+          {/* Icon quote */}
+          <div className="absolute -top-6 -left-6 text-[#EF5627] opacity-10 text-8xl">
             <i className="fa-solid fa-quote-left"></i>
           </div>
 
-          {/* Nội dung */}
-          <div className="mb-4 relative z-10">
+          {/* Nội dung testimonial */}
+          <div className="relative z-10 text-xl leading-relaxed text-gray-700">
             <EditableField
               multiline
               value={testimonial.content || ""}
               onChange={(val) => handleChange("content", val)}
+              placeholder="Nhập nội dung testimonial..."
             />
           </div>
 
-          {/* Tác giả */}
+          {/* Tác giả + chức vụ */}
           <div className="mt-6 relative z-10">
-            <label className="block text-sm font-medium mb-1">Tác giả</label>
-            <EditableField
-              value={testimonial.author || ""}
-              onChange={(val) => handleChange("author", val)}
-            />
-          </div>
-
-          {/* Chức vụ */}
-          <div className="mt-2 relative z-10">
-            <label className="block text-sm font-medium mb-1">Chức vụ</label>
-            <EditableField
-              value={testimonial.position || ""}
-              onChange={(val) => handleChange("position", val)}
-            />
+            <span className="block font-semibold text-gray-900 text-lg">
+              <EditableField
+                value={testimonial.author || ""}
+                onChange={(val) => handleChange("author", val)}
+                placeholder="Tên tác giả"
+              />
+            </span>
+            <span className="block text-sm text-gray-500">
+              <EditableField
+                value={testimonial.position || ""}
+                onChange={(val) => handleChange("position", val)}
+                placeholder="Chức vụ / Công ty"
+              />
+            </span>
           </div>
         </div>
 
-        {/* Cột phải: ảnh */}
+        {/* Cột phải: ảnh lớn */}
         <div className="flex justify-center">
           <EditableImage
-            label="Ảnh"
+            label="Ảnh lớn"
             src={testimonial.image || ""}
             onChange={(val) => handleChange("image", val)}
-            className="max-w-xs"
+            className="w-full max-w-md h-[320px] object-cover rounded-2xl shadow-lg"
           />
         </div>
       </div>

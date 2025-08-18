@@ -34,7 +34,7 @@ export default function HomePage() {
       <CulturePeople data={homeData?.culture} />
       <Partners data={homeData?.partners} />
       <News data={homeData?.news} />
-      <ContactHotline data={homeData?.contactHotline} />
+      <ContactHotline data={homeData?.contact} />
     </FramePage>
   );
 }
