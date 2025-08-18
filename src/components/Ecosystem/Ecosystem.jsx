@@ -1,16 +1,15 @@
 import React from "react";
-import ecosystem from "~/mock/Ecosystem";
 
-export default function Ecosystem() {
+export default function Ecosystem({data}) {
   return (
     <section className=" py-12 px-6 md:px-20">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-[#EF5627] mb-10">
-          Hệ sinh thái phần mềm doanh nghiệp
+          {data?.title }
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {ecosystem.map((item, idx) => (
+          {data?.items.map((item, idx) => (
             <a
               key={idx}
               href={item.link}

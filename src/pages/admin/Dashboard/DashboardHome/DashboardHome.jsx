@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import { fetchHomeData } from "~/services/publicAPI";
 import { updateHomeData } from "~/services/adminAPI";
 import EditHeroSection from "./EditHeroSection";
+import EditEcosystemSection from "./EditEcosystemSection";
+import EditTestimonial from "./EditTestimonial";
 
 export default function DashboardHome() {
-  const [homeData, setHomeData] = useState(null);       // dữ liệu đang chỉnh sửa
+  const [homeData, setHomeData] = useState(null); // dữ liệu đang chỉnh sửa
   const [originalData, setOriginalData] = useState(null); // dữ liệu gốc để reset
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -29,7 +31,7 @@ export default function DashboardHome() {
 
   const handleSave = async () => {
     setSaving(true);
-    await updateHomeData(homeData); 
+    await updateHomeData(homeData);
     setOriginalData(homeData); // sau khi lưu thì cập nhật bản gốc
     setSaving(false);
     alert("Cập nhật thành công!");
@@ -47,7 +49,8 @@ export default function DashboardHome() {
 
       {/* Background / Hero Section */}
       <EditHeroSection data={homeData} onChange={handleChange} />
-
+      <EditEcosystemSection data={homeData} onChange={handleChange} />
+      <EditTestimonial data={homeData} onChange={handleChange} />
       <div className="flex gap-4 mt-4">
         <button
           onClick={handleSave}

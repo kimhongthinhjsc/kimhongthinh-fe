@@ -32,7 +32,6 @@ export default function Services() {
   };
 
   const handleSave = () => {
-    console.log("Danh sách dịch vụ:", services);
     alert("Đã lưu danh sách dịch vụ (demo)");
   };
 

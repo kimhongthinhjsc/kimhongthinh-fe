@@ -8,7 +8,7 @@ export default function Introduce() {
 
   
   const handleSave = () => {
-    console.log("✅ Nội dung giới thiệu đã lưu:", content);
+
     alert("Lưu thành công (demo)!");
   };
 

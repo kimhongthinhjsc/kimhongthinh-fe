@@ -16,7 +16,7 @@ export default function EventForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form data:", formData);
+
     // TODO: gửi API backend hoặc dùng form service
   };
 
