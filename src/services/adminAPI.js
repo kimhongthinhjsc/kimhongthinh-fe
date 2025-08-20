@@ -30,3 +30,45 @@ export const loginAdmin = async (email, password) => {
   const res = await api.post("/auth/login", { email, password });
   return res.data;
 };
+
+
+export const uploadImage = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await api.post("/upload/image", formData);
+  return res.data;
+};
+
+// Upload nhiều ảnh (tối đa 5 theo backend)
+export const uploadImages = async (files) => {
+  const formData = new FormData();
+  files.forEach((f) => formData.append("file", f));
+
+  const res = await api.post("/upload/images", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+};
+
+// Upload video
+export const uploadVideo = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await api.post("/upload/video", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+};
+
+
+export const updateCompanyProfile = async (data) => {
+  try {
+    const res = await api.put("/company-profile", data);
+    return res.data;
+  } catch (error) {
+    console.error("❌ updateCompanyProfile error:", error);
+    return null;
+  }
+};

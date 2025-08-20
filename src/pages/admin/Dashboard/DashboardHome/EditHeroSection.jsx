@@ -1,15 +1,6 @@
 import React from "react";
 import EditableField from "./EditableField";
 import EditableImage from "./EditableImage";
-
-/**
- * data.hero:
- * {
- *  background, title, subtitle,
- *  stats: [{img, number, suffix, text}],
- *  sloganTitle, sloganDesc, link
- * }
- */
 export default function EditHeroSection({ data, onChange }) {
   const hero = data?.hero ?? {};
 
@@ -43,23 +34,12 @@ export default function EditHeroSection({ data, onChange }) {
       className="relative w-full bg-cover bg-center bg-no-repeat text-white rounded-xl overflow-hidden"
       style={{ backgroundImage: `url('${hero.background || ""}')` }}
     >
-      {/* overlay tối để thấy chữ rõ hơn */}
       <div className="absolute inset-0 bg-black/40" />
 
       <div className="relative z-10 p-6 md:p-10">
-        {/* Background URL */}
         <div className="mb-4 bg-white/10 backdrop-blur-sm rounded-lg p-3 inline-flex items-center gap-3">
           <span className="text-sm opacity-80">Ảnh nền:</span>
-          {/* <EditableField
-            value={hero.background}
-            onChange={(val) => setHero({ background: val })}
-            type="url"
-            placeholder="Dán URL ảnh nền..."
-            className="min-w-[320px]"
-          /> */}
         </div>
-
-        {/* Title */}
         <h2 className="text-3xl md:text-5xl font-bold mb-4">
           <EditableField
             value={hero.title}
@@ -68,7 +48,6 @@ export default function EditHeroSection({ data, onChange }) {
           />
         </h2>
 
-        {/* Subtitle */}
         <div className="text-base md:text-lg mb-8 max-w-3xl">
           <EditableField
             value={hero.subtitle}
@@ -77,24 +56,13 @@ export default function EditHeroSection({ data, onChange }) {
             placeholder="Mô tả ngắn (subtitle)"
           />
         </div>
-
-        {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           {(hero.stats || []).map((s, i) => (
             <div
               key={i}
               className="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/10"
             >
-              <div className="flex items-center justify-between mb-3">
-                <div className="font-semibold">Box #{i + 1}</div>
-                <button
-                  onClick={() => removeStat(i)}
-                  className="text-sm bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
-                  title="Xóa box này"
-                >
-                  Xóa
-                </button>
-              </div>
+           
 
               <EditableImage
                 src={s.img}
@@ -104,20 +72,12 @@ export default function EditHeroSection({ data, onChange }) {
 
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <div>
-                  <div className="text-sm font-semibold">Số</div>
+                  <div className="text-sm font-semibold">Số lượng</div>
                   <EditableField
                     value={s.number}
                     onChange={(val) => updateStat(i, { number: val })}
                     type="number"
                     placeholder="0"
-                  />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold">Hậu tố</div>
-                  <EditableField
-                    value={s.suffix}
-                    onChange={(val) => updateStat(i, { suffix: val })}
-                    placeholder="+"
                   />
                 </div>
               </div>
@@ -134,15 +94,6 @@ export default function EditHeroSection({ data, onChange }) {
             </div>
           ))}
         </div>
-
-        {/* <button
-          onClick={addStat}
-          className="mb-10 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded"
-        >
-          + Thêm box thống kê
-        </button> */}
-
-        {/* Slogan */}
         <div className="bg-white/10 rounded-xl p-5 backdrop-blur-sm border border-white/10">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
@@ -162,9 +113,6 @@ export default function EditHeroSection({ data, onChange }) {
             </div>
 
             <div className="text-base leading-relaxed">
-              {/* Nếu về sau bạn muốn thêm nội dung đoạn văn, có thể tạo field mới, ví dụ: sloganContent */}
-              {/* <EditableField multiline value={hero.sloganContent} onChange={(v)=>setHero({sloganContent: v})} /> */}
-
               <div className="mt-4 flex items-center gap-2">
                 <span>Liên kết:</span>
                 <EditableField
@@ -179,8 +127,6 @@ export default function EditHeroSection({ data, onChange }) {
           </div>
         </div>
       </div>
-
-      {/* viền gợi ý block đang edit */}
       <div className="absolute inset-0 pointer-events-none ring-2 ring-blue-400/40 rounded-xl" />
     </section>
   );
