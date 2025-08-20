@@ -11,7 +11,7 @@ export default function HeroSection({ data }) {
         backgroundImage: `url('${data.background}')`,
       }}
     >
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 py-4">
         {/* Title */}
         <div
           data-aos="fade-right"

@@ -1,8 +1,8 @@
 import React from "react";
 import { Phone, Headphones, MessageCircle } from "lucide-react";
-import contacts from "~/mock/Contacts.js";
 
-export default function ContactHotline() {
+export default function ContactHotline({ data }) {
+    if (!data) return null;
   const renderIcon = (icon) => {
     switch (icon) {
       case "phone":
@@ -15,14 +15,18 @@ export default function ContactHotline() {
         return null;
     }
   };
+  console.log(data);
 
   return (
     <section className="bg-white py-12 px-6 md:px-20">
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        {contacts.map((item, idx) => (
-          <div
+        {data.items.map((item, idx) => (
+          <a
             key={idx}
-            className="flex items-start gap-4 bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition"
+            href={item.link || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-start gap-4 bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition cursor-pointer"
           >
             <div className="shrink-0">{renderIcon(item.icon)}</div>
             <div>
@@ -31,7 +35,7 @@ export default function ContactHotline() {
               </p>
               <p className="text-[#EF5627] text-lg font-bold">{item.value}</p>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </section>

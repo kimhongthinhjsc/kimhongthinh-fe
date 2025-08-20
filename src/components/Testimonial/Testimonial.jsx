@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function Testimonial({ data }) {
+    if (!data) return null;
 
   return (
     <section className="bg-gray-50 py-16 px-6 md:px-20">

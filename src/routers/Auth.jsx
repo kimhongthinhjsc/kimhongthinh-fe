@@ -2,14 +2,6 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
-const Test = lazy(() =>
-  import("../components/TestComponent/TestComponent").then((module) => ({
-    default: module.TestComponent,
-  }))
-);
-const NotFoundPage = React.lazy(() =>
-  import("../pages/NotFoundPage/NotFoundPage")
-);
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const Introduce = lazy(() => import("../pages/Introduce/Introduce"));
 const Products = lazy(() => import("../pages/Products/Products"));

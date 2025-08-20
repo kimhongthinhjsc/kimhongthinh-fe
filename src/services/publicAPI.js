@@ -1,13 +1,14 @@
-import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL
+// src/services/productAPI.js
+import api from "./api"; // 👈 dùng instance có interceptor
 
+// Lấy danh sách sản phẩm
 export const fetchProducts = async (page = 1, limit = 12, categoryId, subcategoryId) => {
   try {
     const params = { page, limit };
     if (categoryId) params.categoryId = categoryId;
     if (subcategoryId) params.subcategoryId = subcategoryId;
 
-    const res = await axios.get(`${API_URL}/products`, { params });
+    const res = await api.get("/products", { params });
     return res.data; // { products, totalPages, currentPage }
   } catch (error) {
     console.error("❌ fetchProducts error:", error);
@@ -15,9 +16,10 @@ export const fetchProducts = async (page = 1, limit = 12, categoryId, subcategor
   }
 };
 
+// Lấy danh mục
 export const fetchCategories = async () => {
   try {
-    const res = await axios.get(`${API_URL}/categories`);
+    const res = await api.get("/categories");
     return res.data; // giả sử trả về mảng categories
   } catch (error) {
     console.error("❌ fetchCategories error:", error);
@@ -25,15 +27,37 @@ export const fetchCategories = async () => {
   }
 };
 
+// Lấy chi tiết sản phẩm theo ID
 export const fetchProductById = async (id) => {
-  const res = await axios.get(`${API_URL}/products/${id}`);
-  return res.data;
+  try {
+    const res = await api.get(`/products/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error("❌ fetchProductById error:", error);
+    return null;
+  }
 };
 
-
-// GET dữ liệu home
+// Lấy dữ liệu trang chủ
 export const fetchHomeData = async () => {
-  const res = await axios.get(`${API_URL}/home`);
+  try {
+    const res = await api.get("/home");
+    return res.data;
+  } catch (error) {
+    console.error("❌ fetchHomeData error:", error);
+    return null;
+  }
+};
+
+
+export const getCompanyProfile = async () => {
+  const res = await api.get("/company-profile");
   return res.data;
 };
 
+
+//introduce
+export const getIntroduce = async () => {
+  const res = await api.get("/introduce");
+  return res.data;
+};
