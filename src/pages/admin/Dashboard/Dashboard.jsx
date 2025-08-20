@@ -6,7 +6,7 @@ import functionAdmin from "~/models/funcionAdmin";
 // Lazy load các trang con
 const DashboardHome = lazy(() => import("./DashboardHome/DashboardHome"));
 const DashboardIntroduce = lazy(() => import("./DashboardIntroduce/DashboardIntroduce"));
-const DashboardProducts = lazy(() => import("./Products"));
+const DashboardProducts = lazy(() => import("./DashboardProducts/DashboardProducts"));
 const DashboardServices = lazy(() => import("./Services"));
 const DashboardNews = lazy(() => import("./News"));
 const DashboardEvents = lazy(() => import("./Events"));
@@ -17,7 +17,7 @@ const DashboardContact = lazy(() => import("./Contact"));
 const DashboardUI = lazy(() => import("./UI"));
 const DashboardManageAdmin = lazy(() => import("./ManageAdmin"));
 const DashboardCompanyInfo = lazy(() => import("./CompanyInfo"));
-const DashboardProductEdit = lazy(() => import("./ProductEdit"));
+const DashboardProductEdit = lazy(() => import("./DashboardProducts/DashboardProductEdit/DashboardProductEdit"));
 
 export default function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
