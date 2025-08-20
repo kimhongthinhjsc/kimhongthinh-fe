@@ -1,5 +1,5 @@
-import EditableField from "./EditableField";
-import EditableImage from "./EditableImage";
+import EditableField from "~/components/EditableField/EditableField";
+import EditableImage from "~/components/EditableImage/EditableImage";
 
 export default function EditCulturePeople({ data, onChange }) {
   const culture = data?.culture || { title: "", images: [] };

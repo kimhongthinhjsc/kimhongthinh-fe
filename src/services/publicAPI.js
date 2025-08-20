@@ -54,3 +54,10 @@ export const getCompanyProfile = async () => {
   const res = await api.get("/company-profile");
   return res.data;
 };
+
+
+//introduce
+export const getIntroduce = async () => {
+  const res = await api.get("/introduce");
+  return res.data;
+};
