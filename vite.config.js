@@ -7,6 +7,12 @@ export default defineConfig({
   resolve: {
     alias: {
       "~": path.resolve(__dirname, "src"),
+      ckeditor5: path.resolve(__dirname, "node_modules/ckeditor5"),
+    },
+  },
+  server: {
+    proxy: {
+      "/api": "http://localhost:5000", // mọi request /api sẽ chuyển đến backend
     },
   },
 });

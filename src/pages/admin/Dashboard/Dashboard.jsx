@@ -8,7 +8,8 @@ const DashboardHome = lazy(() => import("./DashboardHome/DashboardHome"));
 const DashboardIntroduce = lazy(() => import("./DashboardIntroduce/DashboardIntroduce"));
 const DashboardProducts = lazy(() => import("./Products"));
 const DashboardServices = lazy(() => import("./Services"));
-const DashboardNews = lazy(() => import("./News"));
+const DashboardNews = lazy(() => import("./News/ListNews"));
+const DashboardCreateNews = lazy(() => import("./News/News"));
 const DashboardEvents = lazy(() => import("./Events"));
 const DashboardCareers = lazy(() => import("./Careers"));
 const DashboardActivities = lazy(() => import("./Activities"));
@@ -75,7 +76,6 @@ export default function Dashboard() {
           </button>
           <h1 className="ml-4 font-semibold text-lg">Dashboard</h1>
         </header>
-
         <main className="flex-1 bg-gray-100 overflow-y-auto">
           <Suspense fallback={<div>Đang tải...</div>}>
             <Routes>
@@ -85,6 +85,7 @@ export default function Dashboard() {
               <Route path="/products" element={<DashboardProducts />} />
               <Route path="/services" element={<DashboardServices />} />
               <Route path="/news" element={<DashboardNews />} />
+              <Route path="/news/create" element={<DashboardCreateNews />} />
               <Route path="/events" element={<DashboardEvents />} />
               <Route path="/careers" element={<DashboardCareers />} />
               <Route path="/activities" element={<DashboardActivities />} />

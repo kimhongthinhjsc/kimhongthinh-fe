@@ -1,5 +1,11 @@
 // adminAPI.js
+import axios from "axios";
+const token = localStorage.getItem("accessToken");
+
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api/products";
 import api from "./api"; // 👈 import instance có interceptor
+
 
 // Tạo sản phẩm
 export const createProduct = async (product) => {
@@ -28,6 +34,27 @@ export const updateHomeData = async (data) => {
 // Đăng nhập admin
 export const loginAdmin = async (email, password) => {
   const res = await api.post("/auth/login", { email, password });
+  return res.data;
+};
+
+export const createNews = async (news) => {
+  console.log(news.image)
+
+  //Call api upload ảnh
+  const resImage = await axios.post(`${API_URL}/upload/image`, { file: news.image }, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`
+    },
+  });
+
+  if (resImage.status === 200) {
+    news.image = resImage.data.url; // Lưu URL ảnh đã upload
+  }
+
+  const res = await axios.post(`${API_URL}/news`, news, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return res.data;
 };
 

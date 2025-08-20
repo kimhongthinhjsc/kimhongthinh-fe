@@ -1,0 +1,517 @@
+
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import DOMPurify from "dompurify";
+import {
+    ClassicEditor,
+    Alignment,
+    Autoformat,
+    AutoImage,
+    Autosave,
+    BalloonToolbar,
+    Base64UploadAdapter,
+    BlockQuote,
+    BlockToolbar,
+    Bold,
+    Bookmark,
+    CloudServices,
+    Code,
+    CodeBlock,
+    Emoji,
+    Essentials,
+    FindAndReplace,
+    FontBackgroundColor,
+    FontColor,
+    FontFamily,
+    FontSize,
+    Fullscreen,
+    GeneralHtmlSupport,
+    Heading,
+    Highlight,
+    HorizontalLine,
+    ImageBlock,
+    ImageCaption,
+    ImageInline,
+    ImageInsert,
+    ImageInsertViaUrl,
+    ImageResize,
+    ImageStyle,
+    ImageTextAlternative,
+    ImageToolbar,
+    ImageUpload,
+    Indent,
+    IndentBlock,
+    Italic,
+    Link,
+    LinkImage,
+    List,
+    ListProperties,
+    MediaEmbed,
+    Mention,
+    PageBreak,
+    Paragraph,
+    PasteFromOffice,
+    PlainTableOutput,
+    RemoveFormat,
+    SpecialCharacters,
+    SpecialCharactersArrows,
+    SpecialCharactersCurrency,
+    SpecialCharactersEssentials,
+    SpecialCharactersLatin,
+    SpecialCharactersMathematical,
+    SpecialCharactersText,
+    Strikethrough,
+    Style,
+    Subscript,
+    Superscript,
+    Table,
+    TableCaption,
+    TableCellProperties,
+    TableColumnResize,
+    TableLayout,
+    TableProperties,
+    TableToolbar,
+    TextPartLanguage,
+    TextTransformation,
+    Title,
+    TodoList,
+    Underline,
+    WordCount
+} from 'ckeditor5';
+
+import 'ckeditor5/dist/ckeditor5.css';
+import 'ckeditor5/dist/ckeditor5-content.css';
+
+import './ComposeNews.scss';
+
+// ---- Custom Upload Adapter ----
+class CustomUploadAdapter {
+    constructor(loader) {
+        this.loader = loader;
+    }
+
+    async upload() {
+        const file = await this.loader.file;
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            const response = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            const data = await response.json();
+            return {
+                default: data.url,
+            };
+        } catch (err) {
+            console.error("Upload error:", err);
+            throw err;
+        }
+    }
+
+    abort() {
+        console.log("Upload aborted");
+    }
+}
+
+// ---- Plugin để tích hợp vào CKEditor ----
+function CustomUploadAdapterPlugin(editor) {
+  editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+    return new CustomUploadAdapter(loader);
+  };
+}
+
+const LICENSE_KEY =
+    'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTY4NTc1OTksImp0aSI6IjU3ZGZiMzViLTExN2ItNDkzMS1iZDU2LWM3YjA3NjNiZDFiNiIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImUwZjRiOTk5In0.Fkvi7Sl3htLGuyBmz5Ub2GM4Nv9lRmEozPMYAFWsAtxhW5_lkMgOLDPA2aG4Vr170PcCsO5dxWZzTlqHRkSlkQ';
+
+export default function ComposeNews({ onContentChange }) {
+    const editorContainerRef = useRef(null);
+    const editorRef = useRef(null);
+    const editorWordCountRef = useRef(null);
+    const [isLayoutReady, setIsLayoutReady] = useState(false);
+
+    useEffect(() => {
+        setIsLayoutReady(true);
+
+        return () => setIsLayoutReady(false);
+    }, []);
+
+    const { editorConfig } = useMemo(() => {
+        if (!isLayoutReady) {
+            return {};
+        }
+
+        return {
+            editorConfig: {
+                toolbar: {
+                    items: [
+                        'undo',
+                        'redo',
+                        '|',
+                        'findAndReplace',
+                        'textPartLanguage',
+                        'fullscreen',
+                        '|',
+                        'heading',
+                        'style',
+                        '|',
+                        'fontSize',
+                        'fontFamily',
+                        'fontColor',
+                        'fontBackgroundColor',
+                        '|',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'strikethrough',
+                        'subscript',
+                        'superscript',
+                        'code',
+                        'removeFormat',
+                        '|',
+                        'emoji',
+                        'specialCharacters',
+                        'horizontalLine',
+                        'pageBreak',
+                        'link',
+                        'bookmark',
+                        'insertImage',
+                        'insertImageViaUrl',
+                        'mediaEmbed',
+                        'insertTable',
+                        'insertTableLayout',
+                        'highlight',
+                        'blockQuote',
+                        'codeBlock',
+                        '|',
+                        'alignment',
+                        '|',
+                        'bulletedList',
+                        'numberedList',
+                        'todoList',
+                        'outdent',
+                        'indent'
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+                plugins: [
+                    Alignment,
+                    Autoformat,
+                    AutoImage,
+                    Autosave,
+                    BalloonToolbar,
+                    Base64UploadAdapter,
+                    BlockQuote,
+                    BlockToolbar,
+                    Bold,
+                    Bookmark,
+                    CloudServices,
+                    Code,
+                    CodeBlock,
+                    Emoji,
+                    Essentials,
+                    FindAndReplace,
+                    FontBackgroundColor,
+                    FontColor,
+                    FontFamily,
+                    FontSize,
+                    Fullscreen,
+                    GeneralHtmlSupport,
+                    Heading,
+                    Highlight,
+                    HorizontalLine,
+                    ImageBlock,
+                    ImageCaption,
+                    ImageInline,
+                    ImageInsert,
+                    ImageInsertViaUrl,
+                    ImageResize,
+                    ImageStyle,
+                    ImageTextAlternative,
+                    ImageToolbar,
+                    ImageUpload,
+                    Indent,
+                    IndentBlock,
+                    Italic,
+                    Link,
+                    LinkImage,
+                    List,
+                    ListProperties,
+                    MediaEmbed,
+                    Mention,
+                    PageBreak,
+                    Paragraph,
+                    PasteFromOffice,
+                    PlainTableOutput,
+                    RemoveFormat,
+                    SpecialCharacters,
+                    SpecialCharactersArrows,
+                    SpecialCharactersCurrency,
+                    SpecialCharactersEssentials,
+                    SpecialCharactersLatin,
+                    SpecialCharactersMathematical,
+                    SpecialCharactersText,
+                    Strikethrough,
+                    Style,
+                    Subscript,
+                    Superscript,
+                    Table,
+                    TableCaption,
+                    TableCellProperties,
+                    TableColumnResize,
+                    TableLayout,
+                    TableProperties,
+                    TableToolbar,
+                    TextPartLanguage,
+                    TextTransformation,
+                    Title,
+                    TodoList,
+                    Underline,
+                    WordCount
+                ],
+                balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|', 'bulletedList', 'numberedList'],
+                blockToolbar: [
+                    'fontSize',
+                    'fontColor',
+                    'fontBackgroundColor',
+                    '|',
+                    'bold',
+                    'italic',
+                    '|',
+                    'link',
+                    'insertImage',
+                    'insertTable',
+                    'insertTableLayout',
+                    '|',
+                    'bulletedList',
+                    'numberedList',
+                    'outdent',
+                    'indent'
+                ],
+                fontFamily: {
+                    supportAllValues: true
+                },
+                fontSize: {
+                    options: [10, 12, 14, 'default', 18, 20, 22],
+                    supportAllValues: true
+                },
+                fullscreen: {
+                    onEnterCallback: container =>
+                        container.classList.add(
+                            'editor-container',
+                            'editor-container_classic-editor',
+                            'editor-container_include-style',
+                            'editor-container_include-block-toolbar',
+                            'editor-container_include-word-count',
+                            'editor-container_include-fullscreen',
+                            'main-container'
+                        )
+                },
+                heading: {
+                    options: [
+                        {
+                            model: 'paragraph',
+                            title: 'Paragraph',
+                            class: 'ck-heading_paragraph'
+                        },
+                        {
+                            model: 'heading1',
+                            view: 'h1',
+                            title: 'Heading 1',
+                            class: 'ck-heading_heading1'
+                        },
+                        {
+                            model: 'heading2',
+                            view: 'h2',
+                            title: 'Heading 2',
+                            class: 'ck-heading_heading2'
+                        },
+                        {
+                            model: 'heading3',
+                            view: 'h3',
+                            title: 'Heading 3',
+                            class: 'ck-heading_heading3'
+                        },
+                        {
+                            model: 'heading4',
+                            view: 'h4',
+                            title: 'Heading 4',
+                            class: 'ck-heading_heading4'
+                        },
+                        {
+                            model: 'heading5',
+                            view: 'h5',
+                            title: 'Heading 5',
+                            class: 'ck-heading_heading5'
+                        },
+                        {
+                            model: 'heading6',
+                            view: 'h6',
+                            title: 'Heading 6',
+                            class: 'ck-heading_heading6'
+                        }
+                    ]
+                },
+                htmlSupport: {
+                    allow: [
+                        {
+                            name: /^.*$/,
+                            styles: true,
+                            attributes: true,
+                            classes: true
+                        }
+                    ]
+                },
+                image: {
+                    toolbar: [
+                        'toggleImageCaption',
+                        'imageTextAlternative',
+                        '|',
+                        'imageStyle:inline',
+                        'imageStyle:wrapText',
+                        'imageStyle:breakText',
+                        '|',
+                        'resizeImage'
+                    ]
+                },
+                initialData:
+                    '\n',
+                licenseKey: LICENSE_KEY,
+                link: {
+                    addTargetToExternalLinks: true,
+                    defaultProtocol: 'https://',
+                    decorators: {
+                        toggleDownloadable: {
+                            mode: 'manual',
+                            label: 'Downloadable',
+                            attributes: {
+                                download: 'file'
+                            }
+                        }
+                    }
+                },
+                list: {
+                    properties: {
+                        styles: true,
+                        startIndex: true,
+                        reversed: true
+                    }
+                },
+                mention: {
+                    feeds: [
+                        {
+                            marker: '@',
+                            feed: [
+                                /* See: https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html */
+                            ]
+                        }
+                    ]
+                },
+                menuBar: {
+                    isVisible: true
+                },
+                style: {
+                    definitions: [
+                        {
+                            name: 'Article category',
+                            element: 'h3',
+                            classes: ['category']
+                        },
+                        {
+                            name: 'Title',
+                            element: 'h2',
+                            classes: ['document-title']
+                        },
+                        {
+                            name: 'Subtitle',
+                            element: 'h3',
+                            classes: ['document-subtitle']
+                        },
+                        {
+                            name: 'Info box',
+                            element: 'p',
+                            classes: ['info-box']
+                        },
+                        {
+                            name: 'CTA Link Primary',
+                            element: 'a',
+                            classes: ['button', 'button--green']
+                        },
+                        {
+                            name: 'CTA Link Secondary',
+                            element: 'a',
+                            classes: ['button', 'button--black']
+                        },
+                        {
+                            name: 'Marker',
+                            element: 'span',
+                            classes: ['marker']
+                        },
+                        {
+                            name: 'Spoiler',
+                            element: 'span',
+                            classes: ['spoiler']
+                        }
+                    ]
+                },
+                table: {
+                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+                }
+            }
+        };
+    }, [isLayoutReady]);
+
+    const [content, setContent] = useState("");
+
+    return (
+        <div className="main-container">
+            <div
+                className="editor-container editor-container_classic-editor editor-container_include-style editor-container_include-block-toolbar editor-container_include-word-count editor-container_include-fullscreen"
+                ref={editorContainerRef}
+            >
+                <div className="editor-container__editor">
+                    <div ref={editorRef}>
+                        {editorConfig && (
+                            <CKEditor
+                                onReady={editor => {
+                                    const wordCount = editor.plugins.get('WordCount');
+                                    editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
+                                }}
+                                onAfterDestroy={() => {
+                                    Array.from(editorWordCountRef.current.children).forEach(child => child.remove());
+                                }}
+                                editor={ClassicEditor}
+                                config={editorConfig}
+                                onChange={(event, editor) => {
+                                    const data = editor.getData();
+                                    setContent(data); // vẫn giữ local preview
+                                    if (onContentChange) onContentChange(data); // gửi lên cha
+                                }}
+                            />
+                        )}
+                    </div>
+                </div>
+                <div className="editor_container__word-count" ref={editorWordCountRef}></div>
+                <div >
+                    <h3 className="text-xl font-semibold mb-3 border-b-2 border-blue-500 pb-1 text-gray-800 font-merri">📰 Xem trước bài báo:</h3>
+                    <div style={{
+                        marginTop: "30px",
+                        minHeight: "300px",
+                        maxWidth: "800px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        padding: "16px",
+                        border: "1px solid #ddd",
+                        borderRadius: "6px",
+                        boxSizing: "border-box",
+                        backgroundColor: "white"
+                    }} className='ck-content'
+                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}
