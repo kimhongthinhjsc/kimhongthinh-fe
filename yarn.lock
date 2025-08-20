@@ -2836,7 +2836,7 @@ ckeditor5@44.3.0:
     "@ckeditor/ckeditor5-widget" "44.3.0"
     "@ckeditor/ckeditor5-word-count" "44.3.0"
 
-ckeditor5@46.0.2:
+ckeditor5@46.0.2, ckeditor5@^46.0.2:
   version "46.0.2"
   resolved "https://registry.yarnpkg.com/ckeditor5/-/ckeditor5-46.0.2.tgz#da85d11dc56a3cbac8599ae334f05854cedfbe8f"
   integrity sha512-Ly+pG/OkF+9P7DaaaCp+VYJOm0+flxLR3Ue1thm10JnMvOW52XXYaRyoasAXoiGz6CC4lh0ZN7AtQSWu85oj3g==
@@ -5600,6 +5600,7 @@ stop-iteration-iterator@^1.1.0:
     internal-slot "^1.1.0"
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
