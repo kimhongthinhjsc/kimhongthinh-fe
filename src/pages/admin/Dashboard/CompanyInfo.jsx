@@ -1,5 +1,6 @@
 // src/pages/admin/Dashboard/CompanyInfo.jsx
 import React, { useState, useEffect } from "react";
+import EditableImage from "~/components/EditableImage/EditableImage";
 import { getCompanyProfile } from "~/services/publicAPI";
 import { updateCompanyProfile, uploadImage } from "~/services/adminAPI";
 import { profile as defaultProfile } from "~/models/CompanyProfile";
@@ -43,27 +44,6 @@ export default function CompanyInfo() {
     }
   };
 
-  const handleLogoChange = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      const localUrl = URL.createObjectURL(file);
-      setFormData((prev) => ({ ...prev, logo: localUrl }));
-
-      const res = await uploadImage(file);
-      const uploadedUrl = res.url || res.secure_url;
-      if (uploadedUrl) {
-        setFormData((prev) => ({ ...prev, logo: uploadedUrl }));
-      } else {
-        alert("❌ Upload thất bại, không có URL trả về");
-      }
-    } catch (error) {
-      console.error("Upload logo error:", error);
-      alert("❌ Có lỗi khi upload logo");
-    }
-  };
-
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -93,25 +73,12 @@ export default function CompanyInfo() {
     <div className="p-6 space-y-6 max-w-5xl mx-auto">
       <h1 className="text-3xl font-bold text-center mb-6">Thông tin công ty</h1>
 
-      {/* Logo */}
-      <div className="bg-white shadow rounded p-4 flex flex-col md:flex-row items-center gap-6">
-        {formData.logo && (
-          <img
-            src={formData.logo}
-            alt="Company Logo"
-            className="h-32 w-32 object-contain border p-1 rounded"
-          />
-        )}
-        <div className="flex-1">
-          <label className="block font-semibold mb-2">Logo</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleLogoChange}
-            className="w-full border rounded p-2"
-          />
-        </div>
-      </div>
+      <EditableImage
+        src={formData.logo}
+        onChange={(val) => setFormData((prev) => ({ ...prev, logo: val }))}
+        label="Logo"
+        className="h-32 max-w-max object-contain border p-1 rounded"
+      />
 
       {/* Thông tin cơ bản */}
       <div className="bg-white shadow rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
