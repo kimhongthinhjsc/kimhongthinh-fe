@@ -2,6 +2,7 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 
+
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const Introduce = lazy(() => import("../pages/Introduce/Introduce"));
 const Products = lazy(() => import("../pages/Products/Products"));

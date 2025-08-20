@@ -69,3 +69,22 @@ export const getSubcategories = async () => {
   const res = await api.get(`/subcategories`);
   return res.data;
 };
+
+export const searchProducts = async ({
+  keyword = "",
+  page = 1,
+  limit = 12,
+}) => {
+  try {
+    const params = { keyword, page, limit };
+    if (categoryId) params.categoryId = categoryId;
+    if (subcategoryId) params.subcategoryId = subcategoryId;
+
+    const res = await api.get("/products/search", { params });
+    return res.data; // { products, totalPages, currentPage }
+  } catch (error) {
+    console.error("❌ searchProducts error:", error);
+    return { products: [], totalPages: 1, currentPage: 1 };
+  }
+};
+

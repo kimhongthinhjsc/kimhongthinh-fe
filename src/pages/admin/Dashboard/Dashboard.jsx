@@ -19,6 +19,7 @@ const DashboardUI = lazy(() => import("./UI"));
 const DashboardManageAdmin = lazy(() => import("./ManageAdmin"));
 const DashboardCompanyInfo = lazy(() => import("./CompanyInfo"));
 const DashboardProductEdit = lazy(() => import("./DashboardProducts/DashboardProductEdit/DashboardProductEdit"));
+const DashboardStatsSection = lazy(() => import("./DashboardStatsSection/DashboardStatsSection"));
 
 export default function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,6 +80,7 @@ export default function Dashboard() {
         <main className="flex-1 bg-gray-100 overflow-y-auto">
           <Suspense fallback={<div>Đang tải...</div>}>
             <Routes>
+              <Route path="/stats" element={<DashboardStatsSection />} />
               <Route path="/home" element={<DashboardHome />} />
               <Route path="/introduce" element={<DashboardIntroduce />} />
               <Route path="/company-info" element={<DashboardCompanyInfo />} />
