@@ -10,8 +10,6 @@ import { useEffect, useState } from "react";
 import { fetchHomeData } from "~/services/publicAPI";
 import HomePageSkeleton from "./HomePageSkeleton";
 import FadeInWhenVisible from "~/components/FramerMotion/FadeInWhenVisible";
-import MorphExample from "~/components/FramerMotion/MorphExample";
-import MorphInWhenVisible from "~/components/FramerMotion/MorphInWhenVisible";
 
 export default function HomePage() {
   const [homeData, setHomeData] = useState(null);

@@ -1,4 +1,5 @@
 const functionAdmin = [
+  {name: "Tổng quan", path: "/admin/dashboard/stats"},
   { name: "Trang chủ", path: "/admin/dashboard/home" },
   { name: "Giới thiệu", path: "/admin/dashboard/introduce" },
   { name: "Thông tin công ty", path: "/admin/dashboard/company-info" },

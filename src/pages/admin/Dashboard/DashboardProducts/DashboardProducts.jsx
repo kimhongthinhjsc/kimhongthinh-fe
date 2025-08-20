@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "~/services/publicAPI";
-import ProductSearchBar from "./ProductSearchBar";
+import SearchBar from "~/components/SearchBar/SearchBar";
 import ProductTable from "./ProductTable";
 import AddProductModal from "./AddProductModal";
 
@@ -99,7 +99,13 @@ export default function DashboardProducts() {
       </div>
 
       {/* Tìm kiếm */}
-      <ProductSearchBar value={search} onChange={setSearch} />
+      <SearchBar
+        value={search}
+        onSearch={(k) => {
+          setSearch(k);
+          setCurrentPage(1);
+        }}
+      />
 
       {/* Danh sách sản phẩm */}
       {loading ? (

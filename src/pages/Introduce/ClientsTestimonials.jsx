@@ -5,7 +5,6 @@ import "swiper/css/pagination";
 
 export default function ClientsTestimonials({ data }) {
   if (!data) return null;
-  console.log("ClientsTestimonials data:", data);
 
   return (
     <section id="clients-testimonials" className="py-16 bg-white">

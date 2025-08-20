@@ -112,7 +112,6 @@ class CustomUploadAdapter {
     }
 
     abort() {
-        console.log("Upload aborted");
     }
 }
 

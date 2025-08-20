@@ -38,8 +38,6 @@ export const loginAdmin = async (email, password) => {
 };
 
 export const createNews = async (news) => {
-  console.log(news.image)
-
   //Call api upload ảnh
   const resImage = await axios.post(`${API_URL}/upload/image`, { file: news.image }, {
     headers: {
@@ -110,3 +108,14 @@ export const updateIntroduceData = async (data) => {
     return null;
   }
 };
+
+export const fetchStatsVisits = async () => {
+  try {
+    const res = await api.get("/stats/visits");
+    return res.data;
+  } catch (error) {
+    console.error("❌ fetchStatsVisits error:", error);
+    return null;
+  }
+};
+
