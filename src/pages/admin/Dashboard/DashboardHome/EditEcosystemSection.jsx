@@ -1,6 +1,6 @@
 import React from "react";
-import EditableField from "./EditableField";
-import EditableImage from "./EditableImage";
+import EditableField from "~/components/EditableField/EditableField";
+import EditableImage from "~/components/EditableImage/EditableImage";
 
 export default function EditEcosystemSection({ data, onChange }) {
   const eco = data?.ecosystem ?? {};

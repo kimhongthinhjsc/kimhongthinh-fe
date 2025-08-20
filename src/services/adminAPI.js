@@ -72,3 +72,14 @@ export const updateCompanyProfile = async (data) => {
     return null;
   }
 };
+
+//introduce update
+export const updateIntroduceData = async (data) => {
+  try {
+    const res = await api.put("/introduce", data);
+    return res.data;
+  } catch (error) {
+    console.error("❌ updateIntroduceData error:", error);
+    return null;
+  }
+};
