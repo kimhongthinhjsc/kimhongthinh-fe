@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Pencil, X } from "lucide-react";
-import EditableField from "./EditableField";
+import { uploadImage } from "~/services/adminAPI"; // API upload file
 
 export default function EditableImage({
   src,
@@ -9,13 +9,41 @@ export default function EditableImage({
   className = "w-20 h-20", // default size nhỏ
 }) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState(src);
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // preview tạm
+    const localUrl = URL.createObjectURL(file);
+    setPreview(localUrl);
+
+    try {
+      setLoading(true);
+      const res = await uploadImage(file); // gọi API upload
+      const uploadedUrl = res.url || res.secure_url;
+      console.log("Uploaded image URL:", uploadedUrl, res);
+      if (uploadedUrl) {
+        onChange(uploadedUrl); // trả URL lên parent
+      } else {
+        alert("❌ Upload thất bại, không có URL trả về");
+      }
+    } catch (err) {
+      console.error("Upload image error:", err);
+      alert("❌ Có lỗi khi upload ảnh");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-2">
       {/* Ảnh + nút sửa */}
       <div className={`relative ${className}`}>
         <img
-          src={src || "https://via.placeholder.com/300x200?text=No+Image"}
+          src={preview || "https://via.placeholder.com/300x200?text=No+Image"}
           alt="preview"
           className="w-full h-full object-cover rounded border bg-white"
         />
@@ -39,27 +67,28 @@ export default function EditableImage({
               <X size={18} />
             </button>
 
-            <h3 className="text-lg font-semibold mb-4">Chỉnh sửa ảnh</h3>
+            <h3 className="text-lg font-semibold mb-4">{label}</h3>
 
             {/* Preview ảnh */}
             <div className="mb-4 flex justify-center">
               <img
-                src={src || "https://via.placeholder.com/400x300?text=No+Image"}
+                src={preview || "https://via.placeholder.com/400x300?text=No+Image"}
                 alt="preview"
                 className="max-h-[300px] object-contain rounded border bg-gray-50"
               />
             </div>
 
-            {/* Input URL */}
-            <EditableField
-              value={src}
-              onChange={onChange}
-              type="url"
-              placeholder="Dán URL ảnh..."
-              className="w-full"
+            {/* Upload file */}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full border rounded p-2"
+              disabled={loading}
             />
+            {loading && <p className="mt-2 text-sm text-gray-500">Đang tải...</p>}
 
-            {/* Nút lưu */}
+            {/* Nút đóng popup */}
             <div className="mt-6 flex justify-end">
               <button
                 onClick={() => setOpen(false)}
