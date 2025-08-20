@@ -1,12 +1,26 @@
 // src/components/Footer.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { profile } from "~/mock/CompanyProfile.js";
 import { FaFacebook, FaYoutube, FaTiktok } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiZalo } from "react-icons/si";
+import { getCompanyProfile } from "~/services/publicAPI";
 
 export default function Footer() {
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await getCompanyProfile();
+      setProfile(data);
+    };
+    fetchProfile();
+  }, []);
+
+  if (!profile) {
+    return null; // hoặc có thể trả ra skeleton loading
+  }
+
   return (
     <footer
       className="bg-[#F0F1F4] text-[#363F69] pt-8 px-6 md:px-20"
@@ -24,7 +38,7 @@ export default function Footer() {
         />
       </div>
 
-      {/* Grid 3 cột trên desktop, 1 cột trên mobile */}
+      {/* Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Cột 1 */}
         <div className="text-center md:text-left">
@@ -40,14 +54,16 @@ export default function Footer() {
           <p className="mb-2">✉️ {profile.email}</p>
           <p className="mb-2">📞 Mua hàng: {profile.hotline1}</p>
           <p className="mb-2">📞 CSKH: {profile.hotline2}</p>
-          <a
-            href={profile.website.link}
-            className="block mt-2 text-blue-500 hover:text-blue-400"
-            target="_blank"
-            rel="noreferrer"
-          >
-            🌐 {profile.website.name}
-          </a>
+          {profile.website && (
+            <a
+              href={profile.website.link}
+              className="block mt-2 text-blue-500 hover:text-blue-400"
+              target="_blank"
+              rel="noreferrer"
+            >
+              🌐 {profile.website.name}
+            </a>
+          )}
         </div>
 
         {/* Cột 2 */}
@@ -96,46 +112,56 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           {/* Social icons */}
           <div className="flex justify-center gap-6 text-2xl text-gray-600">
-            <a
-              href={profile.social.facebook}
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-blue-600"
-            >
-              <FaFacebook />
-            </a>
-            <a
-              href={profile.social.youtube}
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-red-600"
-            >
-              <FaYoutube />
-            </a>
-            <a
-              href={profile.social.twitter}
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-black"
-            >
-              <FaXTwitter />
-            </a>
-            <a
-              href={profile.social.zalo}
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-blue-500"
-            >
-              <SiZalo />
-            </a>
-            <a
-              href={profile.social.tiktok}
-              target="_blank"
-              rel="noreferrer"
-              className="hover:text-black"
-            >
-              <FaTiktok />
-            </a>
+            {profile.social?.facebook && (
+              <a
+                href={profile.social.facebook}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-blue-600"
+              >
+                <FaFacebook />
+              </a>
+            )}
+            {profile.social?.youtube && (
+              <a
+                href={profile.social.youtube}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-red-600"
+              >
+                <FaYoutube />
+              </a>
+            )}
+            {profile.social?.twitter && (
+              <a
+                href={profile.social.twitter}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-black"
+              >
+                <FaXTwitter />
+              </a>
+            )}
+            {profile.social?.zalo && (
+              <a
+                href={profile.social.zalo}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-blue-500"
+              >
+                <SiZalo />
+              </a>
+            )}
+            {profile.social?.tiktok && (
+              <a
+                href={profile.social.tiktok}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-black"
+              >
+                <FaTiktok />
+              </a>
+            )}
           </div>
 
           {/* Policy links */}
@@ -169,11 +195,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
-      {/* Copyright */}
-      {/* <p className="text-center text-sm text-gray-500 mt-6 pb-4">
-        © {new Date().getFullYear()} {profile.companyName}. All rights reserved.
-      </p> */}
     </footer>
   );
 }
