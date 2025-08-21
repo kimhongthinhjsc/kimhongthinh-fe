@@ -38,31 +38,19 @@ export const loginAdmin = async (email, password) => {
 
 export const createNews = async (news) => {
   //Call api upload ảnh
-  const resImage = await axios.post(
-    `${API_URL}/upload/image`,
-    { file: news.image },
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const formData = new FormData();
+  formData.append("file", news.image);
+  const resImage = await api.post(`${API_URL}/upload/image`, formData);
 
   if (resImage.status === 200) {
     news.image = resImage.data.url; // Lưu URL ảnh đã upload
   }
-
-  const res = await axios.post(`${API_URL}/news`, news, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await api.post(`${API_URL}/news`, news);
   return res.data;
 };
 
 export const getNewsList = async (page, limit) => {
-  const res = await api.get(`${API_URL}/news/find/all?page=${page}&limit=${limit}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await api.get(`${API_URL}/news/find/all?page=${page}&limit=${limit}`);
   return res.data;
 };
 
