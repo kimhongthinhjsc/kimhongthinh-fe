@@ -6,7 +6,6 @@ import { createNews } from "~/services/adminAPI";
 export default function NewsAdmin() {
   const [title, setTitle] = useState("");
   const [titleLink, setTitleLink] = useState("");
-  const [thumbnail, setThumbnail] = useState(null);
   const [preview, setPreview] = useState(null);
   const [image, setImage] = useState(null);
   const [date, setDate] = useState("");
@@ -36,13 +35,12 @@ export default function NewsAdmin() {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
-      setThumbnail(file);
       setPreview(URL.createObjectURL(file));
     }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title || !thumbnail || !author || !content) {
+    if (!title || !image || !author || !content) {
       setError("⚠️ Vui lòng nhập đầy đủ thông tin!");
       return;
     }
