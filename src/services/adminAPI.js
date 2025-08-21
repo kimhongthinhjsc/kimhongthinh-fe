@@ -3,7 +3,7 @@ import axios from "axios";
 const token = localStorage.getItem("accessToken");
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api/products";
+  import.meta.env.VITE_API_URL_SERVER || "http://localhost:5000/api/products";
 import api from "./api"; // 👈 import instance có interceptor
 
 
@@ -38,8 +38,6 @@ export const loginAdmin = async (email, password) => {
 };
 
 export const createNews = async (news) => {
-  console.log(news.image)
-
   //Call api upload ảnh
   const resImage = await axios.post(`${API_URL}/upload/image`, { file: news.image }, {
     headers: {
@@ -58,6 +56,12 @@ export const createNews = async (news) => {
   return res.data;
 };
 
+export const getNewsList = async (page, limit) => {
+  const res = await api.get(`/news/find/all?page=1&limit=10`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
 
 export const uploadImage = async (file) => {
   const formData = new FormData();

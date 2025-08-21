@@ -83,45 +83,7 @@ import 'ckeditor5/dist/ckeditor5.css';
 import 'ckeditor5/dist/ckeditor5-content.css';
 
 import './ComposeNews.scss';
-
-// ---- Custom Upload Adapter ----
-class CustomUploadAdapter {
-    constructor(loader) {
-        this.loader = loader;
-    }
-
-    async upload() {
-        const file = await this.loader.file;
-        const formData = new FormData();
-        formData.append("file", file);
-
-        try {
-            const response = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
-            });
-
-            const data = await response.json();
-            return {
-                default: data.url,
-            };
-        } catch (err) {
-            console.error("Upload error:", err);
-            throw err;
-        }
-    }
-
-    abort() {
-        console.log("Upload aborted");
-    }
-}
-
-// ---- Plugin để tích hợp vào CKEditor ----
-function CustomUploadAdapterPlugin(editor) {
-  editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-    return new CustomUploadAdapter(loader);
-  };
-}
+import { uploadImage } from '~/services/adminAPI';
 
 const LICENSE_KEY =
     'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTY4NTc1OTksImp0aSI6IjU3ZGZiMzViLTExN2ItNDkzMS1iZDU2LWM3YjA3NjNiZDFiNiIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImUwZjRiOTk5In0.Fkvi7Sl3htLGuyBmz5Ub2GM4Nv9lRmEozPMYAFWsAtxhW5_lkMgOLDPA2aG4Vr170PcCsO5dxWZzTlqHRkSlkQ';
@@ -465,6 +427,28 @@ export default function ComposeNews({ onContentChange }) {
 
     const [content, setContent] = useState("");
 
+    function CustomUploadAdapter(loader) {
+        this.loader = loader;
+    }
+
+    CustomUploadAdapter.prototype.upload = function () {
+        return this.loader.file
+            .then(async (file) => {
+                const data = await uploadImage(file);
+                return { default: data.url };
+            });
+    };
+
+    CustomUploadAdapter.prototype.abort = function () {
+        console.log("Upload aborted");
+    };
+
+    function CustomUploadAdapterPlugin(editor) {
+        editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+            return new CustomUploadAdapter(loader);
+        };
+    }
+
     return (
         <div className="main-container">
             <div
@@ -478,6 +462,9 @@ export default function ComposeNews({ onContentChange }) {
                                 onReady={editor => {
                                     const wordCount = editor.plugins.get('WordCount');
                                     editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
+                                    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+                                        return new CustomUploadAdapter(loader);
+                                    };
                                 }}
                                 onAfterDestroy={() => {
                                     Array.from(editorWordCountRef.current.children).forEach(child => child.remove());
