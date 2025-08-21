@@ -2,19 +2,11 @@
 import React, { useState, useEffect } from "react";
 import EditableImage from "~/components/EditableImage/EditableImage";
 import { getCompanyProfile } from "~/services/publicAPI";
-import { updateCompanyProfile, uploadImage } from "~/services/adminAPI";
-import { profile as defaultProfile } from "~/models/CompanyProfile";
+import { updateCompanyProfile } from "~/services/adminAPI";
+import CompanyInfoSkeleton from "./CompanyInfoSkeleton";
 
-const withDefaults = (data) => ({
-  ...defaultProfile,
-  ...(data || {}),
-  website: { ...defaultProfile.website, ...(data?.website || {}) },
-  ecommerce: { ...defaultProfile.ecommerce, ...(data?.ecommerce || {}) },
-  social: { ...defaultProfile.social, ...(data?.social || {}) },
-});
-
-export default function CompanyInfo() {
-  const [formData, setFormData] = useState(defaultProfile);
+export default function DashboardCompanyInfo() {
+  const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
 
@@ -22,7 +14,7 @@ export default function CompanyInfo() {
     setLoading(true);
     try {
       const data = await getCompanyProfile();
-      setFormData(withDefaults(data));
+      setFormData(data);
     } finally {
       setLoading(false);
     }
@@ -67,7 +59,7 @@ export default function CompanyInfo() {
     alert("🔄 Đã tải lại dữ liệu từ máy chủ");
   };
 
-  if (loading) return <div className="p-6">Đang tải...</div>;
+  if (loading) return <CompanyInfoSkeleton />;
 
   return (
     <div className="p-6 space-y-6 max-w-5xl mx-auto">

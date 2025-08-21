@@ -7,6 +7,7 @@ import ImageCarousel from "~/components/ImageCarousel/ImageCarousel";
 import InfoList from "~/components/InfoList/InfoList";
 import PriceTag from "~/components/PriceTag/PriceTag";
 import HighlightList from "~/components/HighlightList/HighlightList";
+import RelatedProducts from "./RelatedProducts";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -52,16 +53,20 @@ const ProductDetail = () => {
             )}
 
             <p className="mb-3 text-gray-700">
-              <span className="font-semibold">Danh mục:</span> {product.categoryId}
+              <span className="font-semibold">Danh mục:</span>{" "}
+              {product.categoryName}
             </p>
             <p className="mb-3 text-gray-700">
-              <span className="font-semibold">Nhóm:</span> {product.subcategoryId}
+              <span className="font-semibold">Nhóm:</span>{" "}
+              {product.subcategoryName || "Chưa có"}
             </p>
             <p className="mb-3 text-gray-700">
-              <span className="font-semibold">Thương hiệu:</span> {product.brand}
+              <span className="font-semibold">Thương hiệu:</span>{" "}
+              {product.brand}
             </p>
             <p className="mb-3 text-gray-700">
-              <span className="font-semibold">Bảo hành:</span> {product.warranty}
+              <span className="font-semibold">Bảo hành:</span>{" "}
+              {product.warranty}
             </p>
 
             <PriceTag price={product.price} className="block mb-4" />
@@ -80,6 +85,12 @@ const ProductDetail = () => {
           </h2>
           <InfoList items={product.specifications} />
         </div>
+        {/* Sản phẩm liên quan */}
+        <RelatedProducts
+          categoryId={product.categoryId}
+          subcategoryId={product.subcategoryId}
+          currentProductId={product._id}
+        />
       </div>
     </FramePage>
   );

@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   fetchProductById,
-  fetchCategories,
   getSubcategories,
 } from "~/services/publicAPI";
 import { updateProduct } from "~/services/adminAPI";
 import { ArrowLeft } from "lucide-react";
 import EditableImage from "~/components/EditableImage/EditableImage";
+import { getCategories } from "~/services/categorieAPI";
 
-// Tách thành component con để code gọn hơn
 import HighlightList from "./HighlightList";
+import InputField from "~/components/InputField/InputField";
+import TextAreaField from "~/components/TextAreaField/TextAreaField";
 import SpecList from "./SpecList";
 
 export default function DashboardProductEdit() {
@@ -36,7 +37,7 @@ export default function DashboardProductEdit() {
   };
 
   const loadCategories = async () => {
-    const res = await fetchCategories();
+    const res = await getCategories();
     setCategories(res.categories || res); // API có thể trả object {categories} hoặc array
   };
 
@@ -234,30 +235,5 @@ export default function DashboardProductEdit() {
   );
 }
 
-/* ------------------------- Component nhỏ tái sử dụng ------------------------- */
-function InputField({ label, type = "text", value, onChange }) {
-  return (
-    <div>
-      <label className="block font-semibold">{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        className="border rounded p-2 w-full"
-      />
-    </div>
-  );
-}
 
-function TextAreaField({ label, value, onChange }) {
-  return (
-    <div>
-      <label className="block font-semibold">{label}</label>
-      <textarea
-        value={value}
-        onChange={onChange}
-        className="border rounded p-2 w-full h-24"
-      />
-    </div>
-  );
-}
+

@@ -7,6 +7,7 @@ import EditEcosystemSection from "./EditEcosystemSection";
 import EditTestimonial from "./EditTestimonial";
 import EditCulturePeople from "./EditCulturePeople";
 import EditContact from "./EditContact";
+import DashboardHomeSkeleton from "./DashboardHomeSkeleton";
 
 export default function DashboardHome() {
   const [homeData, setHomeData] = useState(null); // dữ liệu đang chỉnh sửa
@@ -43,13 +44,11 @@ export default function DashboardHome() {
     setHomeData(originalData); // trả về dữ liệu gốc
   };
 
-  if (loading) return <div>Đang tải...</div>;
+  if (loading) return <DashboardHomeSkeleton />;
 
   return (
     <div className=" ">
       <h1 className="text-2xl font-bold mb-4">Quản trị trang chủ</h1>
-
-      {/* Background / Hero Section */}
       <EditHeroSection data={homeData} onChange={handleChange} />
       <EditEcosystemSection data={homeData} onChange={handleChange} />
       <EditTestimonial data={homeData} onChange={handleChange} />

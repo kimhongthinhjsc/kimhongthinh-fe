@@ -21,16 +21,6 @@ export const fetchProducts = async (
   }
 };
 
-// Lấy danh mục
-export const fetchCategories = async () => {
-  try {
-    const res = await api.get("/categories");
-    return res.data; // giả sử trả về mảng categories
-  } catch (error) {
-    console.error("❌ fetchCategories error:", error);
-    return [];
-  }
-};
 
 // Lấy chi tiết sản phẩm theo ID
 export const fetchProductById = async (id) => {
@@ -117,6 +107,4 @@ export const getServiceByKeyword = async (keyword, page = 1, limit = 12) => {
     return { services: [], totalPages: 0, currentPage: page };
   }
 };
-
-
 

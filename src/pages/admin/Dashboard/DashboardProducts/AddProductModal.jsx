@@ -1,7 +1,8 @@
 // src/components/admin/AddProductModal.jsx
 import React, { useEffect, useState } from "react";
 import { createProduct } from "~/services/adminAPI";
-import { fetchCategories, getSubcategories } from "~/services/publicAPI";
+import { getSubcategories } from "~/services/publicAPI";
+import { getCategories } from "~/services/categorieAPI";
 
 export default function AddProductModal({ onClose, onSuccess }) {
   const [form, setForm] = useState({
@@ -24,7 +25,7 @@ export default function AddProductModal({ onClose, onSuccess }) {
 
   useEffect(() => {
     const loadCategories = async () => {
-      const data = await fetchCategories();
+      const data = await getCategories();
       const subData = await getSubcategories();
       setCategories(data.categories || []);
       setSubcategories(subData.subcategories || []);
