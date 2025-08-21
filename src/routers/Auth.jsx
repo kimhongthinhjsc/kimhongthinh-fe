@@ -15,6 +15,9 @@ const LoginAdmin = lazy(() => import("../pages/admin/LoginAdmin/LoginAdmin"));
 const ProductDetail = lazy(() =>
   import("../pages/ProductDetail/ProductDetail")
 );
+const ServiceDetailPage = lazy(() =>
+  import("../pages/ServiceDetailPage/ServiceDetailPage")
+);
 
 //Admin
 const Dashboard = lazy(() => import("../pages/admin/Dashboard/Dashboard"));
@@ -92,6 +95,14 @@ const Auth = () => {
         element={
           <Suspense fallback={<div></div>}>
             <ProductDetail />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/dich-vu/:id"
+        element={
+          <Suspense fallback={<div></div>}>
+            <ServiceDetailPage />
           </Suspense>
         }
       />

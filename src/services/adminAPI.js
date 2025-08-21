@@ -6,7 +6,6 @@ const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5000/api/products";
 import api from "./api"; // 👈 import instance có interceptor
 
-
 // Tạo sản phẩm
 export const createProduct = async (product) => {
   const res = await api.post("/products", product);
@@ -39,12 +38,16 @@ export const loginAdmin = async (email, password) => {
 
 export const createNews = async (news) => {
   //Call api upload ảnh
-  const resImage = await axios.post(`${API_URL}/upload/image`, { file: news.image }, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`
-    },
-  });
+  const resImage = await axios.post(
+    `${API_URL}/upload/image`,
+    { file: news.image },
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 
   if (resImage.status === 200) {
     news.image = resImage.data.url; // Lưu URL ảnh đã upload
@@ -93,7 +96,6 @@ export const uploadVideo = async (file) => {
   return res.data;
 };
 
-
 export const updateCompanyProfile = async (data) => {
   try {
     const res = await api.put("/company-profile", data);
@@ -125,3 +127,17 @@ export const fetchStatsVisits = async () => {
   }
 };
 
+export const updateService = async (id, service) => {
+  const res = await api.put(`/services/${id}`, service);
+  return res.data;
+};
+
+export const deleteService = async (id) => {
+  const res = await api.delete(`/services/${id}`);
+  return res.data;
+};
+
+export const createService = async (service) => {
+  const res = await api.post("/services", service);
+  return res.data;
+};

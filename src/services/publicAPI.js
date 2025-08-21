@@ -86,3 +86,37 @@ export const searchProductsbyKeyword = async ({
   }
 };
 
+export const getAllService = async () => {
+  try {
+    const res = await api.get("/services");
+    return res.data;
+  } catch (error) {
+    console.error("❌ getAllService error:", error);
+    return [];
+  }
+};
+
+export const getServiceById = async (id) => {
+  try {
+    const res = await api.get(`/services/${id}`);
+    return res.data;
+  } catch (error) {
+    console.error("❌ getServiceById error:", error);
+    return null;
+  }
+};
+
+export const getServiceByKeyword = async (keyword, page = 1, limit = 12) => {
+  try {
+    const res = await api.get("/services/search", {
+      params: { keyword, page, limit },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("❌ getServiceByKeyword error:", error);
+    return { services: [], totalPages: 0, currentPage: page };
+  }
+};
+
+
+
