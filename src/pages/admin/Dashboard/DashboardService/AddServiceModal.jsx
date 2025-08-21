@@ -1,7 +1,7 @@
 // src/components/admin/AddServiceModal.jsx
 import React, { useEffect, useState } from "react";
 import { createService } from "~/services/adminAPI";
-import { fetchCategories } from "~/services/publicAPI";
+import { getCategories } from "~/services/categorieAPI";
 import EditableImage from "~/components/EditableImage/EditableImage";
 
 export default function AddServiceModal({ onClose, onSuccess }) {
@@ -22,7 +22,7 @@ export default function AddServiceModal({ onClose, onSuccess }) {
 
   useEffect(() => {
     const loadCategories = async () => {
-      const data = await fetchCategories();
+      const data = await getCategories();
       setCategories(data.categories || []);
     };
     loadCategories();
