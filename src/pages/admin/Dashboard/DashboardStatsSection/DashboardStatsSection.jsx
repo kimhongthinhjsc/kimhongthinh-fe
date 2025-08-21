@@ -35,8 +35,6 @@ export default function DashboardStatsSection() {
 
   return (
     <div className="p-4 bg-white rounded-xl shadow space-y-4">
-      <h2 className="text-xl font-bold mb-2">Tổng quan truy cập</h2>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="p-4 bg-blue-50 rounded">
           <div className="text-gray-500">Tổng lượt truy cập</div>

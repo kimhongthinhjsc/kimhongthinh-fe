@@ -45,7 +45,6 @@ export default function DashboardIntroducePage() {
 
       <div className="w-full space-y-12 p-6">
         {/* Banner */}
-        <h1 className="text-2xl font-bold">Banner Giới thiệu</h1>
         <EditableImage
           src={introduceData.banner}
           onChange={(val) => setIntroduceData({ ...introduceData, banner: val })}

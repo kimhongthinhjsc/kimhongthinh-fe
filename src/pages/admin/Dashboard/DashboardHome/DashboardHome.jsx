@@ -47,8 +47,7 @@ export default function DashboardHome() {
   if (loading) return <DashboardHomeSkeleton />;
 
   return (
-    <div className=" ">
-      <h1 className="text-2xl font-bold mb-4">Quản trị trang chủ</h1>
+    <div className="">
       <EditHeroSection data={homeData} onChange={handleChange} />
       <EditEcosystemSection data={homeData} onChange={handleChange} />
       <EditTestimonial data={homeData} onChange={handleChange} />

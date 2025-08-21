@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import ProductSkeleton from "./ProductSkeleton";
 import SearchBar from "~/components/SearchBar/SearchBar";
 
-const Products = () => {
+const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -173,4 +173,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default ProductsPage;

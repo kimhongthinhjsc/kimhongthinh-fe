@@ -12,7 +12,7 @@ const ServiceSkeleton = () => (
   </div>
 );
 
-export default function Services() {
+export default function ServicesPage() {
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(true);
   const [services, setServices] = useState([]);
