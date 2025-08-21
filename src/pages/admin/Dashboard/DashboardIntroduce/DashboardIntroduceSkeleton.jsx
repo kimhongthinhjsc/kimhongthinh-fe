@@ -1,84 +1,71 @@
 // pages/admin/Dashboard/DashboardIntroduceSkeleton.jsx
 import React from "react";
-import { Skeleton } from "@mui/material";
 
 export default function DashboardIntroduceSkeleton() {
   return (
-    <div className="w-full p-6">
+    <div className="w-full p-6 animate-pulse">
       {/* Banner */}
       <div className="mb-6">
-        <Skeleton variant="text" width={200} height={30} />
-        <Skeleton variant="rectangular" width="100%" height={256} className="rounded-xl" />
+        <div className="h-7 w-52 bg-gray-200 rounded mb-2"></div>
+        <div className="h-64 w-full bg-gray-200 rounded-xl"></div>
       </div>
 
       {/* Something About */}
       <div className="mb-6">
-        <Skeleton variant="text" width={250} height={30} />
+        <div className="h-7 w-64 bg-gray-200 rounded mb-2"></div>
         <div className="space-y-2">
-          <Skeleton variant="text" width="100%" height={20} />
-          <Skeleton variant="text" width="80%" height={20} />
+          <div className="h-5 w-full bg-gray-200 rounded"></div>
+          <div className="h-5 w-4/5 bg-gray-200 rounded"></div>
         </div>
       </div>
 
       {/* Video Section */}
       <div className="mb-6">
-        <Skeleton variant="text" width={200} height={30} />
-        <Skeleton variant="rectangular" width="100%" height={200} className="rounded-xl" />
+        <div className="h-7 w-52 bg-gray-200 rounded mb-2"></div>
+        <div className="h-52 w-full bg-gray-200 rounded-xl"></div>
       </div>
 
       {/* Road Section */}
       <div className="mb-6">
-        <Skeleton variant="text" width={220} height={30} />
+        <div className="h-7 w-56 bg-gray-200 rounded mb-2"></div>
         <div className="space-y-2">
-          <Skeleton variant="text" width="90%" height={20} />
-          <Skeleton variant="text" width="70%" height={20} />
+          <div className="h-5 w-11/12 bg-gray-200 rounded"></div>
+          <div className="h-5 w-3/4 bg-gray-200 rounded"></div>
         </div>
       </div>
 
       {/* Behavior Rules */}
       <div className="mb-6">
-        <Skeleton variant="text" width={180} height={30} />
+        <div className="h-7 w-44 bg-gray-200 rounded mb-2"></div>
         <div className="space-y-2">
-          <Skeleton variant="text" width="95%" height={20} />
-          <Skeleton variant="text" width="80%" height={20} />
+          <div className="h-5 w-[95%] bg-gray-200 rounded"></div>
+          <div className="h-5 w-4/5 bg-gray-200 rounded"></div>
         </div>
       </div>
 
       {/* Core Value */}
       <div className="mb-6">
-        <Skeleton variant="text" width={200} height={30} />
+        <div className="h-7 w-52 bg-gray-200 rounded mb-2"></div>
         <div className="grid grid-cols-2 gap-4 mt-2">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton
-              key={i}
-              variant="rectangular"
-              width="100%"
-              height={120}
-              className="rounded-xl"
-            />
+            <div key={i} className="h-28 w-full bg-gray-200 rounded-xl"></div>
           ))}
         </div>
       </div>
 
       {/* Clients Testimonials */}
       <div className="mb-6">
-        <Skeleton variant="text" width={220} height={30} />
+        <div className="h-7 w-56 bg-gray-200 rounded mb-2"></div>
         <div className="grid grid-cols-3 gap-4 mt-2">
           {[1, 2, 3].map((i) => (
-            <Skeleton
-              key={i}
-              variant="rectangular"
-              width="100%"
-              height={160}
-              className="rounded-xl"
-            />
+            <div key={i} className="h-40 w-full bg-gray-200 rounded-xl"></div>
           ))}
         </div>
       </div>
 
       {/* Save Button */}
       <div className="flex justify-end mt-6">
-        <Skeleton variant="rectangular" width={150} height={40} className="rounded-xl" />
+        <div className="h-10 w-36 bg-gray-200 rounded-xl"></div>
       </div>
     </div>
   );
