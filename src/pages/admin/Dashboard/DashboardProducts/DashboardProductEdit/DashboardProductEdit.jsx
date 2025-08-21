@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  getServiceById,
+  fetchProductById,
   fetchCategories,
   getSubcategories,
 } from "~/services/publicAPI";
@@ -30,7 +30,7 @@ export default function DashboardProductEdit() {
   }, [id]);
 
   const loadProduct = async () => {
-    const data = await getServiceById(id);
+    const data = await fetchProductById(id);
     setProduct(data);
     setLoading(false);
   };
