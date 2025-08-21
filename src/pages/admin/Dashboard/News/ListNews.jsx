@@ -1,31 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import { Link } from "react-router-dom";
+import { getNewsList } from "~/services/adminAPI";
 
-// Dummy data: 30 tin tức mẫu
-const initialNews = Array.from({ length: 1000 }, (_, i) => ({
-  id: i + 1,
-  title: `Tin tức số ${i + 1}`,
-  thumbnail: "https://www.misa.vn/wp-content/uploads/2025/08/anh-1-2048x1166.jpg",
-  date: "2025-08-20",
-  author: `Người đăng ${i + 1}`,
-}));
 
 export default function NewsList() {
-  const [newsList] = useState(initialNews);
+  const [newsList, setNewsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
 
-  const totalPages = Math.ceil(newsList.length / itemsPerPage);
-
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-  const currentNews = newsList.slice(indexOfFirst, indexOfLast);
-
+  // Gọi API
+  const getNews = async () => {
+    try {
+      const data = await getNewsList(currentPage, itemsPerPage);
+      setNewsList(data.news || []);
+      setTotalPages(Math.ceil(data.totalPages / itemsPerPage));
+    } catch (error) {
+      console.error("Lỗi khi lấy tin tức:", error);
+    }
+  };
   const handleEdit = (id) => {
     const news = newsList.find((item) => item.id === id);
     alert(`Bạn muốn chỉnh sửa: ${news.title}`);
   };
 
+
+  useEffect(() => {
+    getNews();
+  }, [currentPage]);
 
   // Tính trang để hiển thị: tối đa 5 trang xung quanh currentPage
   const getPagination = () => {
@@ -63,21 +65,21 @@ export default function NewsList() {
       </h1>
 
       <ul className="space-y-4">
-        {currentNews.map((news) => (
+        {newsList.map((news) => (
           <li
             key={news.id}
             className="flex items-center justify-between p-4 border rounded-lg shadow-sm"
           >
             <div className="flex items-center space-x-4">
               <img
-                src={news.thumbnail}
+                src={news.image}
                 alt={news.title}
                 className="w-24 h-16 object-cover rounded"
               />
               <div>
                 <h2 className="font-semibold text-lg">{news.title}</h2>
                 <p className="text-sm text-gray-500">
-                  {news.date} - {news.author}
+                  {news.createdAt} - {news.author}
                 </p>
               </div>
             </div>

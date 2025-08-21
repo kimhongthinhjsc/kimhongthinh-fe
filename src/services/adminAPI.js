@@ -59,11 +59,18 @@ export const createNews = async (news) => {
   return res.data;
 };
 
+export const getNewsList = async (page, limit) => {
+  const res = await api.get(`${API_URL}/news/find/all?page=${page}&limit=${limit}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+};
+
 export const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await api.post("/upload/image", formData);
+  const res = await api.post(`${API_URL}/upload/image`, formData);
   return res.data;
 };
 
