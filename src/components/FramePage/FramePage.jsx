@@ -13,9 +13,11 @@ export default function FramePage({ children }) {
         {children}
 
         <div className="fixed bottom-6 right-6 flex flex-col gap-3">
-          <Messenger />
-          <ChatZalo />
-          <Phone />
+          <div className="fixed bottom-6 right-6 flex flex-col gap-3">
+            <Messenger />
+            <ChatZalo />
+            <Phone />
+          </div>
         </div>
       </main>
 

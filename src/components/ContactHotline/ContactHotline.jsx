@@ -15,7 +15,6 @@ export default function ContactHotline({ data }) {
         return null;
     }
   };
-  console.log(data);
 
   return (
     <section className="bg-white py-12 px-6 md:px-20">

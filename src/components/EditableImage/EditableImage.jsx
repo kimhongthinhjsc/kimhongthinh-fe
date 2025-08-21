@@ -24,7 +24,6 @@ export default function EditableImage({
       setLoading(true);
       const res = await uploadImage(file); // gọi API upload
       const uploadedUrl = res.url || res.secure_url;
-      console.log("Uploaded image URL:", uploadedUrl, res);
       if (uploadedUrl) {
         onChange(uploadedUrl); // trả URL lên parent
       } else {

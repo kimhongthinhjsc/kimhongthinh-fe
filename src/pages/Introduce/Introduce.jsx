@@ -7,41 +7,70 @@ import RoadSection from "./RoadSection";
 import BehaviorRules from "./BehaviorRules";
 import CoreValue from "./CoreValue";
 import ClientsTestimonials from "./ClientsTestimonials";
+import IntroduceSkeleton from "./IntroduceSkeleton";
+import FadeInWhenVisible from "~/components/FramerMotion/FadeInWhenVisible";
 import { getIntroduce } from "~/services/publicAPI";
 
 export default function Introduce() {
   const [introduceData, setIntroduceData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchIntroduceData = async () => {
-      const data = await getIntroduce();
-      setIntroduceData(data);
+      try {
+        const data = await getIntroduce();
+        setIntroduceData(data);
+      } catch (error) {
+        console.error("Failed to fetch introduce data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchIntroduceData();
   }, []);
-  console.log(introduceData);
+
+  if (loading) {
+    return (
+      <FramePage>
+        <IntroduceSkeleton />
+      </FramePage>
+    );
+  }
 
   return (
     <FramePage>
       <div className="w-full">
-        <section id="sds_banner">
-          <img
-            src={
-              introduceData?.banner ||
-              "https://softdreams.vn/wp-content/uploads/2024/07/Group-2609653.png"
-            }
-            alt="SoftDreams Banner"
-            className="w-full h-auto"
-          />
-        </section>
-
-        <SomethingAbout data={introduceData?.somethingAbout} />
-        <VideoSection data={introduceData?.videoSection} />
-        <RoadSection data={introduceData?.roadSection} />
-        <BehaviorRules data={introduceData?.behaviorRules} />
-        <CoreValue data={introduceData?.coreValue} />
-        <ClientsTestimonials data={introduceData?.testimonials} />
+        <FadeInWhenVisible>
+          <section id="sds_banner">
+            <img
+              src={
+                introduceData?.banner ||
+                "https://softdreams.vn/wp-content/uploads/2024/07/Group-2609653.png"
+              }
+              alt="SoftDreams Banner"
+              className="w-full h-auto"
+            />
+          </section>
+        </FadeInWhenVisible>
+        <FadeInWhenVisible delay={0.2}>
+          <SomethingAbout data={introduceData?.somethingAbout} />
+        </FadeInWhenVisible>
+        <FadeInWhenVisible delay={0.4}>
+          <VideoSection data={introduceData?.videoSection} />
+        </FadeInWhenVisible>
+        <FadeInWhenVisible delay={0.6}>
+          <RoadSection data={introduceData?.roadSection} />
+        </FadeInWhenVisible>
+        <FadeInWhenVisible delay={0.8}>
+          <BehaviorRules data={introduceData?.behaviorRules} />
+        </FadeInWhenVisible>
+        <FadeInWhenVisible delay={1.0}>
+          <CoreValue data={introduceData?.coreValue} />
+        </FadeInWhenVisible>
+        <FadeInWhenVisible delay={1.2}>
+          <ClientsTestimonials data={introduceData?.testimonials} />
+        </FadeInWhenVisible>
       </div>
     </FramePage>
   );

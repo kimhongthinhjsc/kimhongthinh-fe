@@ -2,7 +2,12 @@
 import api from "./api"; // 👈 dùng instance có interceptor
 
 // Lấy danh sách sản phẩm
-export const fetchProducts = async (page = 1, limit = 12, categoryId, subcategoryId) => {
+export const fetchProducts = async (
+  page = 1,
+  limit = 12,
+  categoryId,
+  subcategoryId
+) => {
   try {
     const params = { page, limit };
     if (categoryId) params.categoryId = categoryId;
@@ -49,15 +54,35 @@ export const fetchHomeData = async () => {
   }
 };
 
-
 export const getCompanyProfile = async () => {
   const res = await api.get("/company-profile");
   return res.data;
 };
-
 
 //introduce
 export const getIntroduce = async () => {
   const res = await api.get("/introduce");
   return res.data;
 };
+
+export const getSubcategories = async () => {
+  const res = await api.get(`/subcategories`);
+  return res.data;
+};
+
+export const searchProductsbyKeyword = async ({
+  keyword = "",
+  page = 1,
+  limit = 12,
+}) => {
+  try {
+    const params = { keyword, page, limit };
+
+    const res = await api.get("/products/search", { params });
+    return res.data; // { products, totalPages, currentPage }
+  } catch (error) {
+    console.error("❌ searchProducts error:", error);
+    return { products: [], totalPages: 1, currentPage: 1 };
+  }
+};
+

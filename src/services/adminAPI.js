@@ -3,7 +3,7 @@ import axios from "axios";
 const token = localStorage.getItem("accessToken");
 
 const API_URL =
-  import.meta.env.VITE_API_URL_SERVER || "http://localhost:5000/api/products";
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api/products";
 import api from "./api"; // 👈 import instance có interceptor
 
 
@@ -57,7 +57,7 @@ export const createNews = async (news) => {
 };
 
 export const getNewsList = async (page, limit) => {
-  const res = await api.get(`/news/find/all?page=1&limit=10`, {
+  const res = await api.get(`${API_URL}/news/find/all?page=${page}&limit=${limit}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data;
@@ -67,7 +67,7 @@ export const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await api.post("/upload/image", formData);
+  const res = await api.post(`${API_URL}/upload/image`, formData);
   return res.data;
 };
 
@@ -114,3 +114,14 @@ export const updateIntroduceData = async (data) => {
     return null;
   }
 };
+
+export const fetchStatsVisits = async () => {
+  try {
+    const res = await api.get("/stats/visits");
+    return res.data;
+  } catch (error) {
+    console.error("❌ fetchStatsVisits error:", error);
+    return null;
+  }
+};
+
