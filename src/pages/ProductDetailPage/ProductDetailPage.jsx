@@ -9,7 +9,7 @@ import PriceTag from "~/components/PriceTag/PriceTag";
 import HighlightList from "~/components/HighlightList/HighlightList";
 import RelatedProducts from "./RelatedProducts";
 
-const ProductDetail = () => {
+const ProductDetailPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
 
@@ -96,4 +96,4 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail;
+export default ProductDetailPage;

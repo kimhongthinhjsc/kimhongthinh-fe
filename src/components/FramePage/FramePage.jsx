@@ -9,7 +9,7 @@ export default function FramePage({ children }) {
     <div className="relative flex flex-col h-max">
       <Navbar />
 
-      <main className="relative min-h-[300px] h-max w-full mb-[50px]">
+      <main className="relative min-h-[300px] h-max w-full ]">
         {children}
 
         <div className="fixed bottom-6 right-6 flex flex-col gap-3">
