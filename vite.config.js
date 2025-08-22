@@ -7,7 +7,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "~": path.resolve(__dirname, "src"),
-      ckeditor5: path.resolve(__dirname, "node_modules/ckeditor5"),
     },
   },
   server: {
