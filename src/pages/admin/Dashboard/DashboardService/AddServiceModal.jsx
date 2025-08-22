@@ -250,7 +250,7 @@ function FeaturesList({ form, setForm }) {
 
   return (
     <div className="border rounded-lg p-4 shadow-sm space-y-2">
-      <h3 className="font-semibold">Tính năng nổi bật</h3>
+      <h3 className="font-semibold">Ưu điểm nổi bật</h3>
       {(form.features || []).map((f, idx) => (
         <div key={idx} className="flex gap-2 mt-1">
           <input
