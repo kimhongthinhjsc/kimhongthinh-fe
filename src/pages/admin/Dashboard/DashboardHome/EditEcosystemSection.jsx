@@ -1,29 +1,67 @@
 import React from "react";
-import EditableField from "~/components/EditableField/EditableField";
-import EditableImage from "~/components/EditableImage/EditableImage";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
 
+import { nanoid } from "nanoid";
+
+import EditableField from "~/components/EditableField/EditableField";
+
+// Sortable Item
+import SortableItem from "./SortableItem";
+
+// Main Component
 export default function EditEcosystemSection({ data, onChange }) {
   const eco = data?.ecosystem ?? {};
+
   const setEco = (patch) => onChange("ecosystem", { ...eco, ...patch });
-  const updateItem = (idx, patch) => {
-    const list = [...(eco.items || [])];
-    list[idx] = { ...list[idx], ...patch };
+
+  // Khi load data, thêm id nếu chưa có
+  const items = (eco.items || []).map((item) => ({
+    ...item,
+    id: item.id || nanoid(),
+  }));
+
+  const updateItem = (id, patch) => {
+    const list = items.map((item) =>
+      item.id === id ? { ...item, ...patch } : item
+    );
+    setEco({ items: list });
+  };
+
+  const removeItem = (id) => {
+    const list = items.filter((item) => item.id !== id);
     setEco({ items: list });
   };
 
   const addItem = () => {
-    const list = [...(eco.items || [])];
-    list.push({ name: "", desc: "", link: "", icon: "" });
+    const list = [...items];
+    list.push({ id: nanoid(), name: "", desc: "", link: "", icon: "" });
     setEco({ items: list });
   };
 
-  const removeItem = (idx) => {
-    const list = [...(eco.items || [])];
-    list.splice(idx, 1);
-    setEco({ items: list });
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = items.findIndex((i) => i.id === active.id);
+      const newIndex = items.findIndex((i) => i.id === over.id);
+      const newItems = arrayMove([...items], oldIndex, newIndex);
+      setEco({ items: newItems });
+    }
   };
-
-
 
   return (
     <section className="py-12 px-6 md:px-20 bg-gray-50 rounded-xl">
@@ -38,60 +76,27 @@ export default function EditEcosystemSection({ data, onChange }) {
         </h2>
 
         {/* Grid Items */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(eco.items || []).map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl shadow-md p-6 relative"
-            >
-              {/* Nút xóa */}
-              <button
-                onClick={() => removeItem(i)}
-                className="absolute top-2 right-2 text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-              >
-                Xóa
-              </button>
-
-              {/* Icon */}
-              <EditableImage
-                src={item.icon}
-                onChange={(val) => updateItem(i, { icon: val })}
-                label="Icon"
-              />
-
-              {/* Name */}
-              <h3 className="mt-3 text-lg font-semibold text-[#363F69]">
-                <EditableField
-                  value={item.name}
-                  onChange={(val) => updateItem(i, { name: val })}
-                  placeholder="Tên phần mềm"
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={items.map((i) => i.id)}
+            strategy={rectSortingStrategy}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {items.map((item) => (
+                <SortableItem
+                  key={item.id}
+                  item={item}
+                  updateItem={updateItem}
+                  removeItem={removeItem}
                 />
-              </h3>
-
-              {/* Desc */}
-              <p className="text-gray-600 text-sm mt-1">
-                <EditableField
-                  value={item.desc}
-                  onChange={(val) => updateItem(i, { desc: val })}
-                  placeholder="Mô tả ngắn"
-                  multiline
-                />
-              </p>
-
-              {/* Link */}
-              <div className="mt-2 flex items-center gap-2 text-sm">
-                <span className="text-gray-500">🔗</span>
-                <EditableField
-                  value={item.link}
-                  onChange={(val) => updateItem(i, { link: val })}
-                  type="url"
-                  placeholder="https://..."
-                  className="flex-1"
-                />
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </SortableContext>
+        </DndContext>
 
         {/* Thêm mới */}
         <div className="mt-8">
