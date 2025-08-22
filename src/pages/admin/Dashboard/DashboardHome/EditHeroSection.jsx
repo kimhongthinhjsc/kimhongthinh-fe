@@ -62,8 +62,6 @@ export default function EditHeroSection({ data, onChange }) {
               key={i}
               className="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/10"
             >
-           
-
               <EditableImage
                 src={s.img}
                 onChange={(val) => updateStat(i, { img: val })}

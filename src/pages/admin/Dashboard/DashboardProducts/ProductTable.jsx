@@ -12,11 +12,11 @@ export default function ProductTable({ products, onEdit }) {
         <thead className="bg-gray-100">
           <tr>
             <th className="border p-2 w-20">Ảnh</th>
-            <th className="border p-2">Tên sản phẩm</th>
-            <th className="border p-2 w-36">Danh mục</th>
-            <th className="border p-2 w-40">Loại sản phẩm</th>
-            <th className="border p-2 w-28">Giá</th>
-            <th className="border p-2 w-20">Sửa</th>
+            <th className="border p-2 text-center">Tên sản phẩm</th>
+            <th className="border p-2 w-48">Danh mục</th>
+            <th className="border p-2 w-72">Loại sản phẩm</th>
+            <th className="border p-2 w-32">Giá</th>
+            <th className="border p-2 w-24">Chỉnh sửa</th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@ export default function ProductTable({ products, onEdit }) {
                   className="w-12 h-12 object-cover mx-auto rounded"
                 />
               </td>
-              <td className="border p-2">{product.name}</td>
+              <td className="border p-2 text-center">{product.name}</td>
               <td className="border p-2 text-center">
                 {product.category?.name || "Chưa có"}
               </td>

@@ -5,22 +5,23 @@ import { Routes, Route } from "react-router-dom";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const Introduce = lazy(() => import("../pages/Introduce/Introduce"));
-const Products = lazy(() => import("../pages/Products/Products"));
-const Services = lazy(() => import("../pages/Services/Services"));
+const ProductsPage = lazy(() => import("../pages/ProductsPage/ProductsPage"));
+const ServicesPage = lazy(() => import("../pages/ServicesPage/ServicesPage"));
 const Contact = lazy(() => import("../pages/Contact/Contact"));
 const NewsPage = lazy(() => import("../pages/NewsPage/NewsPage"));
 const CareersPage = lazy(() => import("../pages/CareersPage/CareersPage"));
 const EventsPage = lazy(() => import("../pages/EventsPage/EventsPage"));
 const LoginAdmin = lazy(() => import("../pages/admin/LoginAdmin/LoginAdmin"));
-const ProductDetail = lazy(() =>
-  import("../pages/ProductDetail/ProductDetail")
+const ProductDetailPage = lazy(() =>
+  import("../pages/ProductDetailPage/ProductDetailPage")
 );
 const ServiceDetailPage = lazy(() =>
   import("../pages/ServiceDetailPage/ServiceDetailPage")
 );
+const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
 //Admin
-const Dashboard = lazy(() => import("../pages/admin/Dashboard/Dashboard"));
+const DashboardLayout = lazy(() => import("../pages/admin/Dashboard/DashboardLayout"));
 const Auth = () => {
   return (
     <Routes>
@@ -44,7 +45,7 @@ const Auth = () => {
         path="/san-pham"
         element={
           <Suspense fallback={<div></div>}>
-            <Products />
+            <ProductsPage />
           </Suspense>
         }
       />
@@ -52,7 +53,7 @@ const Auth = () => {
         path="/dich-vu"
         element={
           <Suspense fallback={<div></div>}>
-            <Services />
+            <ServicesPage />
           </Suspense>
         }
       />
@@ -94,7 +95,7 @@ const Auth = () => {
         path="/san-pham/:id"
         element={
           <Suspense fallback={<div></div>}>
-            <ProductDetail />
+            <ProductDetailPage />
           </Suspense>
         }
       />
@@ -116,12 +117,20 @@ const Auth = () => {
           </Suspense>
         }
       />
+      <Route
+        path="*"
+        element={
+          <Suspense fallback={<div></div>}>
+            <NotFoundPage />
+          </Suspense>
+        }
+      />
 
       <Route
         path="/admin/dashboard/*"
         element={
           <Suspense fallback={<div></div>}>
-            <Dashboard />
+            <DashboardLayout />
           </Suspense>
         }
       />

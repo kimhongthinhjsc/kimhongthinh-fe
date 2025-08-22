@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import FramePage from "~/components/FramePage/FramePage";
 import Pagination from "~/components/Pagination/Pagination";
-import { fetchProducts, searchProductsbyKeyword, fetchCategories } from "~/services/publicAPI";
+import { fetchProducts, searchProductsbyKeyword } from "~/services/publicAPI";
+import { getCategories } from "~/services/categorieAPI";
 import { Link } from "react-router-dom";
 import ProductSkeleton from "./ProductSkeleton";
 import SearchBar from "~/components/SearchBar/SearchBar";
 
-const Products = () => {
+const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -19,7 +20,7 @@ const Products = () => {
   // Load categories
   useEffect(() => {
     const loadCategories = async () => {
-      const data = await fetchCategories();
+      const data = await getCategories();
       setCategories(data.categories || []);
     };
     loadCategories();
@@ -172,4 +173,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default ProductsPage;

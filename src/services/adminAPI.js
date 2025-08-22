@@ -1,5 +1,4 @@
 // adminAPI.js
-import axios from "axios";
 const token = localStorage.getItem("accessToken");
 
 const API_URL =
@@ -81,7 +80,7 @@ export const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await api.post(`${API_URL}/upload/image`, formData);
+  const res = await api.post(`/upload/image`, formData);
   return res.data;
 };
 

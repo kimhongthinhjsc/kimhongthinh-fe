@@ -49,15 +49,15 @@ export default function HomePage() {
 
           <CulturePeople data={homeData?.culture} />
 
-          <FadeInWhenVisible delay={1.2}>
+          <FadeInWhenVisible delay={0.6}>
             <Partners data={homeData?.partners} />
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={1.0}>
+          <FadeInWhenVisible delay={0.6}>
             <News data={homeData?.news} />
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={1.2} direction="bottom">
+          <FadeInWhenVisible delay={0.6} direction="bottom">
             <ContactHotline data={homeData?.contact} />
           </FadeInWhenVisible>
         </>

@@ -7,17 +7,20 @@ import BehaviorRulesAdmin from "./BehaviorRulesAdmin";
 import CoreValueAdmin from "./CoreValueAdmin";
 import ClientsTestimonialsAdmin from "./ClientsTestimonialsAdmin";
 import EditableImage from "~/components/EditableImage/EditableImage";
+import DashboardIntroduceSkeleton from "./DashboardIntroduceSkeleton";
 import { getIntroduce } from "~/services/publicAPI";
 import { updateIntroduceData } from "~/services/adminAPI";
 
 export default function DashboardIntroducePage() {
-  const [introduceData, setIntroduceData] = useState(null);
-  const [saving, setSaving] = useState(false);
+  const [introduceData, setIntroduceData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(true);
 
   useEffect(() => {
     const fetchIntroduce = async () => {
       const data = await getIntroduce();
       setIntroduceData(data);
+      setLoading(false);
     };
     fetchIntroduce();
   }, []);
@@ -36,13 +39,12 @@ export default function DashboardIntroducePage() {
     }
   };
 
-  if (!introduceData) return <p>Đang tải dữ liệu...</p>;
+  if (loading) return <DashboardIntroduceSkeleton />;
 
   return (
 
       <div className="w-full space-y-12 p-6">
         {/* Banner */}
-        <h1 className="text-2xl font-bold">Banner Giới thiệu</h1>
         <EditableImage
           src={introduceData.banner}
           onChange={(val) => setIntroduceData({ ...introduceData, banner: val })}
