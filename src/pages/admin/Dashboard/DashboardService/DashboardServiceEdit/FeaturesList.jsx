@@ -17,7 +17,7 @@ export default function FeaturesList({ service, setService }) {
               newFeatures[idx].title = e.target.value;
               setService({ ...service, features: newFeatures });
             }}
-            className="border p-2 rounded w-32"
+            className="border p-2 rounded "
           />
           <input
             placeholder="Nội dung"

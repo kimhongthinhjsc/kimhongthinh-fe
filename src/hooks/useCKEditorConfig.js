@@ -1,23 +1,13 @@
-import { useState, useEffect, useRef, useMemo } from "react";
-import { CKEditor, useCKEditorCloud } from "@ckeditor/ckeditor5-react";
-import DOMPurify from "dompurify";
-import { uploadImage } from "~/services/adminAPI";
+// src/hooks/useCKEditorConfig.js
+import { useMemo } from "react";
 
 const LICENSE_KEY = import.meta.env.VITE_LICENSE_KEY;
-export default function RichTextEditor({ content: initContent, onChange }) {
-  const editorContainerRef = useRef(null);
-  const editorRef = useRef(null);
-  const editorWordCountRef = useRef(null);
-  const [isLayoutReady, setIsLayoutReady] = useState(false);
-  const cloud = useCKEditorCloud({ version: "46.0.2" });
 
-  useEffect(() => {
-    setIsLayoutReady(true);
-    return () => setIsLayoutReady(false);
-  }, []);
-
-  const { ClassicEditor, editorConfig } = useMemo(() => {
-    if (cloud.status !== "success" || !isLayoutReady) return {};
+export default function useCKEditorConfig(cloud, isLayoutReady) {
+  return useMemo(() => {
+    if (cloud.status !== "success" || !isLayoutReady) {
+      return {};
+    }
 
     const {
       ClassicEditor,
@@ -88,7 +78,7 @@ export default function RichTextEditor({ content: initContent, onChange }) {
       TextTransformation,
       TodoList,
       Underline,
-      WordCount,
+      WordCount
     } = cloud.CKEditor;
 
     return {
@@ -143,7 +133,6 @@ export default function RichTextEditor({ content: initContent, onChange }) {
           ],
           shouldNotGroupWhenFull: true,
         },
-        extraPlugins: [CustomUploadAdapterPlugin],
         plugins: [
           Alignment,
           Autoformat,
@@ -214,7 +203,9 @@ export default function RichTextEditor({ content: initContent, onChange }) {
           Underline,
           WordCount,
         ],
-        fontFamily: { supportAllValues: true },
+        fontFamily: {
+          supportAllValues: true,
+        },
         fontSize: {
           options: [10, 12, 14, "default", 18, 20, 22],
           supportAllValues: true,
@@ -231,53 +222,17 @@ export default function RichTextEditor({ content: initContent, onChange }) {
         },
         heading: {
           options: [
-            {
-              model: "paragraph",
-              title: "Paragraph",
-              class: "ck-heading_paragraph",
-            },
-            {
-              model: "heading1",
-              view: "h1",
-              title: "Heading 1",
-              class: "ck-heading_heading1",
-            },
-            {
-              model: "heading2",
-              view: "h2",
-              title: "Heading 2",
-              class: "ck-heading_heading2",
-            },
-            {
-              model: "heading3",
-              view: "h3",
-              title: "Heading 3",
-              class: "ck-heading_heading3",
-            },
-            {
-              model: "heading4",
-              view: "h4",
-              title: "Heading 4",
-              class: "ck-heading_heading4",
-            },
-            {
-              model: "heading5",
-              view: "h5",
-              title: "Heading 5",
-              class: "ck-heading_heading5",
-            },
-            {
-              model: "heading6",
-              view: "h6",
-              title: "Heading 6",
-              class: "ck-heading_heading6",
-            },
+            { model: "paragraph", title: "Paragraph", class: "ck-heading_paragraph" },
+            { model: "heading1", view: "h1", title: "Heading 1", class: "ck-heading_heading1" },
+            { model: "heading2", view: "h2", title: "Heading 2", class: "ck-heading_heading2" },
+            { model: "heading3", view: "h3", title: "Heading 3", class: "ck-heading_heading3" },
+            { model: "heading4", view: "h4", title: "Heading 4", class: "ck-heading_heading4" },
+            { model: "heading5", view: "h5", title: "Heading 5", class: "ck-heading_heading5" },
+            { model: "heading6", view: "h6", title: "Heading 6", class: "ck-heading_heading6" },
           ],
         },
         htmlSupport: {
-          allow: [
-            { name: /^.*$/, styles: true, attributes: true, classes: true },
-          ],
+          allow: [{ name: /^.*$/, styles: true, attributes: true, classes: true }],
         },
         image: {
           toolbar: [
@@ -304,9 +259,7 @@ export default function RichTextEditor({ content: initContent, onChange }) {
             },
           },
         },
-        list: {
-          properties: { styles: true, startIndex: true, reversed: true },
-        },
+        list: { properties: { styles: true, startIndex: true, reversed: true } },
         menuBar: { isVisible: true },
         placeholder: "Type or paste your content here!",
         style: {
@@ -315,16 +268,8 @@ export default function RichTextEditor({ content: initContent, onChange }) {
             { name: "Title", element: "h2", classes: ["document-title"] },
             { name: "Subtitle", element: "h3", classes: ["document-subtitle"] },
             { name: "Info box", element: "p", classes: ["info-box"] },
-            {
-              name: "CTA Link Primary",
-              element: "a",
-              classes: ["button", "button--green"],
-            },
-            {
-              name: "CTA Link Secondary",
-              element: "a",
-              classes: ["button", "button--black"],
-            },
+            { name: "CTA Link Primary", element: "a", classes: ["button", "button--green"] },
+            { name: "CTA Link Secondary", element: "a", classes: ["button", "button--black"] },
             { name: "Marker", element: "span", classes: ["marker"] },
             { name: "Spoiler", element: "span", classes: ["spoiler"] },
           ],
@@ -340,68 +285,5 @@ export default function RichTextEditor({ content: initContent, onChange }) {
         },
       },
     };
-  }, [cloud, isLayoutReady]);
-
-  const [content, setContent] = useState("");
-
-  // ---- Upload Custom ----
-  function CustomUploadAdapter(loader) {
-    this.loader = loader;
-  }
-  CustomUploadAdapter.prototype.upload = function () {
-    return this.loader.file.then(async (file) => {
-      const data = await uploadImage(file);
-      return { default: data.url };
-    });
-  };
-  CustomUploadAdapter.prototype.abort = function () {
-    console.log("Upload aborted");
-  };
-  function CustomUploadAdapterPlugin(editor) {
-    editor.plugins.get("FileRepository").createUploadAdapter = (loader) =>
-      new CustomUploadAdapter(loader);
-  }
-
-  return (
-    <div className="font-sans w-fit mx-auto">
-      <div className="min-w-[795px] max-w-[795px]" ref={editorContainerRef}>
-        <div className="editor-container__editor" ref={editorRef}>
-          {editorConfig && (
-            <CKEditor
-              editor={ClassicEditor}
-              config={editorConfig}
-              onReady={(editor) => {
-                const wordCount = editor.plugins.get("WordCount");
-                editorWordCountRef.current.appendChild(
-                  wordCount.wordCountContainer
-                );
-              }}
-              onAfterDestroy={() => {
-                Array.from(editorWordCountRef.current.children).forEach(
-                  (child) => child.remove()
-                );
-              }}
-              onChange={(event, editor) => {
-                const data = editor.getData();
-                setContent(data);
-                if (onChange) onChange(data);
-              }}
-            />
-          )}
-        </div>
-        <div ref={editorWordCountRef}></div>
-
-        {/* Preview */}
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold mb-3 border-b-2 border-blue-500 pb-1 text-gray-800">
-            📰 Xem trước bài báo:
-          </h3>
-          <div
-            className="mt-6 min-h-[300px] max-w-[800px] mx-auto p-4 border border-gray-300 rounded-md bg-white ck-content prose"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
-          />
-        </div>
-      </div>
-    </div>
-  );
+  }, [cloud, isLayoutReady, LICENSE_KEY]);
 }
