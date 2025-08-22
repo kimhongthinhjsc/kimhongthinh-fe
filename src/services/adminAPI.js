@@ -1,5 +1,9 @@
 // adminAPI.js
 const token = localStorage.getItem("accessToken");
+
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api/products";
+
 import api from "./api"; // 👈 import instance có interceptor
 
 // Tạo sản phẩm

@@ -108,3 +108,12 @@ export const getServiceByKeyword = async (keyword, page = 1, limit = 12) => {
   }
 };
 
+export const getNewsList = async (page, limit) => {
+  const res = await api.get(`/news/find/all?page=${page}&limit=${limit}`);
+  return res.data;
+};
+
+export const getOneNews = async (titleLink) => {
+  const res = await api.get(`/news/${titleLink}`);
+  return res.data;
+};

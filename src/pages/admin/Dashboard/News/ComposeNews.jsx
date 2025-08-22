@@ -5,8 +5,7 @@ import './ComposeNews.scss';
 import DOMPurify from "dompurify";
 import { uploadImage } from '~/services/adminAPI';
 
-const LICENSE_KEY =
-  'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODcxODM5OTksImp0aSI6IjRmYWVlZWE0LTdiYmQtNGUzYS05Njc2LTIxMzA4YzRlNTk2OCIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIiwiRTJQIiwiRTJXIiwiQk9YIl0sInZjIjoiZDNlNmQwNTcifQ.DZ2uFK5TFpbrpw2FrHgW9L7Qx02mGu2cyIxDp62YLezpekxli4kCctIdPPGeSLnfpn58SUiZ6cP4W6_HA_gfPA';
+const LICENSE_KEY = import.meta.env.VITE_LICENSE_KEY;
 
 export default function ComposeNews({ onContentChange }) {
   const editorContainerRef = useRef(null);
@@ -443,7 +442,7 @@ export default function ComposeNews({ onContentChange }) {
         </div>
         <div className="editor_container__word-count" ref={editorWordCountRef}></div>
         <div >
-          <h3 className="text-xl font-semibold mb-3 border-b-2 border-blue-500 pb-1 text-gray-800 font-merri">📰 Xem trước:</h3>
+          <h3 className="text-xl font-semibold mb-3 border-b-2 border-blue-500 pb-1 text-gray-800 font-merri">📰 Xem trước bài báo:</h3>
           <div style={{
             marginTop: "30px",
             minHeight: "300px",
