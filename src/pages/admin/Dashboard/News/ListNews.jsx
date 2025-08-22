@@ -1,5 +1,5 @@
-import React, { useState, useEffect  } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { getNewsList } from "~/services/adminAPI";
 
 
@@ -8,20 +8,33 @@ export default function NewsList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
+  const navigate = useNavigate(); // ✅ khai báo navigate
 
   // Gọi API
   const getNews = async () => {
     try {
       const data = await getNewsList(currentPage, itemsPerPage);
       setNewsList(data.news || []);
-      setTotalPages(Math.ceil(data.totalPages / itemsPerPage));
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error("Lỗi khi lấy tin tức:", error);
     }
   };
   const handleEdit = (id) => {
-    const news = newsList.find((item) => item.id === id);
-    alert(`Bạn muốn chỉnh sửa: ${news.title}`);
+    const news = newsList.find((item) => item._id === id);
+    // Chuyển hướng đến trang chỉnh sửa với titleLink
+    if (news) {
+      // Sử dụng navigate để chuyển hướng
+      navigate(`/admin/dashboard/news/update`, { state: { id: news._id } });
+    }
+  };
+
+  const handleDelete = (id) => {
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa tin tức này không?");
+    if (confirmDelete) {
+      // Gọi API hoặc logic xóa
+      console.log("Đã xóa:", id);
+    }
   };
 
 
@@ -67,7 +80,7 @@ export default function NewsList() {
       <ul className="space-y-4">
         {newsList.map((news) => (
           <li
-            key={news.id}
+            key={news._id}
             className="flex items-center justify-between p-4 border rounded-lg shadow-sm"
           >
             <div className="flex items-center space-x-4">
@@ -78,17 +91,32 @@ export default function NewsList() {
               />
               <div>
                 <h2 className="font-semibold text-lg">{news.title}</h2>
-                <p className="text-sm text-gray-500">
-                  {news.createdAt} - {news.author}
+                <p className="text-sm text-gray-500 italic mt-1">
+                  {new Date(news.updatedAt).toLocaleString("vi-VN", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  })}{" "}
+                  - <span className="font-medium text-gray-700">{news.author}</span>
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => handleEdit(news.id)}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Edit
-            </button>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => handleEdit(news._id)}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Sửa
+              </button>
+              <button
+                onClick={() => handleDelete(news._id)}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Xóa
+              </button>
+            </div>
           </li>
         ))}
       </ul>

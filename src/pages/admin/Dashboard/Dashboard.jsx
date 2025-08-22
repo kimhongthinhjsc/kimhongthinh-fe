@@ -10,6 +10,7 @@ const DashboardProducts = lazy(() => import("./DashboardProducts/DashboardProduc
 const DashboardServices = lazy(() => import("./DashboardService/DashboardService"));
 const DashboardNews = lazy(() => import("./News/ListNews"));
 const DashboardCreateNews = lazy(() => import("./News/News"));
+const DashboardUpdateNews = lazy(() => import("./News/UpdateNews"));
 const DashboardEvents = lazy(() => import("./Events"));
 const DashboardCareers = lazy(() => import("./Careers"));
 const DashboardActivities = lazy(() => import("./Activities"));
@@ -89,6 +90,7 @@ export default function Dashboard() {
               <Route path="/services" element={<DashboardServices />} />
               <Route path="/news" element={<DashboardNews />} />
               <Route path="/news/create" element={<DashboardCreateNews />} />
+              <Route path="/news/update" element={<DashboardUpdateNews />} />
               <Route path="/events" element={<DashboardEvents />} />
               <Route path="/careers" element={<DashboardCareers />} />
               <Route path="/activities" element={<DashboardActivities />} />

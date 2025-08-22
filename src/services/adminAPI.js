@@ -3,7 +3,7 @@ import axios from "axios";
 const token = localStorage.getItem("accessToken");
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api/products";
+  import.meta.env.VITE_API_URL_SERVER || "http://localhost:5000/api/products";
 import api from "./api"; // 👈 import instance có interceptor
 
 // Tạo sản phẩm
@@ -37,7 +37,6 @@ export const loginAdmin = async (email, password) => {
 };
 
 export const createNews = async (news) => {
-  //Call api upload ảnh
   const formData = new FormData();
   formData.append("file", news.image);
   const resImage = await api.post(`${API_URL}/upload/image`, formData);
@@ -49,8 +48,32 @@ export const createNews = async (news) => {
   return res.data;
 };
 
+export const updateNews = async (news) => {
+  if (typeof news.image !== "string") {
+    console.log("Uploading new image...");
+    const formData = new FormData();
+    formData.append("file", news.image);
+    const resImage = await api.post(`${API_URL}/upload/image`, formData);
+    if (resImage.status === 200) {
+      news.image = resImage.data.url; // Lưu URL ảnh đã upload
+    }
+  }
+  const res = await api.put(`${API_URL}/news/${news._id}`, news);
+  return res.data;
+};
+
 export const getNewsList = async (page, limit) => {
   const res = await api.get(`${API_URL}/news/find/all?page=${page}&limit=${limit}`);
+  return res.data;
+};
+
+export const getOneNewsById = async (id) => {
+  const res = await api.get(`${API_URL}/news/findId/${id}`);
+  return res.data;
+};
+
+export const getOneNews = async (titleLink) => {
+  const res = await api.get(`${API_URL}/news/${titleLink}`);
   return res.data;
 };
 
