@@ -6,7 +6,7 @@ export default function FeaturesList({ service, setService }) {
 
   return (
     <div className="bg-white p-4 rounded-lg shadow space-y-2">
-      <label className="block font-semibold">Tính năng nổi bật</label>
+      <label className="block font-semibold">Ưu điểm nổi bật</label>
       {(service.features || []).map((f, idx) => (
         <div key={idx} className="flex gap-2 mt-1">
           <input
@@ -17,7 +17,7 @@ export default function FeaturesList({ service, setService }) {
               newFeatures[idx].title = e.target.value;
               setService({ ...service, features: newFeatures });
             }}
-            className="border p-2 rounded w-32"
+            className="border p-2 rounded "
           />
           <input
             placeholder="Nội dung"
