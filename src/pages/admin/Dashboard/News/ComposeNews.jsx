@@ -443,7 +443,7 @@ export default function ComposeNews({ onContentChange }) {
         </div>
         <div className="editor_container__word-count" ref={editorWordCountRef}></div>
         <div >
-          <h3 className="text-xl font-semibold mb-3 border-b-2 border-blue-500 pb-1 text-gray-800 font-merri">📰 Xem trước bài báo:</h3>
+          <h3 className="text-xl font-semibold mb-3 border-b-2 border-blue-500 pb-1 text-gray-800 font-merri">📰 Xem trước:</h3>
           <div style={{
             marginTop: "30px",
             minHeight: "300px",
