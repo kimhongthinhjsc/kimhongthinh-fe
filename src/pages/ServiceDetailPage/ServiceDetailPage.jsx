@@ -87,7 +87,7 @@ export default function ServiceDetailPage() {
         {/* Tính năng nổi bật */}
         {service.features?.length > 0 && (
           <div>
-            <h2 className="text-2xl font-semibold mb-4">Tính năng nổi bật</h2>
+            <h2 className="text-2xl font-semibold mb-4">Ưu điểm nổi bật</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {service.features.map((f) => (
                 <div

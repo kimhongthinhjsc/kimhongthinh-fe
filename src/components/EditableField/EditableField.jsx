@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-export default function EditableField({ value, onChange, multiline = false }) {
+export default function EditableField({ value, onChange, multiline = false, className }) {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef(null);
 
@@ -13,11 +13,11 @@ export default function EditableField({ value, onChange, multiline = false }) {
   const handleBlur = () => setEditing(false);
 
   return (
-    <div className="relative group cursor-pointer break-words translate-x-0">
+    <div className={`relative group cursor-pointer break-words translate-x-0 ${className}`}>
       {/* Text hiển thị */}
       {!editing && (
         <div
-          className="inline-block break-words"
+          className={` break-words border-b border-[transparent] focus:outline-none `}
           onClick={() => setEditing(true)}
         >
           {value || ""}
