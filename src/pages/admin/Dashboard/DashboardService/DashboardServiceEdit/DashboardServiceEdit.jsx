@@ -10,6 +10,7 @@ import TextAreaField from "./TextAreaField";
 import ProcessList from "./ProcessList";
 import DocumentsList from "./DocumentsList";
 import FeaturesList from "./FeaturesList";
+import RichTextEditor from "./RichTextEditor";
 
 export default function DashboardServiceEdit() {
   const { id } = useParams();
@@ -43,23 +44,56 @@ export default function DashboardServiceEdit() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center gap-3">
-        <button onClick={() => navigate("/admin/dashboard/services")} className="p-2 rounded hover:bg-gray-200">
+        <button
+          onClick={() => navigate("/admin/dashboard/services")}
+          className="p-2 rounded hover:bg-gray-200"
+        >
           <ArrowLeft size={20} />
         </button>
         <h1 className="text-2xl font-bold">Chỉnh sửa dịch vụ</h1>
       </div>
 
       <div className="bg-white p-4 rounded-lg shadow space-y-4">
-        <InputField label="Tên dịch vụ" value={service.name} onChange={(e) => setService({ ...service, name: e.target.value })} />
-        <InputField label="Danh mục" value={service.category} onChange={(e) => setService({ ...service, category: e.target.value })} />
-        <InputField label="Giá" type="number" value={service.price} onChange={(e) => setService({ ...service, price: Number(e.target.value) })} />
-        <TextAreaField label="Mô tả ngắn" value={service.shortDescription || ""} onChange={(e) => setService({ ...service, shortDescription: e.target.value })} />
-        <TextAreaField label="Mô tả chi tiết" value={service.description || ""} onChange={(e) => setService({ ...service, description: e.target.value })} />
+        <InputField
+          label="Tên dịch vụ"
+          value={service.name}
+          onChange={(e) => setService({ ...service, name: e.target.value })}
+        />
+        <InputField
+          label="Danh mục"
+          value={service.category}
+          onChange={(e) => setService({ ...service, category: e.target.value })}
+        />
+        <InputField
+          label="Giá"
+          type="number"
+          value={service.price}
+          onChange={(e) =>
+            setService({ ...service, price: Number(e.target.value) })
+          }
+        />
+        <TextAreaField
+          label="Mô tả ngắn"
+          value={service.shortDescription || ""}
+          onChange={(e) =>
+            setService({ ...service, shortDescription: e.target.value })
+          }
+        />
+        <TextAreaField
+          label="Mô tả chi tiết"
+          value={service.description || ""}
+          onChange={(e) =>
+            setService({ ...service, description: e.target.value })
+          }
+        />
       </div>
 
       <div className="bg-white p-4 rounded-lg shadow space-y-3">
-        <label className="block font-semibold">Thumbnail</label>
-        <EditableImage src={service.thumbnail} onChange={(val) => setService({ ...service, thumbnail: val })} />
+        <label className="block font-semibold">Hình thu nhỏ</label>
+        <EditableImage
+          src={service.thumbnail}
+          onChange={(val) => setService({ ...service, thumbnail: val })}
+        />
 
         <label className="block font-semibold mt-2">Images</label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -72,11 +106,21 @@ export default function DashboardServiceEdit() {
                 imgs[i] = val;
                 setService({ ...service, images: imgs });
               }}
-              onRemove={() => setService({ ...service, images: service.images.filter((_, idx) => idx !== i) })}
+              onRemove={() =>
+                setService({
+                  ...service,
+                  images: service.images.filter((_, idx) => idx !== i),
+                })
+              }
             />
           ))}
           <button
-            onClick={() => setService({ ...service, images: [...(service.images || []), ""] })}
+            onClick={() =>
+              setService({
+                ...service,
+                images: [...(service.images || []), ""],
+              })
+            }
             className="border-2 border-dashed p-4 text-gray-500 rounded hover:bg-gray-50"
           >
             + Thêm ảnh
@@ -87,10 +131,24 @@ export default function DashboardServiceEdit() {
       <ProcessList service={service} setService={setService} />
       <DocumentsList service={service} setService={setService} />
       <FeaturesList service={service} setService={setService} />
+      <RichTextEditor
+        content={service.content}
+        onChange={(val) => setService({ ...service, content: val })}
+      />
 
       <div className="flex gap-4">
-        <button onClick={handleSave} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Lưu thay đổi</button>
-        <button onClick={() => navigate("/admin/dashboard/services")} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Quay lại</button>
+        <button
+          onClick={handleSave}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Lưu thay đổi
+        </button>
+        <button
+          onClick={() => navigate("/admin/dashboard/services")}
+          className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+        >
+          Quay lại
+        </button>
       </div>
     </div>
   );

@@ -84,7 +84,7 @@ export default function ServiceDetailPage() {
           </div>
         )}
 
-        {/* Tính năng nổi bật */}
+        {/*Ưu điểm nổi bật*/}
         {service.features?.length > 0 && (
           <div>
             <h2 className="text-2xl font-semibold mb-4">Ưu điểm nổi bật</h2>
