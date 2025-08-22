@@ -9,6 +9,7 @@ const ProductsPage = lazy(() => import("../pages/ProductsPage/ProductsPage"));
 const ServicesPage = lazy(() => import("../pages/ServicesPage/ServicesPage"));
 const Contact = lazy(() => import("../pages/Contact/Contact"));
 const NewsPage = lazy(() => import("../pages/NewsPage/NewsPage"));
+const NewsDetailPage = lazy(() => import("../pages/NewsPage/NewsDetailPage"));
 const CareersPage = lazy(() => import("../pages/CareersPage/CareersPage"));
 const EventsPage = lazy(() => import("../pages/EventsPage/EventsPage"));
 const LoginAdmin = lazy(() => import("../pages/admin/LoginAdmin/LoginAdmin"));
@@ -70,6 +71,14 @@ const Auth = () => {
         element={
           <Suspense fallback={<div></div>}>
             <NewsPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/tin-tuc/:id"
+        element={
+          <Suspense fallback={<div></div>}>
+            <NewsDetailPage />
           </Suspense>
         }
       />

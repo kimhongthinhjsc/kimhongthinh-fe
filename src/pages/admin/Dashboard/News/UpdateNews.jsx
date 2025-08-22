@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import ComposeNews from "./UpdateComposeNews";
+import ComposeNewsUpdate from "./UpdateComposeNews";
 import { useLocation } from "react-router-dom";
 import './News.scss';
 import { getOneNewsById, updateNews } from "~/services/adminAPI";
@@ -136,7 +136,7 @@ export default function UpdateNews() {
         </div>
 
         {content ? (
-          <ComposeNews initialData={content} />
+          <ComposeNewsUpdate onContentChange={setContent} initialData={content} />
         ) : (
           <p className="text-gray-500">Không có dữ liệu, vui lòng quay lại danh sách.</p>
         )}

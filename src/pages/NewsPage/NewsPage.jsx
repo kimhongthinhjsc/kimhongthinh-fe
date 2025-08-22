@@ -3,6 +3,8 @@ import FramePage from "~/components/FramePage/FramePage";
 import posts from "~/mock/Posts.js";
 import Pagination from "~/components/Pagination/Pagination";
 import { getNewsList } from "~/services/publicAPI";
+import { Link } from "react-router-dom";
+
 
 export default function NewsPage() {
   const postsPerPage = 6;
@@ -52,15 +54,22 @@ export default function NewsPage() {
                   key={index}
                   className="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition"
                 >
-                  <a href={newItem.titleLink} target="_blank" rel="noopener noreferrer">
+                  {/* <a href={newItem.titleLink} target="_blank" rel="noopener noreferrer">
                     <img
                       src={newItem.image}
                       alt={newItem.title}
                       className="w-full h-56 object-cover"
                     />
-                  </a>
+                  </a> */}
                   <div className="p-4">
-                    <a
+                    <Link to={newItem.titleLink}>
+                      <img
+                        src={newItem.image}
+                        alt={newItem.title}
+                        className="w-full h-56 object-cover"
+                      />
+                    </Link>
+                    {/* <a
                       href={newItem.titleLink}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -68,7 +77,7 @@ export default function NewsPage() {
                       <h2 className="text-lg font-semibold text-gray-800 hover:text-blue-600 mb-2">
                         {newItem.title}
                       </h2>
-                    </a>
+                    </a> */}
                     <p className="text-gray-600 text-sm mb-3">{newItem.title}</p>
                     <div className="text-sm text-gray-500">{newItem.title}</div>
                   </div>
