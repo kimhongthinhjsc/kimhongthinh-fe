@@ -8,7 +8,7 @@ import { uploadImage } from '~/services/adminAPI';
 const LICENSE_KEY =
   'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODcxODM5OTksImp0aSI6IjRmYWVlZWE0LTdiYmQtNGUzYS05Njc2LTIxMzA4YzRlNTk2OCIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIiwiRTJQIiwiRTJXIiwiQk9YIl0sInZjIjoiZDNlNmQwNTcifQ.DZ2uFK5TFpbrpw2FrHgW9L7Qx02mGu2cyIxDp62YLezpekxli4kCctIdPPGeSLnfpn58SUiZ6cP4W6_HA_gfPA';
 
-export default function ComposeNews({ onContentChange }) {
+export default function UpdateComposeNews({ initialData, onContentChange }) {
   const editorContainerRef = useRef(null);
   const editorRef = useRef(null);
   const editorWordCountRef = useRef(null);
@@ -383,7 +383,7 @@ export default function ComposeNews({ onContentChange }) {
     };
   }, [cloud, isLayoutReady]);
 
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(initialData || "");
   function CustomUploadAdapter(loader) {
     this.loader = loader;
   }
@@ -391,7 +391,6 @@ export default function ComposeNews({ onContentChange }) {
   CustomUploadAdapter.prototype.upload = function () {
     return this.loader.file
       .then(async (file) => {
-        console.log("Uploading file:", file);
         const data = await uploadImage(file);
         return { default: data.url };
       });
@@ -407,6 +406,11 @@ export default function ComposeNews({ onContentChange }) {
     };
   }
 
+  useEffect(() => {
+    if (initialData) {
+      setContent(initialData);
+    }
+  }, [initialData]);
 
   return (
     <div className="main-container">
@@ -422,7 +426,6 @@ export default function ComposeNews({ onContentChange }) {
                   const wordCount = editor.plugins.get('WordCount');
                   editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
                   editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-                    console.log("Creating custom upload adapter");
                     return new CustomUploadAdapter(loader);
                   }
                 }}
@@ -431,6 +434,7 @@ export default function ComposeNews({ onContentChange }) {
                 }}
                 editor={ClassicEditor}
                 config={editorConfig}
+                data={content}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setContent(data); // vẫn giữ local preview
