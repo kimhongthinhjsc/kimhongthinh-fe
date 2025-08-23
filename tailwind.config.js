@@ -13,6 +13,7 @@ export default {
         light: "#F9FAFB", // Nền chính sáng
         darkText: "#111827", // Text chính
         mutedText: "#6B7280", // Text phụ / secondary
+        bgPrimary: "#F9FAFB", // Nền chính
         cardBg: "#FFFFFF", // Card / paper background
         cardBorder: "#E5E7EB", // Border / outline
         hover: "#F3F4F6", // Hover / background nhẹ

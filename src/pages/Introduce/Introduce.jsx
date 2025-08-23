@@ -49,7 +49,7 @@ export default function Introduce() {
                 "https://softdreams.vn/wp-content/uploads/2024/07/Group-2609653.png"
               }
               alt="SoftDreams Banner"
-              className="w-full h-auto"
+              className="w-full h-28 sm:h-40 md:h-48 lg:h-60 object-cover"
             />
           </section>
         </FadeInWhenVisible>
