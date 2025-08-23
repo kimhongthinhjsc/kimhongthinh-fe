@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { CKEditor, useCKEditorCloud } from "@ckeditor/ckeditor5-react";
 import DOMPurify from "dompurify";
 import useCKEditorConfig from "~/hooks/useCKEditorConfig";
-import { Pencil } from "lucide-react"; // icon edit
+import { FaEdit } from "react-icons/fa";
 
-export default function RichTextEditor({ data, onChange }) {
+export default function RichTextEditor({ data, onChange, label = "Nội dung" }) {
   const editorContainerRef = useRef(null);
   const editorRef = useRef(null);
   const editorWordCountRef = useRef(null);
@@ -14,7 +14,10 @@ export default function RichTextEditor({ data, onChange }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const cloud = useCKEditorCloud({ version: "46.0.2" });
-  const { ClassicEditor, editorConfig } = useCKEditorConfig(cloud, isLayoutReady);
+  const { ClassicEditor, editorConfig } = useCKEditorConfig(
+    cloud,
+    isLayoutReady
+  );
 
   useEffect(() => {
     setIsLayoutReady(true);
@@ -34,12 +37,12 @@ export default function RichTextEditor({ data, onChange }) {
         {/* Icon edit góc trên phải */}
         <button
           onClick={() => setIsOpen(true)}
-          className="absolute top-3 right-3 p-2 rounded-full hover:bg-gray-100 transition"
+          className="absolute top-3 right-3 p-2 rounded-full  transition"
         >
-          <Pencil size={20} className="text-gray-600" />
+          <FaEdit size={28} className="text-gray-600 hover:text-primary" />
         </button>
 
-        <h3 className="text-xl font-semibold mb-3 text-gray-800">📰 Preview</h3>
+        <h3 className="text-xl font-semibold mb-3 text-gray-800">📰 {label}</h3>
         <div
           className="min-h-[300px] max-w-4xl mx-auto p-4 border border-gray-300 rounded-md bg-white ck-content prose"
           dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}

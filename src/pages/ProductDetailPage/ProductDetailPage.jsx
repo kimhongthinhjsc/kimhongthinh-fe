@@ -8,6 +8,8 @@ import InfoList from "~/components/InfoList/InfoList";
 import PriceTag from "~/components/PriceTag/PriceTag";
 import HighlightList from "~/components/HighlightList/HighlightList";
 import RelatedProducts from "./RelatedProducts";
+import "@ckeditor/ckeditor5-build-classic/build/ckeditor";
+import DOMPurify from "dompurify";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -78,6 +80,17 @@ const ProductDetailPage = () => {
             <HighlightList highlights={product.highlights} className="mt-4" />
           </div>
         </div>
+        {product.content && (
+          <section>
+            <h2 className="text-2xl font-semibold mb-2">Chi tiết sản phẩm</h2>
+            <div
+              className="prose ck-content max-w-none text-gray-800"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(product.content),
+              }}
+            />
+          </section>
+        )}
 
         <div className="mt-10">
           <h2 className="text-xl font-bold mb-4 text-gray-800">

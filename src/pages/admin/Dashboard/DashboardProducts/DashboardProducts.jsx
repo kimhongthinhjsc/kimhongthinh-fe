@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchProducts } from "~/services/publicAPI";
+import { fetchProducts, searchProductsbyKeyword } from "~/services/publicAPI";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import ProductTable from "./ProductTable";
+import ProductTableSkeleton from "./ProductTableSkeleton";
+import Pagination from "~/components/Pagination/Pagination";
 
 export default function DashboardProducts() {
   const [products, setProducts] = useState([]);
@@ -19,9 +21,20 @@ export default function DashboardProducts() {
 
   const loadProducts = async () => {
     setLoading(true);
-    const data = await fetchProducts(currentPage, itemsPerPage, search);
-    setProducts(data.products || []);
-    setTotalPages(data.totalPages || 1);
+    if (search.trim()) {
+      console.log("Searching for:", search);
+      const data = await searchProductsbyKeyword({
+        keyword: search,
+        currentPage,
+        itemsPerPage,
+      });
+      setProducts(data.products || []);
+      setTotalPages(data.totalPages || 1);
+    } else {
+      const data = await fetchProducts(currentPage, itemsPerPage);
+      setProducts(data.products || []);
+      setTotalPages(data.totalPages || 1);
+    }
     setLoading(false);
   };
 
@@ -37,54 +50,6 @@ export default function DashboardProducts() {
 
   const handleCreate = () => {
     navigate("/admin/dashboard/products/create");
-  };
-
-  // Skeleton loading cho bảng
-  const renderSkeleton = () => {
-    return (
-      <div className="overflow-x-auto border rounded">
-        <table className="w-full border-collapse">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border p-2 w-20">Ảnh</th>
-              <th className="border p-2">Tên sản phẩm</th>
-              <th className="border p-2 w-28">Giá</th>
-              <th className="border p-2 w-36">Danh mục</th>
-              <th className="border p-2 w-40">Loại sản phẩm</th>
-              <th className="border p-2 w-28">Best Seller</th>
-              <th className="border p-2 w-20">Sửa</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({ length: itemsPerPage }).map((_, i) => (
-              <tr key={i} className="animate-pulse">
-                <td className="border p-2">
-                  <div className="w-12 h-12 bg-gray-200 rounded mx-auto" />
-                </td>
-                <td className="border p-2">
-                  <div className="h-4 bg-gray-200 rounded w-40" />
-                </td>
-                <td className="border p-2 text-center">
-                  <div className="h-4 bg-gray-200 rounded w-16 mx-auto" />
-                </td>
-                <td className="border p-2 text-center">
-                  <div className="h-4 bg-gray-200 rounded w-24 mx-auto" />
-                </td>
-                <td className="border p-2 text-center">
-                  <div className="h-4 bg-gray-200 rounded w-24 mx-auto" />
-                </td>
-                <td className="border p-2 text-center">
-                  <div className="h-4 bg-gray-200 rounded w-6 mx-auto" />
-                </td>
-                <td className="border p-2 text-center">
-                  <div className="h-4 bg-gray-200 rounded w-6 mx-auto" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
   };
 
   return (
@@ -109,43 +74,19 @@ export default function DashboardProducts() {
 
       {/* Danh sách sản phẩm */}
       {loading ? (
-        renderSkeleton()
+        <ProductTableSkeleton rows={itemsPerPage} />
       ) : (
         <ProductTable products={products} onEdit={handleEdit} />
       )}
 
       {/* Pagination */}
       {!loading && (
-        <div className="flex justify-center gap-2">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((p) => p - 1)}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            &lt;
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentPage(i + 1)}
-              className={`px-3 py-1 border rounded ${
-                currentPage === i + 1 ? "bg-blue-600 text-white" : ""
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((p) => p + 1)}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            &gt;
-          </button>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       )}
-
-    
     </div>
   );
 }
