@@ -14,7 +14,7 @@ import { updateIntroduceData } from "~/services/adminAPI";
 export default function DashboardIntroducePage() {
   const [introduceData, setIntroduceData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchIntroduce = async () => {

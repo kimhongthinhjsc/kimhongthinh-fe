@@ -12,6 +12,7 @@ export default function AdminLogin() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError(""); // clear lỗi cũ
     try {
       const res = await loginAdmin(email, password);
       localStorage.setItem("accessToken", res.accessToken);
@@ -40,7 +41,14 @@ export default function AdminLogin() {
         </div>
 
         {/* Form */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleLogin}>
+          {/* Hiển thị lỗi */}
+          {error && (
+            <div className="p-2 text-sm text-red-600 bg-red-100 border border-red-300 rounded-md">
+              {error}
+            </div>
+          )}
+
           {/* Email */}
           <div className="flex flex-col">
             <label className="mb-1 font-medium text-darkText">Email</label>
@@ -48,6 +56,8 @@ export default function AdminLogin() {
               type="email"
               placeholder="Nhập email"
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -58,11 +68,13 @@ export default function AdminLogin() {
               type={showPassword ? "text" : "password"}
               placeholder="Nhập mật khẩu"
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-2 text-gray-500 hover:text-primary"
+              className="absolute right-3 top-8 text-gray-500 hover:text-primary text-sm"
             >
               {showPassword ? "Ẩn" : "Hiện"}
             </button>
