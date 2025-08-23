@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import FramePage from "~/components/FramePage/FramePage";
 import SearchBar from "~/components/SearchBar/SearchBar";
-import { getAllService, getServiceByKeyword } from "~/services/publicAPI"; // import API
+import { getAllService, getServiceByKeyword } from "~/services/publicAPI";
 
 // Skeleton component
 const ServiceSkeleton = () => (
@@ -19,13 +19,12 @@ export default function ServicesPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  // Lấy danh sách dịch vụ (khi mount hoặc keyword thay đổi)
   useEffect(() => {
     const fetchServices = async () => {
       setLoading(true);
       let data;
       if (keyword.trim() === "") {
-        data = await getAllService(); // Lấy tất cả nếu chưa nhập từ khóa
+        data = await getAllService();
         setServices(data.services || []);
         setTotalPages(1);
       } else {
@@ -37,11 +36,10 @@ export default function ServicesPage() {
     };
     fetchServices();
   }, [keyword, page]);
-  console.log("Current services:", services);
 
   return (
     <FramePage>
-      <div className="bg-blue-50 p-6 space-y-6">
+      <div className="bg-bgPrimary p-6 space-y-6 min-h-screen">
         {/* SearchBar */}
         <div className="max-w-md mx-auto">
           <SearchBar
@@ -56,7 +54,7 @@ export default function ServicesPage() {
         {/* Lưới dịch vụ */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {loading
-            ? Array.from({ length: 8 }).map((_, i) => (
+            ? Array.from({ length: 12 }).map((_, i) => (
                 <ServiceSkeleton key={i} />
               ))
             : services.map((item) => (
@@ -66,7 +64,7 @@ export default function ServicesPage() {
              hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
                   {/* Hình ảnh */}
-                  <div className="w-48 h-28 mb-4 flex justify-center items-center overflow-hidden  shadow-md">
+                  <div className="w-48 h-28 mb-4 flex justify-center items-center overflow-hidden shadow-md rounded-lg">
                     <img
                       src={item.thumbnail || "/images/default-service.jpg"}
                       alt={item.name}
@@ -82,9 +80,7 @@ export default function ServicesPage() {
                   {/* Nút xem chi tiết */}
                   <a
                     href={`/dich-vu/${item._id}`}
-                    className="mt-auto w-full bg-gradient-to-r from-yellow-500 to-orange-500 
-               text-white font-medium px-4 py-2 rounded-full 
-               hover:from-orange-500 hover:to-yellow-500 transition"
+                    className="btn-ocean w-full"
                   >
                     Xem chi tiết
                   </a>

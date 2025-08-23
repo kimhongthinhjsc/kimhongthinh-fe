@@ -35,7 +35,7 @@ const ProductsPage = () => {
         const data = await fetchProducts(currentPage, limit, selectedCategory);
         setProducts(data.products);
         setTotalPages(data.totalPages);
-        setKeyword(""); // reset keyword khi chọn category
+        setKeyword("");
       } catch (err) {
         console.error(err);
       } finally {
@@ -57,10 +57,9 @@ const ProductsPage = () => {
           page: currentPage,
           limit,
         });
-        console.log("Search results:", data);
         setProducts(data.products);
         setTotalPages(data.totalPages);
-        setSelectedCategory(null); // reset category khi tìm kiếm
+        setSelectedCategory(null);
       } catch (err) {
         console.error(err);
       } finally {
@@ -93,8 +92,7 @@ const ProductsPage = () => {
 
   return (
     <FramePage>
-      <div className="bg-blue-50 p-4 md:p-6 space-y-6">
-        {/* Filter + Search */}
+      <div className="bg-bgPrimary p-4 md:p-6 space-y-6 min-h-screen">
         {/* Filter + Search */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 flex-wrap">
           {/* Category filter */}
@@ -104,10 +102,10 @@ const ProductsPage = () => {
                 setSelectedCategory(null);
                 setCurrentPage(1);
               }}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium border transition ${
+              className={`${
                 !selectedCategory
-                  ? "bg-orange-500 text-white border-orange-500"
-                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                  ? "btn-ocean"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium transition"
               }`}
             >
               Tất cả
@@ -119,10 +117,10 @@ const ProductsPage = () => {
                   setSelectedCategory(_id);
                   setCurrentPage(1);
                 }}
-                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium border transition ${
+                className={`${
                   selectedCategory === _id
-                    ? "bg-orange-500 text-white border-orange-500"
-                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                    ? "btn-ocean"
+                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-sm sm:text-base font-medium transition"
                 }`}
               >
                 {name}
@@ -142,23 +140,24 @@ const ProductsPage = () => {
           </div>
         </div>
 
-        {/* Products */}
+        {/* Products grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {loading
             ? Array.from({ length: limit }).map((_, i) => (
                 <ProductSkeleton key={i} />
               ))
-            : products.map(({ _id, name, image, bestSeller }) => (
+            : products.length > 0
+            ? products.map(({ _id, name, image, bestSeller }) => (
                 <div
                   key={_id}
-                  className="relative bg-white rounded-xl shadow-md p-3 sm:p-4 text-center border-2 border-transparent hover:shadow-xl hover:border-orange-400 transition"
+                  className="relative bg-white rounded-xl shadow-md p-3 sm:p-4 text-center border-2 border-transparent hover:shadow-xl hover:border-primary transition"
                 >
                   {bestSeller && (
                     <div className="absolute top-0 left-0 bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-semibold px-2 sm:px-3 py-1 rounded-tl-xl rounded-br-xl text-xs sm:text-sm shadow-md">
                       🔥 Bán chạy
                     </div>
                   )}
-                  <div className="border-2 border-orange-400 rounded-lg p-2 sm:p-4 mb-3 sm:mb-4 h-40 sm:h-44 flex justify-center items-center overflow-hidden">
+                  <div className="border-2 border-cardBorder rounded-lg p-2 sm:p-4 mb-3 sm:mb-4 h-40 sm:h-44 flex justify-center items-center overflow-hidden">
                     <img
                       src={image}
                       alt={name}
@@ -169,16 +168,19 @@ const ProductsPage = () => {
                     {name}
                   </div>
                   <Link to={`/san-pham/${_id}`}>
-                    <button className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold text-sm sm:text-base px-4 sm:px-6 py-1.5 sm:py-2 rounded-full hover:from-orange-500 hover:to-yellow-500 transition">
-                      Xem thêm
-                    </button>
+                    <button className="btn-ocean">Xem thêm</button>
                   </Link>
                 </div>
-              ))}
+              ))
+            : (
+                <div className="col-span-full text-center text-gray-500 py-6">
+                  Không tìm thấy sản phẩm nào.
+                </div>
+              )}
         </div>
 
         {/* Pagination */}
-        {!loading && (
+        {!loading && totalPages > 1 && (
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
