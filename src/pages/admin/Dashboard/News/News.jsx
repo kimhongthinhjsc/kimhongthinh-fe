@@ -54,9 +54,11 @@ export default function NewsAdmin() {
   const generateSlug = (str) => {
     return str
       .toLowerCase()
-      .normalize("NFD") // tách dấu
+      .replace(/đ/g, "d")   // thay đ thành d
+      .replace(/Đ/g, "D")   // thay Đ thành D (nếu cần)
+      .normalize("NFD")     // tách dấu
       .replace(/[\u0300-\u036f]/g, "") // xóa dấu
-      .replace(/[^a-z0-9\s-]/g, "") // xóa ký tự đặc biệt
+      .replace(/[^a-z0-9\s-]/g, "")    // xóa ký tự đặc biệt
       .trim()
       .replace(/\s+/g, "-"); // thay space bằng "-"
   };
