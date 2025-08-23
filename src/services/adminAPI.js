@@ -77,6 +77,11 @@ export const getOneNews = async (titleLink) => {
   return res.data;
 };
 
+export const deleteNews = async (id) => {
+  const res = await api.delete(`/news/${id}`);
+  return res.data;
+};
+
 export const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
@@ -150,5 +155,10 @@ export const deleteService = async (id) => {
 
 export const createService = async (service) => {
   const res = await api.post("/services", service);
+  return res.data;
+};
+
+export const sendResetPasswordEmail = async (email) => {
+  const res = await api.post("/auth/forgot-password", { email });
   return res.data;
 };

@@ -3,6 +3,8 @@ import ComposeNews from "./ComposeNews";
 import './News.scss';
 import { createNews } from "~/services/adminAPI";
 import { useNavigate } from "react-router-dom";
+import CancelButton from "./FormCancel";
+import FormSubmit from "./FormSubmit";
 
 export default function NewsAdmin() {
   const navigate = useNavigate(); // ✅ khởi tạo navigate
@@ -91,8 +93,6 @@ export default function NewsAdmin() {
 
   return (
     <div className="news-admin-container">
-      <h1>Quản trị Tin tức</h1>
-      {/* Loading overlay */}
       {loading && (
         <div className="loading-overlay">
           <div className="spinner"></div>
@@ -151,14 +151,8 @@ export default function NewsAdmin() {
 
         <div className="preview-container">
           <div className="button-group" style={{ marginLeft: '200px' }}>
-            <button
-              type="submit"
-              className="btn save-btn"
-              disabled={!title || !image || !author || !content} // ✅ disable nếu còn thiếu
-            >
-              Lưu bài viết
-            </button>
-            <button type="button" className="btn cancel-btn" onClick={() => console.log('Hủy')}>Hủy</button>
+            <FormSubmit handle={handleSubmit} update={false} fields={{ title, image, author, content }}>Đăng tin</FormSubmit>
+            <CancelButton>Hủy</CancelButton>
           </div>
         </div>
       </form>

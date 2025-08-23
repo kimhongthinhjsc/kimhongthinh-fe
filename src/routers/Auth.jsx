@@ -23,6 +23,8 @@ const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
 //Admin
 const DashboardLayout = lazy(() => import("../pages/admin/Dashboard/DashboardLayout"));
+const ForgotPassword = lazy(() => import("../pages/admin/ForgotPassword/ForgotPassword"));
+const ResetPassword = lazy(() => import("../pages/admin/ResetPassword/ResetPassword"));
 const Auth = () => {
   return (
     <Routes>
@@ -123,6 +125,22 @@ const Auth = () => {
         element={
           <Suspense fallback={<div></div>}>
             <LoginAdmin />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/admin/forgot-password"
+        element={
+          <Suspense fallback={<div></div>}>
+            <ForgotPassword />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/admin/reset-password/:token"
+        element={
+          <Suspense fallback={<div></div>}>
+            <ResetPassword />
           </Suspense>
         }
       />

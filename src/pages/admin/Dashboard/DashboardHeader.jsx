@@ -1,11 +1,35 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Menu } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, matchPath } from "react-router-dom";
+import headerAdminDetail from "~/models/headerAdmin";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
-export default function DashboardHeader({ currentTitle, onMenuClick }) {
+export default function DashboardHeader({ onMenuClick }) {
   const [openDropdown, setOpenDropdown] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const location = useLocation();
+
+  // Tìm route chi tiết
+  const detailRoute = headerAdminDetail.find((item) =>
+    matchPath({ path: item.path, end: true }, location.pathname)
+  );
+
+  // Nếu là route con, tìm route cha trong functionAdmin
+  const parentRoute =
+    detailRoute &&
+    headerAdminDetail.find(
+      (item) =>
+        location.pathname.startsWith(item.path) &&
+        location.pathname !== item.path // loại bỏ route chính
+    );
+
+  // Tiêu đề hiện tại
+  const currentTitle = detailRoute?.name || parentRoute?.name || "Nội dung chính";
+
+  // Hiển thị nút quay lại chỉ khi route là con
+  const showBack = !!parentRoute;
+  const handleBack = () => parentRoute && navigate(parentRoute.path);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -16,10 +40,7 @@ export default function DashboardHeader({ currentTitle, onMenuClick }) {
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
     function handleClickOutside(event) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpenDropdown(false);
       }
     }
@@ -29,6 +50,20 @@ export default function DashboardHeader({ currentTitle, onMenuClick }) {
     };
   }, []);
 
+  const Title = () => (
+    <h1 className="ml-4 font-semibold text-lg flex items-center gap-2">
+      {showBack && (
+        <button
+          onClick={handleBack}
+          className="text-gray-500 hover:text-gray-700 font-bold"
+        >
+         <IoMdArrowRoundBack size={32}/>
+        </button>
+      )}
+      {currentTitle}
+    </h1>
+  );
+
   return (
     <>
       {/* Header Mobile */}
@@ -37,7 +72,7 @@ export default function DashboardHeader({ currentTitle, onMenuClick }) {
           <button className="text-gray-700" onClick={onMenuClick}>
             <Menu size={28} />
           </button>
-          <h1 className="ml-4 font-semibold text-lg">{currentTitle}</h1>
+          <Title />
         </div>
 
         {/* Account menu */}
@@ -77,9 +112,8 @@ export default function DashboardHeader({ currentTitle, onMenuClick }) {
       </header>
 
       {/* Header Desktop */}
-      <header className="sticky top-0 z-50 bg-[#fff] p-4 pr-12 font-bold border-b border-gray-700 hidden md:flex justify-between items-center">
-        <h2 className="text-xl font-bold">{currentTitle}</h2>
-
+      <header className="sticky top-0 z-50 bg-white p-4 pr-12 font-bold border-b border-gray-700 hidden md:flex justify-between items-center">
+        <Title />
         {/* Account menu */}
         <div className="relative" ref={dropdownRef}>
           <button

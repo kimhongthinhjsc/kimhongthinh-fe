@@ -45,17 +45,6 @@ export default function DashboardServiceEdit() {
 
   return (
     <div className="p-6 space-y-8">
-      {/* Header */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => navigate("/admin/dashboard/services")}
-          className="p-2 rounded hover:bg-gray-200"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h1 className="text-2xl font-bold">Chỉnh sửa dịch vụ</h1>
-      </div>
-
       {/* Thông tin cơ bản */}
       <div className="bg-white p-6 rounded-lg shadow space-y-4">
         <h2 className="text-lg font-semibold border-b pb-2">Thông tin cơ bản</h2>

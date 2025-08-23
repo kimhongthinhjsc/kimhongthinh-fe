@@ -1,11 +1,12 @@
 import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { loginAdmin } from "~/services/adminAPI";
+import logo from "~/assets/images/HongThinhTechnologyServices.png";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -13,11 +14,8 @@ export default function AdminLogin() {
     e.preventDefault();
     try {
       const res = await loginAdmin(email, password);
-
-      // Lưu token
       localStorage.setItem("accessToken", res.accessToken);
       localStorage.setItem("refreshToken", res.refreshToken);
-
       navigate("/admin/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Đăng nhập thất bại");
@@ -25,38 +23,73 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white shadow-xl rounded-2xl p-6 w-96"
-      >
-        <h2 className="text-2xl font-bold mb-4 text-center">Admin Login</h2>
-        {error && <p className="text-red-500 mb-3">{error}</p>}
+    <div className="min-h-screen bg-light flex justify-center px-4 py-6">
+      <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-4 sm:p-6 md:p-8 overflow-y-auto max-h-screen">
+        {/* Logo */}
+        <div className="text-center mb-6">
+          <Link to="/">
+            <img
+              src={logo}
+              alt="Logo"
+              className="mx-auto h-20 sm:h-32 md:h-40"
+            />
+          </Link>
+          <h2 className="text-2xl sm:text-3xl font-bold mt-4 text-darkText">
+            Đăng nhập Quản trị
+          </h2>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 border rounded mb-3"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        {/* Form */}
+        <form className="space-y-4">
+          {/* Email */}
+          <div className="flex flex-col">
+            <label className="mb-1 font-medium text-darkText">Email</label>
+            <input
+              type="email"
+              placeholder="Nhập email"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+            />
+          </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 border rounded mb-3"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          {/* Password */}
+          <div className="flex flex-col relative">
+            <label className="mb-1 font-medium text-darkText">Mật khẩu</label>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Nhập mật khẩu"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-2 text-gray-500 hover:text-primary"
+            >
+              {showPassword ? "Ẩn" : "Hiện"}
+            </button>
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Login
-        </button>
-      </form>
+          {/* Links */}
+          <div className="flex justify-between items-center text-sm">
+            <Link
+              to="/admin/forgot-password"
+              className="text-primary hover:underline"
+            >
+              Quên mật khẩu?
+            </Link>
+            <Link to="/" className="text-secondary hover:underline">
+              Quay lại trang chủ
+            </Link>
+          </div>
+
+          {/* Button */}
+          <button
+            type="submit"
+            className="w-full btn-primary py-2 rounded-full text-white font-semibold hover:shadow-lg transition"
+          >
+            Đăng nhập
+          </button>
+        </form>
+      </div>
     </div>
   );
-  
 }
