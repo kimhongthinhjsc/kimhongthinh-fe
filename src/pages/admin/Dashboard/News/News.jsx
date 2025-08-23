@@ -2,8 +2,12 @@ import { useState, useEffect } from "react";
 import ComposeNews from "./ComposeNews";
 import './News.scss';
 import { createNews } from "~/services/adminAPI";
+import { useNavigate } from "react-router-dom";
+import CancelButton from "./FormCancel";
+import FormSubmit from "./FormSubmit";
 
 export default function NewsAdmin() {
+  const navigate = useNavigate(); // ✅ khởi tạo navigate
   const [title, setTitle] = useState("");
   const [titleLink, setTitleLink] = useState("");
   const [preview, setPreview] = useState(null);
@@ -12,6 +16,13 @@ export default function NewsAdmin() {
   const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ state loading
+  const [toast, setToast] = useState(null); // ✅ state thông báo
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 5000); // 3 giây tự biến mất
+  };
 
   const newsData = {
     title,
@@ -45,10 +56,21 @@ export default function NewsAdmin() {
       return;
     }
     setError("");
-    //Call api
-    //tạo json
-    await createNews(newsData);
-    alert("Đăng tin thành công!");
+    setLoading(true); // ✅ bật loading
+    try {
+      await createNews(newsData);
+      showToast("Đăng tin thành công!", "success"); // ✅ dùng toast
+      // Delay 0.5s để toast hiển thị rồi quay lại trang trước
+      setTimeout(() => {
+        navigate(-1); // quay lại trang trước đó
+      }, 500);
+    } catch (err) {
+      console.error(err);
+      showToast("Vui lòng thử lại sau!", "error");
+    } finally {
+      setLoading(false); // ✅ tắt loading
+    }
+
   };
 
   const generateSlug = (str) => {
@@ -71,7 +93,12 @@ export default function NewsAdmin() {
 
   return (
     <div className="news-admin-container">
-      <h1>Quản trị Tin tức</h1>
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="news-admin-form">
         <div>
           <label>Tiêu đề *</label>
@@ -124,11 +151,17 @@ export default function NewsAdmin() {
 
         <div className="preview-container">
           <div className="button-group" style={{ marginLeft: '200px' }}>
-            <button type="submit" className="btn save-btn">Lưu bài viết</button>
-            <button type="button" className="btn cancel-btn" onClick={() => console.log('Hủy')}>Hủy</button>
+            <FormSubmit handle={handleSubmit} update={false} fields={{ title, image, author, content }}>Đăng tin</FormSubmit>
+            <CancelButton>Hủy</CancelButton>
           </div>
         </div>
       </form>
+      {/* Toast notification */}
+      {toast && (
+        <div className={`toast ${toast.type}`}>
+          {toast.message}
+        </div>
+      )}
     </div>
   );
 }

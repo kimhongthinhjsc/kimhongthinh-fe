@@ -16,6 +16,9 @@ export default function UpdateComposeNews({ initialData, onContentChange }) {
 
   useEffect(() => {
     setIsLayoutReady(true);
+    if (initialData) {
+      setContent(initialData);
+    }
 
     return () => setIsLayoutReady(false);
   }, []);
@@ -382,7 +385,7 @@ export default function UpdateComposeNews({ initialData, onContentChange }) {
     };
   }, [cloud, isLayoutReady]);
 
-  const [content, setContent] = useState(initialData || "");
+  const [content, setContent] = useState(initialData ?? "");
   function CustomUploadAdapter(loader) {
     this.loader = loader;
   }
@@ -405,12 +408,6 @@ export default function UpdateComposeNews({ initialData, onContentChange }) {
     };
   }
 
-  useEffect(() => {
-    if (initialData) {
-      setContent(initialData);
-    }
-  }, [initialData]);
-
   return (
     <div className="main-container">
       <div
@@ -419,7 +416,7 @@ export default function UpdateComposeNews({ initialData, onContentChange }) {
       >
         <div className="editor-container__editor">
           <div ref={editorRef}>
-            {editorConfig && (
+            {editorConfig && ClassicEditor && (
               <CKEditor
                 onReady={editor => {
                   const wordCount = editor.plugins.get('WordCount');
@@ -429,11 +426,13 @@ export default function UpdateComposeNews({ initialData, onContentChange }) {
                   }
                 }}
                 onAfterDestroy={() => {
-                  Array.from(editorWordCountRef.current.children).forEach(child => child.remove());
+                  if (editorWordCountRef.current) { // ✅ check null
+                    Array.from(editorWordCountRef.current.children).forEach(child => child.remove());
+                  }
                 }}
                 editor={ClassicEditor}
                 config={editorConfig}
-                data={content}
+                data={content=="" ? "<p></p>" : content}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setContent(data); // vẫn giữ local preview

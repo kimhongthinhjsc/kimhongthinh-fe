@@ -16,7 +16,6 @@ export default function ComposeNews({ onContentChange }) {
 
   useEffect(() => {
     setIsLayoutReady(true);
-
     return () => setIsLayoutReady(false);
   }, []);
 

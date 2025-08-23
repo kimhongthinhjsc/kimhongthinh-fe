@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getNewsList } from "~/services/adminAPI";
+import { deleteNews, getNewsList } from "~/services/adminAPI";
+import FormDelete from "./FormDelete";
+import './News.scss';
 
 export default function NewsList() {
   const [newsList, setNewsList] = useState([]);
@@ -8,7 +10,13 @@ export default function NewsList() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true); // ✅ thêm state loading
   const itemsPerPage = 10;
+  const [toast, setToast] = useState(null); // ✅ state thông báo
+
   const navigate = useNavigate();
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 5000); // 3 giây tự biến mất
+  };
 
   // Gọi API
   const getNews = async () => {
@@ -31,10 +39,14 @@ export default function NewsList() {
     }
   };
 
-  const handleDelete = (id) => {
-    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa tin tức này không?");
-    if (confirmDelete) {
-      console.log("Đã xóa:", id);
+  const handleDelete = async (id) => {
+    try {
+      await deleteNews(id);
+      setNewsList(newsList.filter((item) => item._id !== id));
+      showToast("Xóa tin tức thành công!", "success");
+    } catch (error) {
+      console.error("Lỗi khi xóa tin tức:", error);
+      showToast("Xóa tin tức thất bại!", "error");
     }
   };
 
@@ -69,11 +81,19 @@ export default function NewsList() {
         <span>Danh sách tin tức</span>
         <Link
           to="/admin/dashboard/news/create"
-          className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white font-medium rounded-lg shadow hover:bg-green-600 transition"
+          className="
+    flex items-center gap-2 px-4 py-2
+    bg-gradient-to-r from-green-500 to-green-600
+    text-white font-medium rounded-lg shadow
+    hover:from-green-600 hover:to-green-700
+    transform hover:scale-105 transition-all duration-200
+    focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2
+  "
         >
           <span className="text-base">➕</span>
-          <span>Thêm tin tức</span>
+          <span className="text-sm">Thêm tin tức</span>
         </Link>
+
       </h1>
 
       {/* ✅ Skeleton Loading */}
@@ -132,12 +152,9 @@ export default function NewsList() {
                 >
                   Sửa
                 </button>
-                <button
-                  onClick={() => handleDelete(news._id)}
-                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                >
-                  Xóa
-                </button>
+                <FormDelete
+                  handleDelete={() => handleDelete(news._id)}
+                />
               </div>
             </li>
           ))}
@@ -161,11 +178,10 @@ export default function NewsList() {
             <button
               key={page}
               onClick={() => setCurrentPage(page)}
-              className={`px-3 py-1 rounded ${
-                currentPage === page
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}
+              className={`px-3 py-1 rounded ${currentPage === page
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+                }`}
             >
               {page}
             </button>
@@ -179,6 +195,11 @@ export default function NewsList() {
           >
             &gt;
           </button>
+        </div>
+      )}
+      {toast && (
+        <div className={`toast ${toast.type}`}>
+          {toast.message}
         </div>
       )}
     </div>

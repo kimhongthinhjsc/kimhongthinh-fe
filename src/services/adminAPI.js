@@ -77,6 +77,11 @@ export const getOneNews = async (titleLink) => {
   return res.data;
 };
 
+export const deleteNews = async (id) => {
+  const res = await api.delete(`/news/${id}`);
+  return res.data;
+};
+
 export const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);

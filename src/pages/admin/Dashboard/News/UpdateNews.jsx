@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import ComposeNewsUpdate from "./UpdateComposeNews";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import './News.scss';
 import { getOneNewsById, updateNews } from "~/services/adminAPI";
+import CancelButton from "./FormCancel";
+import FormSubmit from "./FormSubmit";
 
 export default function UpdateNews() {
   const [title, setTitle] = useState("");
@@ -14,6 +16,14 @@ export default function UpdateNews() {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const { state } = useLocation();
+  const [toast, setToast] = useState(null); // ✅ state thông báo
+  const [loading, setLoading] = useState(false); // ✅ state loading
+  const navigate = useNavigate(); // ✅ khởi tạo navigate
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 5000); // 3 giây tự biến mất
+  };
 
   const newsData = {
     _id: state.id,
@@ -31,7 +41,7 @@ export default function UpdateNews() {
       setAuthor(data.news.author);
       setContent(data.news.content);
       setImage(data.news.image);
-      setPreview(data.news.image ? data.news.image : null); 
+      setPreview(data.news.image ? data.news.image : null);
       setTitle(data.news.title);
       setTitleLink(data.news.titleLink);
       setDate(new Date(data.news.date).toLocaleString("vi-VN"));
@@ -48,28 +58,35 @@ export default function UpdateNews() {
       " " +
       now.toLocaleTimeString("vi-VN");
     setDate(formatted);
-    
+
   }, []);
 
   const handleThumbnailChange = (e) => {
-    console.log("Thumbnail changed");
     const file = e.target.files[0];
     if (file) {
       setImage(file);
       setPreview(URL.createObjectURL(file));
     }
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (!title || !image || !author || !content) {
       setError("⚠️ Vui lòng nhập đầy đủ thông tin!");
       return;
     }
     setError("");
-    //Call api
-    //tạo json
-    await updateNews(newsData);
-    alert("Cập nhật tin thành công!");
+    try {
+      setLoading(true); // ✅ bật loading
+      await updateNews(newsData);
+      showToast("Cập nhật thành công!", "success"); // ✅ dùng toast
+      setTimeout(() => {
+        navigate(-1); // quay lại trang trước đó
+      }, 500);
+    } catch (err) {
+      console.error(err);
+      showToast("Vui lòng thử lại sau!", "error");
+    } finally {
+      setLoading(false); // ✅ tắt loading
+    }
   };
 
   const generateSlug = (str) => {
@@ -90,7 +107,11 @@ export default function UpdateNews() {
 
   return (
     <div className="news-admin-container">
-      <h1>Quản trị Tin tức</h1>
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="news-admin-form">
         <div>
           <label>Tiêu đề *</label>
@@ -135,7 +156,7 @@ export default function UpdateNews() {
           <strong>Ngày đăng:</strong> {date}
         </div>
 
-        {content ? (
+        {image ? (
           <ComposeNewsUpdate onContentChange={setContent} initialData={content} />
         ) : (
           <p className="text-gray-500">Không có dữ liệu, vui lòng quay lại danh sách.</p>
@@ -145,11 +166,17 @@ export default function UpdateNews() {
 
         <div className="preview-container">
           <div className="button-group" style={{ marginLeft: '200px' }}>
-            <button type="submit" className="btn save-btn" onClick={handleSubmit}>Cập nhật</button>
-            <button type="button" className="btn cancel-btn" onClick={() => console.log('Hủy')}>Hủy</button>
+            <FormSubmit handle={handleSubmit} update={true} fields={{ title, image, author, content }}>Cập nhật</FormSubmit>
+            <CancelButton>Hủy</CancelButton>
           </div>
         </div>
       </form>
+      {/* Toast notification */}
+      {toast && (
+        <div className={`toast ${toast.type}`}>
+          {toast.message}
+        </div>
+      )}
     </div>
   );
 }
