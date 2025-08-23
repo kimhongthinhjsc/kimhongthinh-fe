@@ -35,7 +35,7 @@ const ProductDetailPage = () => {
 
   return (
     <FramePage>
-      <div className="p-6 rounded-2xl shadow-lg px-24">
+      <div className="p-4 md:p-6 lg:px-24 rounded-2xl shadow-lg">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
           {product.name}
         </h1>

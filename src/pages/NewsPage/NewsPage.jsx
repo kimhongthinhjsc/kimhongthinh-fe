@@ -5,6 +5,7 @@ import Pagination from "~/components/Pagination/Pagination";
 import { getNewsList } from "~/services/publicAPI";
 import { Link } from "react-router-dom";
 import NewsSkeleton from "./NewsSkeleton"; // ✅ import skeleton
+import DOMPurify from "dompurify";
 
 export default function NewsPage() {
   const postsPerPage = 6;
@@ -49,9 +50,13 @@ export default function NewsPage() {
             <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
               {loading
                 ? Array.from({ length: postsPerPage }).map((_, i) => (
-                    <NewsSkeleton key={i} />
-                  ))
-                : news.map((newItem, index) => (
+                  <NewsSkeleton key={i} />
+                ))
+                : news.map((newItem, index) => {
+                  // Lấy text thuần từ content (bỏ thẻ HTML)
+                  const plainText = DOMPurify.sanitize(newItem.content, { ALLOWED_TAGS: [] });
+
+                  return (
                     <div
                       key={index}
                       className="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition"
@@ -64,15 +69,20 @@ export default function NewsPage() {
                             className="w-full h-56 object-cover"
                           />
                         </Link>
-                        <p className="text-gray-600 text-sm mb-3">
+
+                        {/* Tiêu đề */}
+                        <h2 className="text-lg font-semibold text-gray-800 hover:text-blue-600 mt-3 line-clamp-2">
                           {newItem.title}
+                        </h2>
+
+                        {/* Nội dung rút gọn, chỉ text thuần */}
+                        <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+                          {plainText}
                         </p>
-                        <div className="text-sm text-gray-500">
-                          {newItem.title}
-                        </div>
                       </div>
                     </div>
-                  ))}
+                  );
+                })}
             </div>
 
             {/* Pagination */}
