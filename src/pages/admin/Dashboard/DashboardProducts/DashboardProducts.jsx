@@ -3,13 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "~/services/publicAPI";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import ProductTable from "./ProductTable";
-import AddProductModal from "./AddProductModal";
 
 export default function DashboardProducts() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  const [showModal, setShowModal] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -36,6 +33,10 @@ export default function DashboardProducts() {
   const navigate = useNavigate();
   const handleEdit = (id) => {
     navigate(`/admin/dashboard/products/${id}/edit`);
+  };
+
+  const handleCreate = () => {
+    navigate("/admin/dashboard/products/create");
   };
 
   // Skeleton loading cho bảng
@@ -90,7 +91,7 @@ export default function DashboardProducts() {
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <button
-          onClick={() => setShowModal(true)}
+          onClick={handleCreate}
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           + Thêm sản phẩm
@@ -144,13 +145,7 @@ export default function DashboardProducts() {
         </div>
       )}
 
-      {/* Popup thêm sản phẩm */}
-      {showModal && (
-        <AddProductModal
-          onClose={() => setShowModal(false)}
-          onSuccess={handleAddSuccess}
-        />
-      )}
+    
     </div>
   );
 }

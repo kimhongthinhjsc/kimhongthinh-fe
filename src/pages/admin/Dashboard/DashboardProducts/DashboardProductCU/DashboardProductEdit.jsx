@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  fetchProductById,
-  getSubcategories,
-} from "~/services/publicAPI";
+import { fetchProductById, getSubcategories } from "~/services/publicAPI";
 import { updateProduct } from "~/services/adminAPI";
 import { ArrowLeft } from "lucide-react";
 import EditableImage from "~/components/EditableImage/EditableImage";
@@ -64,15 +61,6 @@ export default function DashboardProductEdit() {
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => navigate("/admin/dashboard/products")}
-          className="p-2 rounded hover:bg-gray-200"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h1 className="text-2xl font-bold">Chỉnh sửa sản phẩm</h1>
-      </div>
 
       {/* Thông tin cơ bản */}
       <div className="bg-white p-4 rounded-lg shadow space-y-4">
@@ -234,6 +222,3 @@ export default function DashboardProductEdit() {
     </div>
   );
 }
-
-
-

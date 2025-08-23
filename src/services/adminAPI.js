@@ -152,3 +152,8 @@ export const createService = async (service) => {
   const res = await api.post("/services", service);
   return res.data;
 };
+
+export const sendResetPasswordEmail = async (email) => {
+  const res = await api.post("/auth/forgot-password", { email });
+  return res.data;
+};
