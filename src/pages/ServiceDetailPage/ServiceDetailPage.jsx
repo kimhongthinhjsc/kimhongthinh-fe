@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import FramePage from "~/components/FramePage/FramePage";
 import { getServiceById } from "~/services/publicAPI";
 import ServiceDetailSkeleton from "./ServiceDetailSkelention";
+import '@ckeditor/ckeditor5-build-classic/build/ckeditor';
 
 export default function ServiceDetailPage() {
   const { id } = useParams();
