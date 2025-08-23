@@ -20,7 +20,7 @@ export default function Navbar() {
   // tìm label theo pathname
   const basePath = "/" + location.pathname.split("/")[1];
   const currentPage =
-    menuItems.find((item) => item.path === basePath)?.label || "Trang chủ";
+    menuItems.find((item) => item.path === basePath)?.label || "404";
 
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">

@@ -60,15 +60,7 @@ export default function DashboardServiceCreate() {
   return (
     <div className="p-6 space-y-8">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => navigate("/admin/dashboard/services")}
-          className="p-2 rounded hover:bg-gray-200"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h1 className="text-2xl font-bold">➕ Thêm dịch vụ mới</h1>
-      </div>
+    
 
       {/* Thông tin cơ bản */}
       <div className="bg-white p-6 rounded-lg shadow space-y-4">

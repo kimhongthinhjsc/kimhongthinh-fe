@@ -1,9 +1,7 @@
 import React, { useState, lazy, Suspense } from "react";
 import { Routes, Route, Outlet, useLocation } from "react-router-dom";
 import DashboardSidebar from "./DashboardSidebar";
-import functionAdmin from "~/models/funcionAdmin";
 import DashboardHeader from "./DashboardHeader";
-
 // Lazy imports (giữ nguyên)
 const DashboardHome = lazy(() => import("./DashboardHome/DashboardHome"));
 const DashboardIntroduce = lazy(() => import("./DashboardIntroduce/DashboardIntroduce"));
@@ -20,7 +18,8 @@ const DashboardContact = lazy(() => import("./Contact"));
 const DashboardUI = lazy(() => import("./UI"));
 const DashboardManageAdmin = lazy(() => import("./ManageAdmin"));
 const DashboardCompanyInfo = lazy(() => import("./DashboardCompanyInfo/DashboardCompanyInfo"));
-const DashboardProductEdit = lazy(() => import("./DashboardProducts/DashboardProductEdit/DashboardProductEdit"));
+const DashboardProductEdit = lazy(() => import("./DashboardProducts/DashboardProductCU/DashboardProductEdit"));
+const DashboardProductCreate = lazy(() => import("./DashboardProducts/DashboardProductCU/DashboardProductCreate"));
 const DashboardServiceEdit = lazy(() => import("./DashboardService/DashboardServiceCU/DashboardServiceEdit"));
 const DashboardServiceCreate = lazy(() => import("./DashboardService/DashboardServiceCU/DashboardServiceCreate"));
 const DashboardStatsSection = lazy(() => import("./DashboardStatsSection/DashboardStatsSection"));
@@ -28,11 +27,8 @@ const DashboardCategories = lazy(() => import("./DashboardCategories/DashboardCa
 
 export default function DashboardLayout() {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
 
-  const currentTitle =
-    functionAdmin.find((item) => location.pathname.startsWith(item.path))?.name ||
-    "Nội dung chính";
+
 
   return (
     <div className="flex h-screen">
@@ -47,7 +43,7 @@ export default function DashboardLayout() {
       {/* Content */}
       <div className="flex-1 flex flex-col">
         {/* Gọi Header component */}
-        <DashboardHeader currentTitle={currentTitle} onMenuClick={() => setIsOpen(true)} />
+        <DashboardHeader onMenuClick={() => setIsOpen(true)} />
 
         <main className="flex-1 bg-gray-100 overflow-y-auto">
           <Suspense fallback={<div></div>}>
@@ -69,6 +65,7 @@ export default function DashboardLayout() {
               <Route path="/ui" element={<DashboardUI />} />
               <Route path="/manage-admin" element={<DashboardManageAdmin />} />
               <Route path="/products/:id/edit" element={<DashboardProductEdit />} />
+              <Route path="/products/create" element={<DashboardProductCreate />} />
               <Route path="/services/:id/edit" element={<DashboardServiceEdit />} />
               <Route path="/services/create" element={<DashboardServiceCreate />} />
               <Route path="/categories" element={<DashboardCategories />} />
