@@ -16,30 +16,44 @@ export default function CulturePeople({ data }) {
   const { title, images } = data;
 
   return (
-    <section className="bg-gray-50 py-12 px-4 md:px-12">
-      <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-xl md:text-2xl font-bold text-[#EF5627] mb-8">
+    <section className="bg-gray-50 py-10 px-4 sm:px-6 lg:px-12">
+      <div className="max-w-6xl mx-auto text-center">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#EF5627] mb-6 sm:mb-8">
           {title}
         </h2>
 
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 gap-4"
+          className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6"
           variants={container}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
         >
           {images.map((src, idx) => {
-            const isBig = idx === 3; // Ảnh dài 2 cột
+            const isBig = idx === 3; // Ảnh dài 2 cột (desktop/tablet)
+            // order cho mobile
+            let orderClass = "";
+            if (idx === 0) orderClass = "order-1";
+            if (idx === 1) orderClass = "order-2";
+            if (idx === 2) orderClass = "order-3";
+            if (idx === 4) orderClass = "order-4"; // ảnh số 5 lên trước ảnh 4
+            if (idx === 3) orderClass = "order-5"; // ảnh số 4 xuống cuối
+
             return (
               <motion.div
                 key={idx}
-                className={`overflow-hidden rounded-lg shadow`}
+                className={`overflow-hidden rounded-xl shadow-md ${orderClass} sm:order-none`}
                 variants={item}
-                style={{ gridColumn: isBig ? "span 2" : "auto" }}
+                style={{
+                  gridColumn: isBig ? "span 2" : "auto",
+                }}
               >
                 <div
-                  className={`w-full ${isBig ? "h-64 md:h-80" : "aspect-square"}`}
+                  className={`w-full ${
+                    isBig
+                      ? "h-44 sm:h-60 md:h-76 lg:h-92"
+                      : "h-44 sm:h-60 md:h-76 lg:h-92"
+                  }`}
                 >
                   <img
                     src={src}

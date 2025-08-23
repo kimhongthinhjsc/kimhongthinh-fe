@@ -42,35 +42,49 @@ export default function ServicesPage() {
   return (
     <FramePage>
       <div className="bg-blue-50 p-6 space-y-6">
-        <h1 className="text-3xl font-bold text-center text-[#EF5627]">
-          Dịch vụ của chúng tôi
-        </h1>
-
         {/* SearchBar */}
         <div className="max-w-md mx-auto">
-          <SearchBar value={keyword} onSearch={(k) => { setPage(1); setKeyword(k); }} />
+          <SearchBar
+            value={keyword}
+            onSearch={(k) => {
+              setPage(1);
+              setKeyword(k);
+            }}
+          />
         </div>
 
         {/* Lưới dịch vụ */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {loading
-            ? Array.from({ length: 8 }).map((_, i) => <ServiceSkeleton key={i} />)
+            ? Array.from({ length: 8 }).map((_, i) => (
+                <ServiceSkeleton key={i} />
+              ))
             : services.map((item) => (
                 <div
                   key={item._id}
-                  className="bg-white rounded-xl shadow-md p-4 flex flex-col items-center text-center hover:shadow-xl transition"
+                  className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center 
+             hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
                 >
-                  <div className="w-28 h-28 mb-4 flex justify-center items-center overflow-hidden">
+                  {/* Hình ảnh */}
+                  <div className="w-48 h-28 mb-4 flex justify-center items-center overflow-hidden  shadow-md">
                     <img
                       src={item.thumbnail || "/images/default-service.jpg"}
                       alt={item.name}
-                      className="object-cover w-full h-full rounded"
+                      className="object-cover w-full h-full transform hover:scale-110 transition duration-300"
                     />
                   </div>
-                  <h3 className="font-bold mb-2 text-gray-800">{item.name}</h3>
+
+                  {/* Tên dịch vụ */}
+                  <h3 className="font-semibold text-lg text-gray-800 mb-2 line-clamp-2">
+                    {item.name}
+                  </h3>
+
+                  {/* Nút xem chi tiết */}
                   <a
                     href={`/dich-vu/${item._id}`}
-                    className="mt-auto bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold px-4 py-2 rounded-full hover:from-orange-500 hover:to-yellow-500 transition"
+                    className="mt-auto w-full bg-gradient-to-r from-yellow-500 to-orange-500 
+               text-white font-medium px-4 py-2 rounded-full 
+               hover:from-orange-500 hover:to-yellow-500 transition"
                   >
                     Xem chi tiết
                   </a>

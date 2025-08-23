@@ -18,8 +18,6 @@ export default function RichTextEditor({ data, onChange }) {
     setIsLayoutReady(true);
     return () => setIsLayoutReady(false);
   }, []);
-
-  // Đồng bộ lại khi prop data thay đổi
   useEffect(() => {
     if (data !== content) {
       setContent(data || "");

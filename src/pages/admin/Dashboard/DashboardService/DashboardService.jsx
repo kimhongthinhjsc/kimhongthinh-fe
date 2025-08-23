@@ -3,14 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { getAllService, getServiceByKeyword } from "~/services/publicAPI";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import ServiceTable from "./ServiceTable";
-import AddServiceModal from "./AddServiceModal";
 // Table component riêng
 
 export default function DashboardServices() {
   const [services, setServices] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -43,13 +41,13 @@ export default function DashboardServices() {
     setLoading(false);
   };
 
-  const handleAddSuccess = () => {
-    setShowModal(false);
-    loadServices();
-  };
 
   const handleEdit = (id) => {
     navigate(`/admin/dashboard/services/${id}/edit`);
+  };
+
+  const handleAddService = () => {
+    navigate(`/admin/dashboard/services/create`);
   };
 
   // Skeleton
@@ -94,7 +92,7 @@ export default function DashboardServices() {
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <button
-          onClick={() => setShowModal(true)}
+          onClick={handleAddService}
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           + Thêm dịch vụ
@@ -145,13 +143,7 @@ export default function DashboardServices() {
           </button>
         </div>
       )}
-      {/* Modal for adding new service */}
-      {showModal && (
-        <AddServiceModal
-          onClose={() => setShowModal(false)}
-          onSuccess={handleAddSuccess}
-        />
-      )}
+    
     </div>
   );
 }
