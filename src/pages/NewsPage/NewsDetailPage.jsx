@@ -5,6 +5,7 @@ import { getOneNews } from "~/services/publicAPI";
 import NewsDetailSkeleton from "./NewsDetailSkeleton";
 import DOMPurify from "dompurify";
 import '@ckeditor/ckeditor5-build-classic/build/ckeditor';
+import NotFoundPage from "../NotFoundPage/NotFoundPage";
 
 export default function NewsDetailPage() {
   const { id } = useParams();
@@ -15,6 +16,10 @@ export default function NewsDetailPage() {
     const fetchNews = async () => {
       setLoading(true);
       const data = await getOneNews(id);
+      if (data.success == false) {
+        setLoading(false);
+        return;
+      }
       setNews(data.news);
       setLoading(false);
     };
@@ -28,7 +33,7 @@ export default function NewsDetailPage() {
       </FramePage>
     );
 
-  if (!news) return <FramePage>Tin tức không tồn tại.</FramePage>;
+  if (!news) return <NotFoundPage />;
 
   return (
     <FramePage>
@@ -48,8 +53,12 @@ export default function NewsDetailPage() {
         {/* Content */}
         {news.content && (
           <div
-            className="ck-content"
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(news.content) }}
+            className="ck-content "
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(news.content, {
+                USE_PROFILES: { html: true }, // giữ thẻ table, tr, td
+              })
+            }}
           />
         )}
       </article>
