@@ -8,12 +8,12 @@ import EditTestimonial from "./EditTestimonial";
 import EditCulturePeople from "./EditCulturePeople";
 import EditContact from "./EditContact";
 import DashboardHomeSkeleton from "./DashboardHomeSkeleton";
+import { globalLoading } from "~/context/LoadingContext";
 
 export default function DashboardHome() {
   const [homeData, setHomeData] = useState(null); // dữ liệu đang chỉnh sửa
   const [originalData, setOriginalData] = useState(null); // dữ liệu gốc để reset
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -33,11 +33,18 @@ export default function DashboardHome() {
   };
 
   const handleSave = async () => {
-    setSaving(true);
-    await updateHomeData(homeData);
-    setOriginalData(homeData); // sau khi lưu thì cập nhật bản gốc
-    setSaving(false);
-    alert("Cập nhật thành công!");
+    globalLoading(true, "Đang lưu dữ liệu...");
+    await updateHomeData(homeData)
+      .then(() => {
+        setOriginalData(homeData);
+        alert("Cập nhật thành công!");
+      })
+      .catch((error) => {
+        alert("Cập nhật thất bại!");
+      })
+      .finally(() => {
+        globalLoading(false);
+      });
   };
 
   const handleReset = () => {
@@ -56,17 +63,16 @@ export default function DashboardHome() {
       <div className="flex gap-4 mt-4">
         <button
           onClick={handleSave}
-          disabled={saving}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
         >
-          {saving ? "Đang lưu..." : "Lưu thay đổi"}
+          Lưu thay đổi
         </button>
 
         <button
           onClick={handleReset}
           className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
         >
-          Reset
+          Đặt lại
         </button>
       </div>
     </div>

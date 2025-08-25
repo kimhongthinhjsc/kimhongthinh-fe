@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-
+import AuthRoute from "~/components/AuthRoute/AuthRoute";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const Introduce = lazy(() => import("../pages/Introduce/Introduce"));
@@ -22,9 +22,15 @@ const ServiceDetailPage = lazy(() =>
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
 //Admin
-const DashboardLayout = lazy(() => import("../pages/admin/Dashboard/DashboardLayout"));
-const ForgotPassword = lazy(() => import("../pages/admin/ForgotPassword/ForgotPassword"));
-const ResetPassword = lazy(() => import("../pages/admin/ResetPassword/ResetPassword"));
+const DashboardLayout = lazy(() =>
+  import("../pages/admin/Dashboard/DashboardLayout")
+);
+const ForgotPassword = lazy(() =>
+  import("../pages/admin/ForgotPassword/ForgotPassword")
+);
+const ResetPassword = lazy(() =>
+  import("../pages/admin/ResetPassword/ResetPassword")
+);
 const Auth = () => {
   return (
     <Routes>
@@ -123,25 +129,31 @@ const Auth = () => {
       <Route
         path="/admin/login"
         element={
-          <Suspense fallback={<div></div>}>
-            <LoginAdmin />
-          </Suspense>
+          <AuthRoute>
+            <Suspense fallback={<div></div>}>
+              <LoginAdmin />
+            </Suspense>
+          </AuthRoute>
         }
       />
       <Route
         path="/admin/forgot-password"
         element={
-          <Suspense fallback={<div></div>}>
-            <ForgotPassword />
-          </Suspense>
+          <AuthRoute>
+            <Suspense fallback={<div></div>}>
+              <ForgotPassword />
+            </Suspense>
+          </AuthRoute>
         }
       />
       <Route
         path="/admin/reset-password/:token"
         element={
-          <Suspense fallback={<div></div>}>
-            <ResetPassword />
-          </Suspense>
+          <AuthRoute>
+            <Suspense fallback={<div></div>}>
+              <ResetPassword />
+            </Suspense>
+          </AuthRoute>
         }
       />
       <Route
@@ -156,9 +168,11 @@ const Auth = () => {
       <Route
         path="/admin/dashboard/*"
         element={
-          <Suspense fallback={<div></div>}>
-            <DashboardLayout />
-          </Suspense>
+          <AuthRoute>
+            <Suspense fallback={<div></div>}>
+              <DashboardLayout />
+            </Suspense>
+          </AuthRoute>
         }
       />
     </Routes>
