@@ -162,3 +162,8 @@ export const sendResetPasswordEmail = async (email) => {
   const res = await api.post("/auth/forgot-password", { email });
   return res.data;
 };
+
+export const checkAuth = async () => {
+  const res = await api.get("/auth/checkAuth");
+  return res.data;
+};

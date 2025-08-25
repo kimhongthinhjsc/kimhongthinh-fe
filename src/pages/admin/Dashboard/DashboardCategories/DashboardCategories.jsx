@@ -12,6 +12,7 @@ import SearchBar from "~/components/SearchBar/SearchBar";
 import CategoryTable from "./CategoryTable";
 import CategoryModal from "./CategoryModal";
 import Pagination from "~/components/Pagination/Pagination";
+import CategoryTableSkeleton from "./CategoryTableSkeleton";
 
 export default function DashboardCategories() {
   const [categories, setCategories] = useState([]);
@@ -120,7 +121,7 @@ export default function DashboardCategories() {
       />
 
       {loading ? (
-        <p>Đang tải...</p>
+        <CategoryTableSkeleton />
       ) : (
         <CategoryTable
           categories={categories}

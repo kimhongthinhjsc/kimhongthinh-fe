@@ -37,21 +37,21 @@ export default function SomethingAboutAdmin({ data, onChange }) {
           <EditableField
             value={data.title}
             onChange={(val) => onChange({ ...data, title: val })}
+            className="text-center" // ép text luôn căn giữa khi edit
           />
           <div className="mt-4">
             <EditableField
               value={data.subtitle}
               onChange={(val) => onChange({ ...data, subtitle: val })}
               multiline
+              className="text-center" // subtitle cũng căn giữa
             />
           </div>
         </div>
-
         {/* Nội dung và hình ảnh */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           {/* Text + Stats */}
           <div>
-            {/* Paragraphs */}
             {data.paragraphs?.map((p, idx) => (
               <div key={idx} className="mt-4">
                 <EditableField

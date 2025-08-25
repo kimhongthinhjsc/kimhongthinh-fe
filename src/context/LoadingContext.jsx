@@ -9,20 +9,24 @@ let globalToggleLoading = () => {
 };
 
 // export globalLoading để dùng toàn app
-export const globalLoading = (state) => {
-  globalToggleLoading(state);
+export const globalLoading = (state, message) => {
+  globalToggleLoading(state, message);
 };
 
 export function LoadingProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("Đang tải");
 
   useEffect(() => {
     // gán hàm toggle cho biến toàn cục
-    globalToggleLoading = setIsLoading;
+    globalToggleLoading = (state, message) => {
+      setIsLoading(state);
+      setLoadingMessage(message);
+    };
   }, []);
 
   return (
-    <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
+    <LoadingContext.Provider value={{ isLoading, loadingMessage }}>
       {children}
       {isLoading && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-[9999]">
@@ -32,7 +36,7 @@ export function LoadingProvider({ children }) {
             
             {/* Text */}
             <p className="text-gray-800 font-semibold text-lg tracking-wide">
-              Đang tải...
+              {loadingMessage} 
             </p>
             
             {/* Thanh progress giả */}
