@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginAdmin } from "~/services/adminAPI";
 import logo from "~/assets/images/HongThinhTechnologyServices.png";
+import { globalLoading } from "~/context/LoadingContext";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ export default function AdminLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(""); // clear lỗi cũ
+    globalLoading(true, "Đang đăng nhập..."); // Hiển thị loading
     try {
       const res = await loginAdmin(email, password);
       localStorage.setItem("accessToken", res.accessToken);
@@ -20,6 +22,8 @@ export default function AdminLogin() {
       navigate("/admin/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Đăng nhập thất bại");
+    } finally {
+      globalLoading(false); // Ẩn loading
     }
   };
 
