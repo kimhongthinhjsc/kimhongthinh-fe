@@ -18,7 +18,7 @@ export default function CancelButton() {
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-lg max-w-sm w-full p-6 text-center">
-            <h2 className="text-lg font-bold mb-4">⚠️ Xác nhận hủy</h2>
+            <h2 className="text-lg font-bold mb-4">Thông báo</h2>
             <p className="mb-6">Bạn có chắc muốn hủy đăng tin không?</p>
             <div className="flex justify-center gap-4">
               <button
