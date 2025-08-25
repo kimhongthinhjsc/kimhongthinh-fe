@@ -114,6 +114,10 @@ export const getNewsList = async (page, limit) => {
 };
 
 export const getOneNews = async (titleLink) => {
-  const res = await api.get(`/news/${titleLink}`);
-  return res.data;
+  try {
+    const res = await api.get(`/news/${titleLink}`);
+    return res.data;
+  } catch (error) {
+    return { success: false, news: null };
+  }
 };
