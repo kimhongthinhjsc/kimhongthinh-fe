@@ -5,6 +5,7 @@ import { createNews } from "~/services/adminAPI";
 import { useNavigate } from "react-router-dom";
 import CancelButton from "./FormCancel";
 import FormSubmit from "./FormSubmit";
+import NewsSkeleton from "../../../../components/News/NewsSkeleton";
 
 export default function NewsAdmin() {
   const navigate = useNavigate(); // ✅ khởi tạo navigate
@@ -17,6 +18,7 @@ export default function NewsAdmin() {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // ✅ state loading
+  const [loadingData, setLoadingData] = useState(true); // ✅ loading khi fetch
   const [toast, setToast] = useState(null); // ✅ state thông báo
 
   const showToast = (message, type = "success") => {
@@ -34,12 +36,14 @@ export default function NewsAdmin() {
   };
 
   useEffect(() => {
+    setLoadingData(true);
     const now = new Date();
     const formatted =
       now.toLocaleDateString("vi-VN") +
       " " +
       now.toLocaleTimeString("vi-VN");
     setDate(formatted);
+    setLoadingData(false);
   }, []);
 
   const handleThumbnailChange = (e) => {
@@ -98,64 +102,67 @@ export default function NewsAdmin() {
           <div className="spinner"></div>
         </div>
       )}
+      {loadingData ? (
+        <NewsSkeleton />  // ✅ hiển thị skeleton khi chờ API
+      ) : (
 
-      <form onSubmit={handleSubmit} className="news-admin-form">
-        <div>
-          <label>Tiêu đề *</label>
-          <input
-            type="text"
-            value={title}
-            onChange={handleTitleChange}
-            placeholder="Nhập tiêu đề bài viết..."
-            required
-          />
-        </div>
-
-        <div>
-          <label>Link</label>
-          <input
-            type="text"
-            value={titleLink}
-            onChange={(e) => setTitleLink(e.target.value)} // vẫn cho phép sửa tay
-            placeholder="Link bài viết"
-            required
-          />
-        </div>
-
-        <div>
-          <label>Thumbnail *</label>
-          <input type="file" accept="image/*" onChange={handleThumbnailChange} required />
-          {preview && <img src={preview} alt="preview" className="preview" />}
-        </div>
-
-        <div>
-          <label>Người đăng *</label>
-          <input
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Nhập tên người đăng..."
-            required
-          />
-        </div>
-
-        <div className="news-admin-date">
-          <strong>Ngày đăng:</strong> {date}
-        </div>
-
-        <div>
-          <ComposeNews onContentChange={setContent} />
-        </div>
-
-        {error && <p className="news-admin-error">{error}</p>}
-
-        <div className="preview-container">
-          <div className="button-group" style={{ marginLeft: '200px' }}>
-            <FormSubmit handle={handleSubmit} update={false} fields={{ title, image, author, content }}>Đăng tin</FormSubmit>
-            <CancelButton>Hủy</CancelButton>
+        <form onSubmit={handleSubmit} className="news-admin-form">
+          <div>
+            <label>Tiêu đề *</label>
+            <input
+              type="text"
+              value={title}
+              onChange={handleTitleChange}
+              placeholder="Nhập tiêu đề bài viết..."
+              required
+            />
           </div>
-        </div>
-      </form>
+
+          <div>
+            <label>Link</label>
+            <input
+              type="text"
+              value={titleLink}
+              onChange={(e) => setTitleLink(e.target.value)} // vẫn cho phép sửa tay
+              placeholder="Link bài viết"
+              required
+            />
+          </div>
+
+          <div>
+            <label>Thumbnail *</label>
+            <input type="file" accept="image/*" onChange={handleThumbnailChange} required />
+            {preview && <img src={preview} alt="preview" className="preview" />}
+          </div>
+
+          <div>
+            <label>Người đăng *</label>
+            <input
+              type="text"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              placeholder="Nhập tên người đăng..."
+              required
+            />
+          </div>
+
+          <div className="news-admin-date">
+            <strong>Ngày đăng:</strong> {date}
+          </div>
+
+          <div>
+            <ComposeNews onContentChange={setContent} />
+          </div>
+
+          {error && <p className="news-admin-error">{error}</p>}
+
+          <div className="preview-container">
+            <div className="button-group" style={{ marginLeft: '200px' }}>
+              <FormSubmit handle={handleSubmit} update={false} fields={{ title, image, author, content }}>Đăng tin</FormSubmit>
+              <CancelButton>Hủy</CancelButton>
+            </div>
+          </div>
+        </form>)}
       {/* Toast notification */}
       {toast && (
         <div className={`toast ${toast.type}`}>

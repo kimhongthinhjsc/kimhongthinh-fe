@@ -5,6 +5,7 @@ import './News.scss';
 import { getOneNewsById, updateNews } from "~/services/adminAPI";
 import CancelButton from "./FormCancel";
 import FormSubmit from "./FormSubmit";
+import UpdateNewsSkeleton from "../../../../components/News/NewsSkeleton";
 
 export default function UpdateNews() {
   const [title, setTitle] = useState("");
@@ -18,6 +19,7 @@ export default function UpdateNews() {
   const { state } = useLocation();
   const [toast, setToast] = useState(null); // ✅ state thông báo
   const [loading, setLoading] = useState(false); // ✅ state loading
+  const [loadingData, setLoadingData] = useState(true); // ✅ loading khi fetch
   const navigate = useNavigate(); // ✅ khởi tạo navigate
 
   const showToast = (message, type = "success") => {
@@ -37,6 +39,7 @@ export default function UpdateNews() {
 
   const getNews = async () => {
     try {
+      setLoadingData(true);
       const data = await getOneNewsById(state.id);
       setAuthor(data.news.author);
       setContent(data.news.content);
@@ -44,9 +47,11 @@ export default function UpdateNews() {
       setPreview(data.news.image ? data.news.image : null);
       setTitle(data.news.title);
       setTitleLink(data.news.titleLink);
-      setDate(new Date(data.news.date).toLocaleString("vi-VN"));
+      setDate(new Date().toLocaleString("vi-VN"));
     } catch (error) {
       console.error("Lỗi khi lấy tin tức:", error);
+    } finally {
+      setLoadingData(false);
     }
   };
 
@@ -112,65 +117,68 @@ export default function UpdateNews() {
           <div className="spinner"></div>
         </div>
       )}
-      <form onSubmit={handleSubmit} className="news-admin-form">
-        <div>
-          <label>Tiêu đề *</label>
-          <input
-            type="text"
-            value={title}
-            onChange={handleTitleChange}
-            placeholder="Nhập tiêu đề bài viết..."
-            required
-          />
-        </div>
-
-        <div>
-          <label>Link</label>
-          <input
-            type="text"
-            value={titleLink}
-            onChange={(e) => setTitleLink(e.target.value)} // vẫn cho phép sửa tay
-            placeholder="Link bài viết"
-            required
-          />
-        </div>
-
-        <div>
-          <label>Thumbnail *</label>
-          <input type="file" accept="image/*" onChange={handleThumbnailChange} required={!image} />
-          {preview && <img src={preview} alt="preview" className="preview" />}
-        </div>
-
-        <div>
-          <label>Người đăng *</label>
-          <input
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder="Nhập tên người đăng..."
-            required
-          />
-        </div>
-
-        <div className="news-admin-date">
-          <strong>Ngày đăng:</strong> {date}
-        </div>
-
-        {image ? (
-          <ComposeNewsUpdate onContentChange={setContent} initialData={content} />
-        ) : (
-          <p className="text-gray-500">Không có dữ liệu, vui lòng quay lại danh sách.</p>
-        )}
-
-        {error && <p className="news-admin-error">{error}</p>}
-
-        <div className="preview-container">
-          <div className="button-group" style={{ marginLeft: '200px' }}>
-            <FormSubmit handle={handleSubmit} update={true} fields={{ title, image, author, content }}>Cập nhật</FormSubmit>
-            <CancelButton>Hủy</CancelButton>
+      {loadingData ? (
+        <UpdateNewsSkeleton />  // ✅ hiển thị skeleton khi chờ API
+      ) : (
+        <form onSubmit={handleSubmit} className="news-admin-form">
+          <div>
+            <label>Tiêu đề *</label>
+            <input
+              type="text"
+              value={title}
+              onChange={handleTitleChange}
+              placeholder="Nhập tiêu đề bài viết..."
+              required
+            />
           </div>
-        </div>
-      </form>
+
+          <div>
+            <label>Link</label>
+            <input
+              type="text"
+              value={titleLink}
+              onChange={(e) => setTitleLink(e.target.value)} // vẫn cho phép sửa tay
+              placeholder="Link bài viết"
+              required
+            />
+          </div>
+
+          <div>
+            <label>Thumbnail *</label>
+            <input type="file" accept="image/*" onChange={handleThumbnailChange} required={!image} />
+            {preview && <img src={preview} alt="preview" className="preview" />}
+          </div>
+
+          <div>
+            <label>Người đăng *</label>
+            <input
+              type="text"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              placeholder="Nhập tên người đăng..."
+              required
+            />
+          </div>
+
+          <div className="news-admin-date">
+            <strong>Ngày cập nhật:</strong> {date}
+          </div>
+
+          {image ? (
+            <ComposeNewsUpdate onContentChange={setContent} initialData={content} />
+          ) : (
+            <p className="text-gray-500">Không có dữ liệu, vui lòng quay lại danh sách.</p>
+          )}
+
+          {error && <p className="news-admin-error">{error}</p>}
+
+          <div className="preview-container">
+            <div className="button-group" style={{ marginLeft: '200px' }}>
+              <FormSubmit handle={handleSubmit} update={true} fields={{ title, image, author, content }}>Cập nhật</FormSubmit>
+              <CancelButton>Hủy</CancelButton>
+            </div>
+          </div>
+        </form>)}
       {/* Toast notification */}
       {toast && (
         <div className={`toast ${toast.type}`}>
