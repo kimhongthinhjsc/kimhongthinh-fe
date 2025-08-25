@@ -76,5 +76,7 @@ export default function DashboardHome() {
         </button>
       </div>
     </div>
-  );
+  )
 }
+
+
