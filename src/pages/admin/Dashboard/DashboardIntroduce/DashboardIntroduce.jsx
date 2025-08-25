@@ -15,7 +15,6 @@ import { globalLoading } from "~/context/LoadingContext";
 export default function DashboardIntroducePage() {
   const [introduceData, setIntroduceData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchIntroduce = async () => {
@@ -31,14 +30,12 @@ export default function DashboardIntroducePage() {
     if (!introduceData) return;
 
     try {
-      setSaving(true);
       await updateIntroduceData(introduceData);
       globalLoading(false);
     } catch (err) {
       console.error(err);
       alert("❌ Lưu thất bại");
     } finally {
-      setSaving(false);
       globalLoading(false);
     }
   };
@@ -107,12 +104,9 @@ export default function DashboardIntroducePage() {
       <div className="flex justify-end">
         <button
           onClick={handleSave}
-          className={`bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition ${
-            saving ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={saving}
+          className={`bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition `}
         >
-          {saving ? "Đang lưu..." : "Lưu toàn bộ"}
+          Lưu
         </button>
       </div>
     </div>

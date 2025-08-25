@@ -4,11 +4,11 @@ import EditableImage from "~/components/EditableImage/EditableImage";
 import { getCompanyProfile } from "~/services/publicAPI";
 import { updateCompanyProfile } from "~/services/adminAPI";
 import CompanyInfoSkeleton from "./CompanyInfoSkeleton";
+import { globalLoading } from "~/context/LoadingContext";
 
 export default function DashboardCompanyInfo() {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -37,11 +37,11 @@ export default function DashboardCompanyInfo() {
   };
 
   const handleSave = async () => {
-    setSaving(true);
+    globalLoading(true, "Đang lưu...");
     try {
       const updated = await updateCompanyProfile(formData);
       if (updated) {
-        setFormData(withDefaults(updated));
+        setFormData(updated);
         alert("✅ Đã lưu thông tin công ty");
       } else {
         alert("❌ Lưu thất bại");
@@ -50,7 +50,7 @@ export default function DashboardCompanyInfo() {
       console.error(err);
       alert("❌ Có lỗi xảy ra khi lưu");
     } finally {
-      setSaving(false);
+      globalLoading(false);
     }
   };
 
@@ -208,10 +208,9 @@ export default function DashboardCompanyInfo() {
       <div className="flex flex-col md:flex-row justify-end gap-4">
         <button
           onClick={handleSave}
-          disabled={saving}
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-60"
         >
-          {saving ? "Đang lưu..." : "Lưu"}
+          Lưu
         </button>
         <button
           onClick={handleReset}

@@ -11,6 +11,7 @@ import InputField from "~/components/InputField/InputField";
 import TextAreaField from "~/components/TextAreaField/TextAreaField";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import SpecList from "./SpecList";
+import { globalLoading } from "~/context/LoadingContext";
 
 export default function DashboardProductEdit() {
   const { id } = useParams();
@@ -45,14 +46,15 @@ export default function DashboardProductEdit() {
   };
 
   const handleSave = async () => {
+    globalLoading(true);
     try {
       const updated = await updateProduct(id, product);
       if (updated) {
-        alert("Cập nhật thành công!");
         navigate("/admin/dashboard/products");
       }
     } catch (err) {
-      alert("Lỗi khi cập nhật sản phẩm: " + err.message);
+    } finally {
+      globalLoading(false);
     }
   };
 

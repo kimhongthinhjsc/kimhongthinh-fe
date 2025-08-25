@@ -10,7 +10,7 @@ import TextAreaField from "~/components/TextAreaField/TextAreaField";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import HighlightList from "./HighlightList";
 import SpecList from "./SpecList";
-
+import { globalLoading } from "~/context/LoadingContext";
 export default function DashboardProductCreate() {
   const navigate = useNavigate();
 
@@ -49,14 +49,16 @@ export default function DashboardProductCreate() {
   };
 
   const handleSave = async () => {
+    globalLoading(true);
     try {
       const created = await createProduct(product);
       if (created) {
-        alert("Tạo sản phẩm thành công!");
         navigate("/admin/dashboard/products");
       }
     } catch (err) {
       alert("Lỗi khi tạo sản phẩm: " + err.message);
+    } finally {
+      globalLoading(false);
     }
   };
 
