@@ -9,6 +9,7 @@ import { getCategories } from "~/services/categorieAPI";
 import HighlightList from "./HighlightList";
 import InputField from "~/components/InputField/InputField";
 import TextAreaField from "~/components/TextAreaField/TextAreaField";
+import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import SpecList from "./SpecList";
 
 export default function DashboardProductEdit() {
@@ -60,41 +61,62 @@ export default function DashboardProductEdit() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
-
       {/* Thông tin cơ bản */}
       <div className="bg-white p-4 rounded-lg shadow space-y-4">
+        {/* Tên sản phẩm full width */}
         <InputField
           label="Tên sản phẩm"
           value={product.name}
           onChange={(e) => setProduct({ ...product, name: e.target.value })}
         />
-        <InputField
-          label="Giá"
-          type="number"
-          value={product.price}
-          onChange={(e) =>
-            setProduct({ ...product, price: Number(e.target.value) })
-          }
-        />
-        <InputField
-          label="Thương hiệu"
-          value={product.brand}
-          onChange={(e) => setProduct({ ...product, brand: e.target.value })}
-        />
-        <InputField
-          label="Bảo hành"
-          value={product.warranty || ""}
-          onChange={(e) => setProduct({ ...product, warranty: e.target.value })}
-        />
-        <InputField
-          label="Số lượng tồn kho"
-          type="number"
-          value={product.stock}
-          onChange={(e) =>
-            setProduct({ ...product, stock: Number(e.target.value) })
-          }
-        />
+
+        {/* Grid 2 cột */}
+        <div className="grid grid-cols-2 gap-4">
+          <InputField
+            label="Giá"
+            type="number"
+            value={product.price}
+            onChange={(e) =>
+              setProduct({ ...product, price: Number(e.target.value) })
+            }
+          />
+          <InputField
+            label="Thương hiệu"
+            value={product.brand}
+            onChange={(e) => setProduct({ ...product, brand: e.target.value })}
+          />
+        </div>
+
+        {/* Grid 3 cột */}
+        <div className="grid grid-cols-3 gap-4">
+          <InputField
+            label="Bảo hành"
+            value={product.warranty || ""}
+            onChange={(e) =>
+              setProduct({ ...product, warranty: e.target.value })
+            }
+          />
+          <InputField
+            label="Số lượng tồn kho"
+            type="number"
+            value={product.stock}
+            onChange={(e) =>
+              setProduct({ ...product, stock: Number(e.target.value) })
+            }
+          />
+          <label className="flex items-center gap-2 mt-6">
+            <input
+              type="checkbox"
+              checked={product.bestSeller}
+              onChange={(e) =>
+                setProduct({ ...product, bestSeller: e.target.checked })
+              }
+            />
+            Best Seller
+          </label>
+        </div>
+
+        {/* Mô tả full width */}
         <TextAreaField
           label="Mô tả"
           value={product.description || ""}
@@ -102,22 +124,10 @@ export default function DashboardProductEdit() {
             setProduct({ ...product, description: e.target.value })
           }
         />
-
-        {/* Best Seller */}
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={product.bestSeller}
-            onChange={(e) =>
-              setProduct({ ...product, bestSeller: e.target.checked })
-            }
-          />
-          Best Seller
-        </label>
       </div>
 
       {/* Category & Subcategory */}
-      <div className="bg-white p-4 rounded-lg shadow space-y-4">
+      <div className="bg-white p-4 rounded-lg shadow grid grid-cols-2 gap-4">
         <div>
           <label className="block font-semibold">Danh mục</label>
           <select
@@ -191,6 +201,13 @@ export default function DashboardProductEdit() {
           </button>
         </div>
       </div>
+
+      {/* Nội dung chi tiết */}
+      <RichTextEditor
+        label="Nội dung chi tiết"
+        data={product.content || ""}
+        onChange={(val) => setProduct({ ...product, content: val })}
+      />
 
       {/* Highlights */}
       <HighlightList
