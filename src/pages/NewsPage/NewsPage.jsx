@@ -22,7 +22,6 @@ export default function NewsPage() {
       const data = await getNewsList(currentPage, postsPerPage);
       setNews(data.news);
       setTotalPages(data.totalPages);
-      console.log("Danh sách tin tức:", data);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách tin tức:", error);
     } finally {
