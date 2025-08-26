@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getServiceById } from "~/services/publicAPI";
-import { updateService } from "~/services/adminAPI";
+import { updateService, deleteService } from "~/services/adminAPI";
 import EditableImage from "~/components/EditableImage/EditableImage";
 import InputField from "./InputField";
 import TextAreaField from "./TextAreaField";
@@ -11,6 +11,7 @@ import FeaturesList from "./FeaturesList";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import { handleContent } from "~/utils/handleContent";
 import { globalLoading } from "~/context/LoadingContext";
+import ImageUploader from "~/components/ImageUploader/ImageUploader";
 
 export default function DashboardServiceEdit() {
   const { id } = useParams();
@@ -39,6 +40,20 @@ export default function DashboardServiceEdit() {
       navigate("/admin/dashboard/services");
     } catch (err) {
       alert("Lỗi khi cập nhật dịch vụ: " + err.message);
+    } finally {
+      globalLoading(false);
+    }
+  };
+  const handleDelete = async () => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa dịch vụ này?")) return;
+
+    globalLoading(true);
+    try {
+      await deleteService(id);
+      alert("Xóa dịch vụ thành công!");
+      navigate("/admin/dashboard/services");
+    } catch (err) {
+      alert("Lỗi khi xóa dịch vụ: " + err.message);
     } finally {
       globalLoading(false);
     }
@@ -93,41 +108,16 @@ export default function DashboardServiceEdit() {
           <EditableImage
             src={service.thumbnail}
             onChange={(val) => setService({ ...service, thumbnail: val })}
+            className="w-40 h-40"
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-2">Gallery</label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {(service.images || []).map((img, i) => (
-              <EditableImage
-                key={i}
-                src={img}
-                onChange={(val) => {
-                  const imgs = [...service.images];
-                  imgs[i] = val;
-                  setService({ ...service, images: imgs });
-                }}
-                onRemove={() =>
-                  setService({
-                    ...service,
-                    images: service.images.filter((_, idx) => idx !== i),
-                  })
-                }
-              />
-            ))}
-            <button
-              onClick={() =>
-                setService({
-                  ...service,
-                  images: [...(service.images || []), ""],
-                })
-              }
-              className="border-2 border-dashed p-4 text-gray-500 rounded hover:bg-gray-50"
-            >
-              + Thêm ảnh
-            </button>
-          </div>
+          <ImageUploader
+            images={service.images}
+            onChange={(imgs) => setService({ ...service, images: imgs })}
+            size="w-32 h-32"
+          />
         </div>
       </div>
 
@@ -162,7 +152,13 @@ export default function DashboardServiceEdit() {
           onClick={() => navigate("/admin/dashboard/services")}
           className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
         >
-          Quay lại
+          Đặt lại
+        </button>
+        <button
+          onClick={handleDelete}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        >
+          Xóa dịch vụ
         </button>
       </div>
     </div>

@@ -12,6 +12,7 @@ import FeaturesList from "./FeaturesList";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import { handleContent } from "~/utils/handleContent";
 import { globalLoading } from "~/context/LoadingContext";
+import ImageUploader from "~/components/ImageUploader/ImageUploader";
 
 export default function DashboardServiceCreate() {
   const navigate = useNavigate();
@@ -116,47 +117,22 @@ export default function DashboardServiceCreate() {
 
       {/* Hình ảnh */}
       <div className="bg-white p-6 rounded-lg shadow space-y-4">
-        <h2 className="text-lg font-semibold border-b pb-2">Hình ảnh</h2>
+        <h2 className="text-lg font-semibold border-b pb-2 ">Hình ảnh</h2>
         <div>
           <label className="block font-semibold mb-2">Hình thu nhỏ</label>
           <EditableImage
             src={service.thumbnail}
             onChange={(val) => setService({ ...service, thumbnail: val })}
+            className="w-40 h-40"
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-2">Gallery</label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {(service.images || []).map((img, i) => (
-              <EditableImage
-                key={i}
-                src={img}
-                onChange={(val) => {
-                  const imgs = [...service.images];
-                  imgs[i] = val;
-                  setService({ ...service, images: imgs });
-                }}
-                onRemove={() =>
-                  setService({
-                    ...service,
-                    images: service.images.filter((_, idx) => idx !== i),
-                  })
-                }
-              />
-            ))}
-            <button
-              onClick={() =>
-                setService({
-                  ...service,
-                  images: [...(service.images || []), ""],
-                })
-              }
-              className="border-2 border-dashed p-4 text-gray-500 rounded hover:bg-gray-50"
-            >
-              + Thêm ảnh
-            </button>
-          </div>
+          <ImageUploader
+            images={service.images}
+            onChange={(imgs) => setService({ ...service, images: imgs })}
+            size="w-32 h-32"
+          />
         </div>
       </div>
 

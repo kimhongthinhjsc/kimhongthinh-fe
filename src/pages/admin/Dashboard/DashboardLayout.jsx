@@ -13,10 +13,7 @@ const DashboardUpdateNews = lazy(() => import("./News/UpdateNews"));
 const DashboardEvents = lazy(() => import("./Events"));
 const DashboardCareers = lazy(() => import("./Careers"));
 const DashboardActivities = lazy(() => import("./Activities"));
-const DashboardTestimonials = lazy(() => import("./Testimonials"));
 const DashboardContact = lazy(() => import("./Contact"));
-const DashboardUI = lazy(() => import("./UI"));
-const DashboardManageAdmin = lazy(() => import("./ManageAdmin"));
 const DashboardCompanyInfo = lazy(() => import("./DashboardCompanyInfo/DashboardCompanyInfo"));
 const DashboardProductEdit = lazy(() => import("./DashboardProducts/DashboardProductCU/DashboardProductEdit"));
 const DashboardProductCreate = lazy(() => import("./DashboardProducts/DashboardProductCU/DashboardProductCreate"));
@@ -60,10 +57,7 @@ export default function DashboardLayout() {
               <Route path="/events" element={<DashboardEvents />} />
               <Route path="/careers" element={<DashboardCareers />} />
               <Route path="/activities" element={<DashboardActivities />} />
-              <Route path="/testimonials" element={<DashboardTestimonials />} />
               <Route path="/contact" element={<DashboardContact />} />
-              <Route path="/ui" element={<DashboardUI />} />
-              <Route path="/manage-admin" element={<DashboardManageAdmin />} />
               <Route path="/products/:id/edit" element={<DashboardProductEdit />} />
               <Route path="/products/create" element={<DashboardProductCreate />} />
               <Route path="/services/:id/edit" element={<DashboardServiceEdit />} />

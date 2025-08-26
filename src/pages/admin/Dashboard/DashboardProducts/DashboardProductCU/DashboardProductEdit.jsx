@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchProductById, getSubcategories } from "~/services/publicAPI";
-import { updateProduct } from "~/services/adminAPI";
-import { ArrowLeft } from "lucide-react";
+import { updateProduct, deleteProduct } from "~/services/adminAPI";
 import EditableImage from "~/components/EditableImage/EditableImage";
 import { getCategories } from "~/services/categorieAPI";
 
@@ -12,6 +11,8 @@ import TextAreaField from "~/components/TextAreaField/TextAreaField";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import SpecList from "./SpecList";
 import { globalLoading } from "~/context/LoadingContext";
+import { handleContent } from "~/utils/handleContent";
+import ImageUploader from "~/components/ImageUploader/ImageUploader";
 
 export default function DashboardProductEdit() {
   const { id } = useParams();
@@ -48,11 +49,35 @@ export default function DashboardProductEdit() {
   const handleSave = async () => {
     globalLoading(true);
     try {
-      const updated = await updateProduct(id, product);
+      const newContent = await handleContent(product.content);
+      const updated = await updateProduct(id, {
+        ...product,
+        content: newContent,
+      });
       if (updated) {
         navigate("/admin/dashboard/products");
       }
     } catch (err) {
+    } finally {
+      globalLoading(false);
+    }
+  };
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Bạn có chắc chắn muốn xóa sản phẩm này?"
+    );
+    if (!confirmDelete) return;
+
+    globalLoading(true);
+    try {
+      const deleted = await deleteProduct(id);
+      if (deleted) {
+        alert("Xóa sản phẩm thành công!");
+        navigate("/admin/dashboard/products");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Xóa sản phẩm thất bại!");
     } finally {
       globalLoading(false);
     }
@@ -172,36 +197,10 @@ export default function DashboardProductEdit() {
       {/* Images */}
       <div className="bg-white p-4 rounded-lg shadow space-y-3">
         <label className="block font-semibold">Hình ảnh</label>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {(product.images || []).map((img, i) => (
-            <EditableImage
-              key={i}
-              src={img}
-              onChange={(val) => {
-                const imgs = [...product.images];
-                imgs[i] = val;
-                setProduct({ ...product, images: imgs });
-              }}
-              onRemove={() =>
-                setProduct({
-                  ...product,
-                  images: product.images.filter((_, idx) => idx !== i),
-                })
-              }
-            />
-          ))}
-          <button
-            onClick={() =>
-              setProduct({
-                ...product,
-                images: [...(product.images || []), ""],
-              })
-            }
-            className="border-2 border-dashed p-4 text-gray-500 rounded hover:bg-gray-50"
-          >
-            + Thêm ảnh
-          </button>
-        </div>
+        <ImageUploader
+          images={product.images || []}
+          setImages={(imgs) => setProduct({ ...product, images: imgs })}
+        />
       </div>
 
       {/* Nội dung chi tiết */}
@@ -235,7 +234,13 @@ export default function DashboardProductEdit() {
           onClick={() => navigate("/admin/dashboard/products")}
           className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
         >
-          Quay lại
+          Đặt lại
+        </button>
+        <button
+          onClick={handleDelete}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+        >
+          Xóa sản phẩm
         </button>
       </div>
     </div>
