@@ -12,8 +12,10 @@
     "start": "yarn dev"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^44.3.0",
+    "@ckeditor/ckeditor5-build-classic": "file:ckeditor-ckeditor5-build-classic-19.0.3.tgz",
+    "@ckeditor/ckeditor5-core": "^46.0.2",
     "@ckeditor/ckeditor5-react": "^11.0.0",
+    "@ckeditor/ckeditor5-watchdog": "^46.0.2",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
