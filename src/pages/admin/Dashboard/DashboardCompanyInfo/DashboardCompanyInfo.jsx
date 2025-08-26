@@ -82,7 +82,7 @@ export default function DashboardCompanyInfo() {
           />
         </div>
         <div>
-          <label className="block font-semibold">Slogan</label>
+          <label className="block font-semibold">Khẩu hiệu</label>
           <input
             type="text"
             value={formData.slogan || ""}
@@ -158,7 +158,7 @@ export default function DashboardCompanyInfo() {
             className="w-full border rounded p-2"
           />
         </div>
-        <div>
+        {/* <div>
           <label className="block font-semibold">Thương mại điện tử</label>
           <input
             type="text"
@@ -172,7 +172,7 @@ export default function DashboardCompanyInfo() {
             onChange={(e) => handleChange(e, "ecommerce", "link")}
             className="w-full border rounded p-2"
           />
-        </div>
+        </div> */}
       </div>
 
       {/* Social */}
