@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // icon menu hamburger
-import logo from "~/assets/images/HongThinhTechnologyServices.png";
 
-export default function Navbar() {
+export default function Navbar({ profile }) {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -29,9 +28,9 @@ export default function Navbar() {
         <div className="flex items-center">
           <Link to="/" className="cursor-pointer">
             <img
-              src={logo}
+              src={profile?.logo}
               alt="Logo"
-              className="h-10 sm:h-14 lg:h-20 w-auto object-contain"
+              className="h-10 sm:h-14 lg:h-20 w-auto object-contain scale-150"
             />
           </Link>
         </div>
