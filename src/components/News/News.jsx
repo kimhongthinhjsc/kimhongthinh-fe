@@ -1,18 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getNewsList } from "~/services/publicAPI";
 import DOMPurify from "dompurify";
 
 export default function News() {
-  const [newsList, setNewsList] = React.useState([]);
+  const [newsList, setNewsList] = useState([]);
 
-  useEffect(async () => {
-    const data = await getNewsList(1, 4);
-    setNewsList(data.news);
+  useEffect(() => {
+    // Không dùng async trực tiếp trong useEffect
+    const fetchData = async () => {
+      try {
+        const data = await getNewsList(1, 4);
+        setNewsList(data.news || []);
+      } catch (error) {
+        console.error("Lỗi khi fetch news:", error);
+      }
+    };
+    fetchData();
   }, []);
 
+  if (!newsList || newsList.length === 0) {
+    return null; // Hoặc loading skeleton
+  }
+
+  const renderPreview = (content, maxLength = 120) => {
+    const sanitized = DOMPurify.sanitize(content || "", { ALLOWED_TAGS: [] });
+    return sanitized.length > maxLength ? sanitized.substring(0, maxLength) + "..." : sanitized;
+  };
 
   return (
-    <section className=" py-12 px-4 md:px-10 lg:px-20">
+    <section className="py-12 px-4 md:px-10 lg:px-20">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-xl md:text-2xl font-bold text-[#EF5627] mb-8 text-center">
           Tin tức & Sự kiện
@@ -20,36 +36,40 @@ export default function News() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Bên trái: bài nổi bật */}
-          <a
-            href={`${window.location.origin}/tin-tuc/${newsList[0]?.titleLink}`}
-            className="block bg-white rounded-xl shadow-md  transition overflow-hidden"
-          >
-            <img
-              src={newsList[0]?.image}
-              alt={newsList[0]?.title}
-              className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
-
-            />
-            <div className="p-6">
-              <h3 className="text-lg font-bold text-[#363F69] mb-3">
-                {newsList[0]?.title}
-              </h3>
-              <p className="text-gray-600 mb-3">{DOMPurify.sanitize(newsList[0]?.content, { ALLOWED_TAGS: [] }).length > 120
-                ? DOMPurify.sanitize(newsList[0]?.content, { ALLOWED_TAGS: [] }).substring(0, 120) + "..."
-                : DOMPurify.sanitize(newsList[0]?.content, { ALLOWED_TAGS: [] })}</p>
-              <div className="text-sm text-gray-500 flex items-center gap-2">
-                <i className="fa-solid fa-calendar"></i> {newsList[0] && new Date(newsList[0].createdAt).toLocaleDateString("vi-VN")}
+          {newsList[0] && (
+            <a
+              href={`${window.location.origin}/tin-tuc/${newsList[0].titleLink}`}
+              className="block bg-white rounded-xl shadow-md transition overflow-hidden"
+            >
+              <img
+                src={newsList[0].image}
+                alt={newsList[0].title}
+                className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
+              />
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-[#363F69] mb-3">
+                  {newsList[0].title}
+                </h3>
+                <p className="text-gray-600 mb-3">
+                  {renderPreview(newsList[0].content)}
+                </p>
+                <div className="text-sm text-gray-500 flex items-center gap-2">
+                  <i className="fa-solid fa-calendar"></i>{" "}
+                  {newsList[0].createdAt
+                    ? new Date(newsList[0].createdAt).toLocaleDateString("vi-VN")
+                    : ""}
+                </div>
               </div>
-            </div>
-          </a>
+            </a>
+          )}
 
           {/* Bên phải: 3 bài nhỏ */}
           <div className="flex flex-col gap-6">
-            {newsList?.slice(1).map((item, idx) => (
+            {newsList.slice(1).map((item, idx) => (
               <a
                 key={idx}
                 href={`${window.location.origin}/tin-tuc/${item.titleLink}`}
-                className="flex gap-4 bg-white rounded-xl shadow-md  transition overflow-hidden"
+                className="flex gap-4 bg-white rounded-xl shadow-md transition overflow-hidden"
               >
                 <div className="w-28 h-28 shrink-0 overflow-hidden">
                   <img
@@ -63,12 +83,13 @@ export default function News() {
                     {item.title}
                   </h4>
                   <p className="text-sm text-gray-600 line-clamp-2">
-                    {DOMPurify.sanitize(item.content, { ALLOWED_TAGS: [] }).length > 120
-                      ? DOMPurify.sanitize(item.content, { ALLOWED_TAGS: [] }).substring(0, 120) + "..."
-                      : DOMPurify.sanitize(item.content, { ALLOWED_TAGS: [] })}
+                    {renderPreview(item.content)}
                   </p>
                   <div className="text-sm text-gray-500 flex items-center gap-2">
-                    <i className="fa-solid fa-calendar"></i> {item && new Date(item.createdAt).toLocaleDateString("vi-VN")}
+                    <i className="fa-solid fa-calendar"></i>{" "}
+                    {item.createdAt
+                      ? new Date(item.createdAt).toLocaleDateString("vi-VN")
+                      : ""}
                   </div>
                 </div>
               </a>
