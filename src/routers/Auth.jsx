@@ -40,23 +40,31 @@ const Auth = () => {
         element={
           <Suspense fallback={<div></div>}>
             <FramePage>
-              <Suspense fallback={<div></div>}>
-                <Routes>
-                  <Route index element={<HomePage />} />
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/gioi-thieu" element={<Introduce />} />
-                  <Route path="/san-pham" element={<ProductsPage />} />
-                  <Route path="/san-pham/:id" element={<ProductDetailPage />} />
-                  <Route path="/dich-vu" element={<ServicesPage />} />
-                  <Route path="/dich-vu/:id" element={<ServiceDetailPage />} />
-                  <Route path="/lien-he" element={<Contact />} />
-                  <Route path="/tin-tuc" element={<NewsPage />} />
-                  <Route path="/tin-tuc/:id" element={<NewsDetailPage />} />
-                  <Route path="/tuyen-dung" element={<CareersPage />} />
-                  <Route path="/su-kien" element={<EventsPage />} />
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </Suspense>
+              <main>
+                <Suspense fallback={<div></div>}>
+                  <Routes>
+                    <Route index element={<HomePage />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/gioi-thieu" element={<Introduce />} />
+                    <Route path="/san-pham" element={<ProductsPage />} />
+                    <Route
+                      path="/san-pham/:id"
+                      element={<ProductDetailPage />}
+                    />
+                    <Route path="/dich-vu" element={<ServicesPage />} />
+                    <Route
+                      path="/dich-vu/:id"
+                      element={<ServiceDetailPage />}
+                    />
+                    <Route path="/lien-he" element={<Contact />} />
+                    <Route path="/tin-tuc" element={<NewsPage />} />
+                    <Route path="/tin-tuc/:id" element={<NewsDetailPage />} />
+                    <Route path="/tuyen-dung" element={<CareersPage />} />
+                    <Route path="/su-kien" element={<EventsPage />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Routes>
+                </Suspense>
+              </main>
             </FramePage>
           </Suspense>
         }
