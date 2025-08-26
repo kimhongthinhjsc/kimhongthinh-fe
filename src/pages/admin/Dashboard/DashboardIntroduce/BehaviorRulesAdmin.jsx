@@ -12,6 +12,7 @@ export default function BehaviorRulesAdmin({ data, onChange }) {
     onChange({ ...data, vision: { ...data.vision, [field]: value } });
   const handleBannerChange = (val) => onChange({ ...data, banner: val });
 
+  console.log("BehaviorRulesAdmin data:", data);
   return (
     <section className="space-y-12">
       {/* Banner */}
@@ -40,8 +41,8 @@ export default function BehaviorRulesAdmin({ data, onChange }) {
           />
         </div>
         <EditableImage
-          src="https://softdreams.vn/wp-content/uploads/2023/11/Group-2609257-2.png"
-          onChange={() => {}}
+          src={data?.mission?.image || null}
+          onChange={(val) => handleMissionChange("image", val)}
           label="Mission Image"
           className="w-full max-w-sm md:max-w-md h-64 mx-auto rounded-xl shadow"
         />
@@ -51,8 +52,8 @@ export default function BehaviorRulesAdmin({ data, onChange }) {
       <div className="bg-[#FDEEE9] py-8">
         <div className="container mx-auto max-w-4xl grid md:grid-cols-2 gap-6 items-center">
           <EditableImage
-            src="https://softdreams.vn/wp-content/uploads/2023/12/Subtract.png"
-            onChange={() => {}}
+            src={data?.vision?.image || null}
+            onChange={(val) => handleVisionChange("image", val)}
             label="Vision Image"
             className="w-full max-w-sm md:max-w-md h-64 mx-auto rounded-xl shadow"
           />
