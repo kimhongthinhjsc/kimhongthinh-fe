@@ -115,5 +115,4 @@ export default function Auth() {
     </Routes>
   );
 }
-export default Auth;
 
