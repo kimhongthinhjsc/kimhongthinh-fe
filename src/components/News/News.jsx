@@ -6,7 +6,6 @@ export default function News() {
   const [newsList, setNewsList] = useState([]);
 
   useEffect(() => {
-    // Không dùng async trực tiếp trong useEffect
     const fetchData = async () => {
       try {
         const data = await getNewsList(1, 4);

@@ -121,7 +121,6 @@ export default function ServiceDetailPage() {
           </section>
         )}
 
-        {/* Gallery hình ảnh */}
         {service.images?.length > 0 && (
           <section>
             <h2 className="text-2xl font-semibold mb-4">Hình ảnh minh họa</h2>

@@ -1,31 +1,33 @@
-import React, { useState } from "react";
-import { Pencil, X } from "lucide-react";
-import { uploadImage } from "~/services/adminAPI"; // API upload file
+import React, { useState, useRef } from "react";
+import { Pencil, Check, Loader2 } from "lucide-react";
+import { uploadImage } from "~/services/adminAPI";
 
 export default function EditableImage({
   src,
   onChange,
   label = "Ảnh",
-  className = "w-20 h-20", // default size nhỏ
+  className = "w-20 h-20",
 }) {
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [preview, setPreview] = useState(src);
+  const fileInputRef = useRef(null);
 
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // preview tạm
-    const localUrl = URL.createObjectURL(file);
-    setPreview(localUrl);
+    setPreview(URL.createObjectURL(file));
+    setLoading(true);
+    setSuccess(false);
 
     try {
-      setLoading(true);
-      const res = await uploadImage(file); // gọi API upload
+      const res = await uploadImage(file);
       const uploadedUrl = res.url || res.secure_url;
       if (uploadedUrl) {
-        onChange(uploadedUrl); // trả URL lên parent
+        onChange(uploadedUrl);
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000); // check hiện 2s
       } else {
         alert("❌ Upload thất bại, không có URL trả về");
       }
@@ -38,67 +40,39 @@ export default function EditableImage({
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      {/* Ảnh + nút sửa */}
-      <div className={`relative ${className}`}>
-        <img
-          src={preview || "https://via.placeholder.com/300x200?text=No+Image"}
-          alt="preview"
-          className="w-full h-full object-cover rounded border bg-white"
-        />
-        <button
-          onClick={() => setOpen(true)}
-          className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow hover:bg-gray-100"
-        >
-          <Pencil size={16} className="text-gray-600" />
-        </button>
+    <div className={`relative ${className} cursor-pointer`} onClick={() => fileInputRef.current?.click()}>
+      <img
+        src={preview || "https://via.placeholder.com/300x200?text=No+Image"}
+        alt="preview"
+        className="w-full h-full object-cover rounded border bg-white"
+      />
+
+      {/* Icon chỉnh sửa */}
+      <div className="absolute bottom-2 right-2 bg-white rounded-full p-1 shadow">
+        <Pencil className="w-4 h-4 text-gray-600" />
       </div>
 
-      {/* Popup chỉnh sửa */}
-      {open && (
-        <div className=" fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-[90%] max-w-md shadow-lg relative">
-            {/* Nút đóng */}
-            <button
-              onClick={() => setOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-            >
-              <X size={18} />
-            </button>
-
-            <h3 className="text-lg font-semibold mb-4">{label}</h3>
-
-            {/* Preview ảnh */}
-            <div className="mb-4 flex justify-center">
-              <img
-                src={preview || "https://via.placeholder.com/400x300?text=No+Image"}
-                alt="preview"
-                className="max-h-[300px] object-contain rounded border bg-gray-50"
-              />
-            </div>
-
-            {/* Upload file */}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="w-full border rounded p-2"
-              disabled={loading}
-            />
-            {loading && <p className="mt-2 text-sm text-gray-500">Đang tải...</p>}
-
-            {/* Nút đóng popup */}
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={() => setOpen(false)}
-                className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded"
-              >
-                Xong
-              </button>
-            </div>
-          </div>
+      {/* Loading */}
+      {loading && (
+        <div className="absolute top-2 right-2 bg-white rounded-full p-1">
+          <Loader2 className="w-5 h-5 animate-spin text-gray-600" />
         </div>
       )}
+      {/* Success */}
+      {!loading && success && (
+        <div className="absolute top-2 right-2 bg-white rounded-full p-1">
+          <Check className="w-5 h-5 text-green-500" />
+        </div>
+      )}
+
+      {/* Input file ẩn */}
+      <input
+        type="file"
+        accept="image/*"
+        className="hidden"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+      />
     </div>
   );
 }

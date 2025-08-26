@@ -11,6 +11,8 @@ import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import HighlightList from "./HighlightList";
 import SpecList from "./SpecList";
 import { globalLoading } from "~/context/LoadingContext";
+import { handleContent } from "~/utils/handleContent";
+import ImageUploader from "~/components/ImageUploader/ImageUploader";
 export default function DashboardProductCreate() {
   const navigate = useNavigate();
 
@@ -51,7 +53,8 @@ export default function DashboardProductCreate() {
   const handleSave = async () => {
     globalLoading(true);
     try {
-      const created = await createProduct(product);
+      const newContent = await handleContent(product.content);
+      const created = await createProduct({ ...product, content: newContent });
       if (created) {
         navigate("/admin/dashboard/products");
       }
@@ -171,36 +174,11 @@ export default function DashboardProductCreate() {
       {/* Images */}
       <div className="bg-white p-4 rounded-lg shadow space-y-3">
         <label className="block font-semibold">Hình ảnh</label>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {(product.images || []).map((img, i) => (
-            <EditableImage
-              key={i}
-              src={img}
-              onChange={(val) => {
-                const imgs = [...product.images];
-                imgs[i] = val;
-                setProduct({ ...product, images: imgs });
-              }}
-              onRemove={() =>
-                setProduct({
-                  ...product,
-                  images: product.images.filter((_, idx) => idx !== i),
-                })
-              }
-            />
-          ))}
-          <button
-            onClick={() =>
-              setProduct({
-                ...product,
-                images: [...(product.images || []), ""],
-              })
-            }
-            className="border-2 border-dashed p-4 text-gray-500 rounded hover:bg-gray-50"
-          >
-            + Thêm ảnh
-          </button>
-        </div>
+        <ImageUploader
+          images={product.images}
+          onChange={(imgs) => setProduct({ ...product, images: imgs })}
+          size="w-32 h-32"
+        />
       </div>
 
       {/* RichTextEditor */}
