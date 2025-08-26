@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import chatzalo from "~/assets/icon/zalo.svg";
 
-export default function ChatZalo() {
+export default function ChatZalo({chatZalo=""}) {
   const [hover, setHover] = useState(false);
 
   return (
@@ -11,7 +11,7 @@ export default function ChatZalo() {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={() =>
-        window.open(import.meta.env.VITE_LINK_ChatZalo, "_blank")
+        window.open(chatZalo, "_blank")
       }
     >
       {/* Tooltip */}

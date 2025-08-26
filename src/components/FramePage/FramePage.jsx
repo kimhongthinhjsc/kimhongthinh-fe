@@ -29,9 +29,9 @@ export default function FramePage({ children }) {
 
         <div className="fixed bottom-6 right-6 flex flex-col gap-3">
           <div className="fixed bottom-6 right-6 flex flex-col gap-3">
-            <Messenger />
-            <ChatZalo />
-            <Phone />
+            <Messenger chatMessenger={profile?.social.messenger} />
+            <ChatZalo chatZalo={profile?.social.zalo} />
+            <Phone phone={profile?.hotline1} />
           </div>
         </div>
       </main>
