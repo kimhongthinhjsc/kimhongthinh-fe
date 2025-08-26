@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import FramePage from "~/components/FramePage/FramePage";
 import { getServiceById } from "~/services/publicAPI";
 import ServiceDetailSkeleton from "./ServiceDetailSkelention";
+import '@ckeditor/ckeditor5-build-classic/build/ckeditor';
 
 export default function ServiceDetailPage() {
   const { id } = useParams();
@@ -19,16 +20,19 @@ export default function ServiceDetailPage() {
     fetchService();
   }, [id]);
 
-  if (loading) return;
-  <FramePage>
-    <ServiceDetailSkeleton />
-  </FramePage>;
+  if (loading)
+    return (
+      <FramePage>
+        <ServiceDetailSkeleton />
+      </FramePage>
+    );
+
   if (!service) return <FramePage>Dịch vụ không tồn tại.</FramePage>;
 
   return (
     <FramePage>
-      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-6 space-y-6">
-        {/* Tiêu đề & Thumbnail */}
+      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-6 space-y-10">
+        {/* Header */}
         <div className="flex flex-col lg:flex-row gap-6">
           {service.thumbnail && (
             <img
@@ -38,9 +42,7 @@ export default function ServiceDetailPage() {
             />
           )}
           <div className="flex-1 space-y-4">
-            <h1 className="text-3xl font-bold text-[#EF5627]">
-              {service.name}
-            </h1>
+            <h1 className="text-3xl font-bold text-[#EF5627]">{service.name}</h1>
             <p className="text-gray-700">
               {service.shortDescription || service.description}
             </p>
@@ -50,17 +52,28 @@ export default function ServiceDetailPage() {
           </div>
         </div>
 
-        {/* Mô tả chi tiết */}
+        {/* Mô tả ngắn */}
         {service.description && (
-          <div>
+          <section>
             <h2 className="text-2xl font-semibold mb-2">Mô tả dịch vụ</h2>
             <p className="text-gray-700">{service.description}</p>
-          </div>
+          </section>
+        )}
+
+        {/* Nội dung chi tiết */}
+        {service.content && (
+          <section>
+            <h2 className="text-2xl font-semibold mb-2">Chi tiết dịch vụ</h2>
+            <div
+              className="prose ck-content max-w-none text-gray-800"
+              dangerouslySetInnerHTML={{ __html: service.content }}
+            />
+          </section>
         )}
 
         {/* Quy trình */}
         {service.process?.length > 0 && (
-          <div>
+          <section>
             <h2 className="text-2xl font-semibold mb-2">Quy trình thực hiện</h2>
             <ol className="list-decimal list-inside space-y-2 border-l-4 border-orange-400 pl-4">
               {service.process.map((step) => (
@@ -69,25 +82,25 @@ export default function ServiceDetailPage() {
                 </li>
               ))}
             </ol>
-          </div>
+          </section>
         )}
 
         {/* Hồ sơ cần chuẩn bị */}
         {service.documentsRequired?.length > 0 && (
-          <div>
+          <section>
             <h2 className="text-2xl font-semibold mb-2">Hồ sơ cần chuẩn bị</h2>
             <ul className="list-disc list-inside space-y-1">
               {service.documentsRequired.map((doc, idx) => (
                 <li key={idx}>{doc}</li>
               ))}
             </ul>
-          </div>
+          </section>
         )}
 
-        {/* Tính năng nổi bật */}
+        {/* Ưu điểm nổi bật */}
         {service.features?.length > 0 && (
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">Tính năng nổi bật</h2>
+          <section>
+            <h2 className="text-2xl font-semibold mb-4">Ưu điểm nổi bật</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {service.features.map((f) => (
                 <div
@@ -106,12 +119,12 @@ export default function ServiceDetailPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
         {/* Gallery hình ảnh */}
         {service.images?.length > 0 && (
-          <div>
+          <section>
             <h2 className="text-2xl font-semibold mb-4">Hình ảnh minh họa</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {service.images.map((img, idx) => (
@@ -123,7 +136,7 @@ export default function ServiceDetailPage() {
                 />
               ))}
             </div>
-          </div>
+          </section>
         )}
       </div>
     </FramePage>

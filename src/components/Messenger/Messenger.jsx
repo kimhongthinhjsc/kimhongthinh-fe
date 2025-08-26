@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import messenger from "~/assets/icon/messenger.svg";
 
-export default function Messenger() {
+export default function Messenger({chatMessenger=""}) {
   const [hover, setHover] = useState(false);
 
   return (
@@ -11,7 +11,7 @@ export default function Messenger() {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={() =>
-        window.open(import.meta.env.VITE_LINK_MESSENGER, "_blank")
+        window.open(chatMessenger, "_blank")
       }
     >
       {/* Tooltip */}

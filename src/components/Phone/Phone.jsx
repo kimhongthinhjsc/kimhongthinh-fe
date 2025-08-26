@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import phone from "~/assets/icon/phone.svg";
 
-export default function Phone() {
+export default function Phone({phone = ""}) {
   const [hover, setHover] = useState(false);
 
   return (
     <a
-      href="tel:0346353913"
+      href={`tel:${phone}`}
       className="relative w-12 h-12 cursor-pointer rounded-full bg-green-500 flex items-center justify-center shadow-md transition-transform duration-200 ease-in-out hover:scale-110 hover:shadow-xl"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -15,7 +15,7 @@ export default function Phone() {
       {/* Tooltip */}
       {hover && (
         <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3 px-3 py-1 rounded-md text-white text-sm bg-gray-800 shadow-md whitespace-nowrap">
-          0346 353 913
+          {phone}
         </div>
       )}
 

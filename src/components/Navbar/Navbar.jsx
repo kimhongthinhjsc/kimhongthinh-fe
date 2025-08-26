@@ -1,10 +1,8 @@
-
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // icon menu hamburger
-import logo from "~/assets/images/HongThinhTechnologyServices.png";
 
-export default function Navbar() {
+export default function Navbar({ profile }) {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -18,16 +16,32 @@ export default function Navbar() {
     { path: "/su-kien", label: "Sự kiện" },
   ];
 
+  // tìm label theo pathname
+  const basePath = "/" + location.pathname.split("/")[1];
+  const currentPage =
+    menuItems.find((item) => item.path === basePath)?.label || "404";
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
         {/* Logo */}
         <div className="flex items-center">
-          <img src={logo} alt="Logo" className="h-24   w-auto object-contain" />
+          <Link to="/" className="cursor-pointer">
+            <img
+              src={profile?.logo}
+              alt="Logo"
+              className="h-10 sm:h-14 lg:h-20 w-auto object-contain scale-150"
+            />
+          </Link>
+        </div>
+
+        {/* Hiện tên trang ở giữa chỉ khi mobile */}
+        <div className="md:hidden absolute left-1/2 -translate-x-1/2 text-gray-800 font-semibold">
+          {currentPage}
         </div>
 
         {/* Menu desktop */}
-        <nav className="hidden md:flex items-center gap-8 font-bold text-gray-700 ">
+        <nav className="hidden md:flex items-center gap-4 lg:gap-8 font-bold text-gray-700">
           {menuItems.map((item) => (
             <Link
               key={item.path}

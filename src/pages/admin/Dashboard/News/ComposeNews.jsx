@@ -5,8 +5,7 @@ import './ComposeNews.scss';
 import DOMPurify from "dompurify";
 import { uploadImage } from '~/services/adminAPI';
 
-const LICENSE_KEY =
-  'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTY4NTc1OTksImp0aSI6IjU3ZGZiMzViLTExN2ItNDkzMS1iZDU2LWM3YjA3NjNiZDFiNiIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImUwZjRiOTk5In0.Fkvi7Sl3htLGuyBmz5Ub2GM4Nv9lRmEozPMYAFWsAtxhW5_lkMgOLDPA2aG4Vr170PcCsO5dxWZzTlqHRkSlkQ';
+const LICENSE_KEY = import.meta.env.VITE_LICENSE_KEY;
 
 export default function ComposeNews({ onContentChange }) {
   const editorContainerRef = useRef(null);
@@ -17,7 +16,6 @@ export default function ComposeNews({ onContentChange }) {
 
   useEffect(() => {
     setIsLayoutReady(true);
-
     return () => setIsLayoutReady(false);
   }, []);
 
@@ -397,7 +395,6 @@ export default function ComposeNews({ onContentChange }) {
   };
 
   CustomUploadAdapter.prototype.abort = function () {
-    console.log("Upload aborted");
   };
 
   function CustomUploadAdapterPlugin(editor) {

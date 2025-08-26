@@ -21,16 +21,6 @@ export const fetchProducts = async (
   }
 };
 
-// Lấy danh mục
-export const fetchCategories = async () => {
-  try {
-    const res = await api.get("/categories");
-    return res.data; // giả sử trả về mảng categories
-  } catch (error) {
-    console.error("❌ fetchCategories error:", error);
-    return [];
-  }
-};
 
 // Lấy chi tiết sản phẩm theo ID
 export const fetchProductById = async (id) => {
@@ -118,5 +108,16 @@ export const getServiceByKeyword = async (keyword, page = 1, limit = 12) => {
   }
 };
 
+export const getNewsList = async (page, limit) => {
+  const res = await api.get(`/news/find/all?page=${page}&limit=${limit}`);
+  return res.data;
+};
 
-
+export const getOneNews = async (titleLink) => {
+  try {
+    const res = await api.get(`/news/${titleLink}`);
+    return res.data;
+  } catch (error) {
+    return { success: false, news: null };
+  }
+};
