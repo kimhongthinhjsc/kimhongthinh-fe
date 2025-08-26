@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getServiceById } from "~/services/publicAPI";
 import { updateService } from "~/services/adminAPI";
-import { ArrowLeft } from "lucide-react";
 import EditableImage from "~/components/EditableImage/EditableImage";
-
 import InputField from "./InputField";
 import TextAreaField from "./TextAreaField";
 import ProcessList from "./ProcessList";
@@ -12,11 +10,11 @@ import DocumentsList from "./DocumentsList";
 import FeaturesList from "./FeaturesList";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import { handleContent } from "~/utils/handleContent";
+import { globalLoading } from "~/context/LoadingContext";
 
 export default function DashboardServiceEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -33,6 +31,7 @@ export default function DashboardServiceEdit() {
   if (!service) return <div className="p-6">Không tìm thấy dịch vụ</div>;
 
   const handleSave = async () => {
+    globalLoading(true);
     try {
       const newContent = await handleContent(service.content);
       await updateService(id, { ...service, content: newContent });
@@ -40,6 +39,8 @@ export default function DashboardServiceEdit() {
       navigate("/admin/dashboard/services");
     } catch (err) {
       alert("Lỗi khi cập nhật dịch vụ: " + err.message);
+    } finally {
+      globalLoading(false);
     }
   };
 
@@ -47,7 +48,9 @@ export default function DashboardServiceEdit() {
     <div className="p-6 space-y-8">
       {/* Thông tin cơ bản */}
       <div className="bg-white p-6 rounded-lg shadow space-y-4">
-        <h2 className="text-lg font-semibold border-b pb-2">Thông tin cơ bản</h2>
+        <h2 className="text-lg font-semibold border-b pb-2">
+          Thông tin cơ bản
+        </h2>
         <InputField
           label="Tên dịch vụ"
           value={service.name}

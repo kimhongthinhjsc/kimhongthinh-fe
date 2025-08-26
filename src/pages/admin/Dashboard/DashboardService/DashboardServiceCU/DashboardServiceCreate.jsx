@@ -1,11 +1,9 @@
 // src/pages/admin/DashboardServiceCreate.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import { createService } from "~/services/adminAPI";
 import { getCategories } from "~/services/categorieAPI";
 import EditableImage from "~/components/EditableImage/EditableImage";
-
 import InputField from "./InputField";
 import TextAreaField from "./TextAreaField";
 import ProcessList from "./ProcessList";
@@ -13,6 +11,7 @@ import DocumentsList from "./DocumentsList";
 import FeaturesList from "./FeaturesList";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import { handleContent } from "~/utils/handleContent";
+import { globalLoading } from "~/context/LoadingContext";
 
 export default function DashboardServiceCreate() {
   const navigate = useNavigate();
@@ -42,6 +41,7 @@ export default function DashboardServiceCreate() {
   }, []);
 
   const handleSave = async () => {
+    globalLoading(true);
     if (!service.name || !service.category || !service.price) {
       alert("Vui lòng nhập đầy đủ thông tin bắt buộc");
       return;
@@ -54,17 +54,20 @@ export default function DashboardServiceCreate() {
     } catch (err) {
       console.error("❌ Lỗi khi thêm dịch vụ:", err);
       alert("Không thể thêm dịch vụ");
+    } finally {
+      globalLoading(false);
     }
   };
 
   return (
     <div className="p-6 space-y-8">
       {/* Header */}
-    
 
       {/* Thông tin cơ bản */}
       <div className="bg-white p-6 rounded-lg shadow space-y-4">
-        <h2 className="text-lg font-semibold border-b pb-2">Thông tin cơ bản</h2>
+        <h2 className="text-lg font-semibold border-b pb-2">
+          Thông tin cơ bản
+        </h2>
         <InputField
           label="Tên dịch vụ"
           value={service.name}
@@ -74,7 +77,9 @@ export default function DashboardServiceCreate() {
           <label className="block font-semibold mb-1">Danh mục</label>
           <select
             value={service.category}
-            onChange={(e) => setService({ ...service, category: e.target.value })}
+            onChange={(e) =>
+              setService({ ...service, category: e.target.value })
+            }
             className="border rounded p-2 w-full"
           >
             <option value="">-- Chọn danh mục --</option>
