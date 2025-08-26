@@ -26,7 +26,7 @@ export default function FramePage({ children }) {
       <Navbar profile={profile} />
 
       <main className="relative min-h-[300px] h-max w-full ]">
-        {children}
+        <Outlet>{children}</Outlet>
 
         <div className="fixed bottom-6 right-6 flex flex-col gap-3">
           <div className="fixed bottom-6 right-6 flex flex-col gap-3">
