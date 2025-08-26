@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import FramePage from "~/components/FramePage/FramePage";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import { getAllService, getServiceByKeyword } from "~/services/publicAPI";
+import { Link } from "react-router-dom";
 
 // Skeleton component
 const ServiceSkeleton = () => (
@@ -38,62 +38,58 @@ export default function ServicesPage() {
   }, [keyword, page]);
 
   return (
-    <FramePage>
-      <div className="bg-bgPrimary p-6 space-y-6 min-h-screen">
-        {/* SearchBar */}
-        <div className="max-w-md mx-auto">
-          <SearchBar
-            value={keyword}
-            onSearch={(k) => {
-              setPage(1);
-              setKeyword(k);
-            }}
-          />
-        </div>
-
-        {/* Lưới dịch vụ */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {loading
-            ? Array.from({ length: 12 }).map((_, i) => (
-                <ServiceSkeleton key={i} />
-              ))
-            : services.map((item) => (
-                <div
-                  key={item._id}
-                  className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center 
-             hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                >
-                  {/* Hình ảnh */}
-                  <div className="w-48 h-28 mb-4 flex justify-center items-center overflow-hidden shadow-md rounded-lg">
-                    <img
-                      src={item.thumbnail || "/images/default-service.jpg"}
-                      alt={item.name}
-                      className="object-cover w-full h-full transform hover:scale-110 transition duration-300"
-                    />
-                  </div>
-
-                  {/* Tên dịch vụ */}
-                  <h3 className="font-semibold text-lg text-gray-800 mb-2 line-clamp-2">
-                    {item.name}
-                  </h3>
-
-                  {/* Nút xem chi tiết */}
-                  <a
-                    href={`/dich-vu/${item._id}`}
-                    className="btn-ocean w-full"
-                  >
-                    Xem chi tiết
-                  </a>
-                </div>
-              ))}
-
-          {!loading && services.length === 0 && (
-            <div className="col-span-full text-center text-gray-500 mt-6">
-              Không tìm thấy dịch vụ nào.
-            </div>
-          )}
-        </div>
+    <div className="bg-bgPrimary p-6 space-y-6 min-h-screen">
+      {/* SearchBar */}
+      <div className="max-w-md mx-auto">
+        <SearchBar
+          value={keyword}
+          onSearch={(k) => {
+            setPage(1);
+            setKeyword(k);
+          }}
+        />
       </div>
-    </FramePage>
+
+      {/* Lưới dịch vụ */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {loading
+          ? Array.from({ length: 12 }).map((_, i) => <ServiceSkeleton key={i} />)
+          : services.map((item) => (
+              <div
+                key={item._id}
+                className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center 
+                   hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                {/* Hình ảnh */}
+                <div className="w-48 h-28 mb-4 flex justify-center items-center overflow-hidden shadow-md rounded-lg">
+                  <img
+                    src={item.thumbnail || "/images/default-service.jpg"}
+                    alt={item.name}
+                    className="object-cover w-full h-full transform hover:scale-110 transition duration-300"
+                  />
+                </div>
+
+                {/* Tên dịch vụ */}
+                <h3
+                  className="font-semibold text-lg text-gray-800 mb-4 line-clamp-2"
+                  style={{ minHeight: "3.5rem" }} // giữ cố định chiều cao ~2 dòng
+                >
+                  {item.name}
+                </h3>
+
+                {/* Nút xem chi tiết */}
+                <Link to={`/dich-vu/${item._id}`} className="btn-ocean w-full mt-auto">
+                  Xem chi tiết
+                </Link>
+              </div>
+            ))}
+
+        {!loading && services.length === 0 && (
+          <div className="col-span-full text-center text-gray-500 mt-6">
+            Không tìm thấy dịch vụ nào.
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

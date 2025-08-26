@@ -1,4 +1,3 @@
-import FramePage from "~/components/FramePage/FramePage";
 import HeroSection from "./HeroSection";
 import Ecosystem from "~/components/Ecosystem/Ecosystem";
 import Testimonial from "~/components/Testimonial/Testimonial";
@@ -30,7 +29,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <FramePage>
+    <>
       {loading ? (
         <HomePageSkeleton />
       ) : (
@@ -62,6 +61,6 @@ export default function HomePage() {
           </FadeInWhenVisible>
         </>
       )}
-    </FramePage>
+    </>
   );
 }

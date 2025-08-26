@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import FramePage from "~/components/FramePage/FramePage";
 import { getOneNews } from "~/services/publicAPI";
 import NewsDetailSkeleton from "./NewsDetailSkeleton";
 import DOMPurify from "dompurify";
@@ -28,15 +27,15 @@ export default function NewsDetailPage() {
 
   if (loading)
     return (
-      <FramePage>
+      <>
         <NewsDetailSkeleton />
-      </FramePage>
+      </>
     );
 
   if (!news) return <NotFoundPage />;
 
   return (
-    <FramePage>
+    <>
       <article className="max-w-4xl mx-auto bg-white rounded-xl shadow-md p-6 space-y-6">
         {/* Title */}
         <h1 className="text-3xl font-bold text-[#EF5627] leading-snug">
@@ -62,6 +61,6 @@ export default function NewsDetailPage() {
           />
         )}
       </article>
-    </FramePage>
+    </>
   );
 }

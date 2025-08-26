@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchProductById } from "~/services/publicAPI";
-import FramePage from "~/components/FramePage/FramePage";
 
 import ImageCarousel from "~/components/ImageCarousel/ImageCarousel";
 import InfoList from "~/components/InfoList/InfoList";
@@ -29,14 +28,14 @@ const ProductDetailPage = () => {
 
   if (!product) {
     return (
-      <FramePage>
+      <>
         <div className="p-6 text-center">⏳ Đang tải sản phẩm...</div>
-      </FramePage>
+      </>
     );
   }
 
   return (
-    <FramePage>
+    <>
       <div className="p-4 md:p-6 lg:px-24 rounded-2xl shadow-lg">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
           {product.name}
@@ -105,7 +104,7 @@ const ProductDetailPage = () => {
           currentProductId={product._id}
         />
       </div>
-    </FramePage>
+    </>
   );
 };
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import FramePage from "~/components/FramePage/FramePage";
 import { getServiceById } from "~/services/publicAPI";
 import ServiceDetailSkeleton from "./ServiceDetailSkelention";
 import '@ckeditor/ckeditor5-build-classic/build/ckeditor';
@@ -22,15 +21,15 @@ export default function ServiceDetailPage() {
 
   if (loading)
     return (
-      <FramePage>
+      <>
         <ServiceDetailSkeleton />
-      </FramePage>
+      </>
     );
 
-  if (!service) return <FramePage>Dịch vụ không tồn tại.</FramePage>;
+  if (!service) return <>Dịch vụ không tồn tại.</>;
 
   return (
-    <FramePage>
+    <>
       <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-6 space-y-10">
         {/* Header */}
         <div className="flex flex-col lg:flex-row gap-6">
@@ -139,6 +138,6 @@ export default function ServiceDetailPage() {
           </section>
         )}
       </div>
-    </FramePage>
+    </>
   );
 }

@@ -30,7 +30,7 @@ export default function DashboardLayout() {
 
 
 
-  return (
+  return (  
     <div className="flex h-screen">
       <DashboardSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       {isOpen && (

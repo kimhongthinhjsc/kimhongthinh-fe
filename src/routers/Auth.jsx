@@ -1,41 +1,30 @@
-// eslint-disable-next-line no-unused-vars
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import AuthRoute from "~/components/AuthRoute/AuthRoute";
 
+// Lazy load các page
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const Introduce = lazy(() => import("../pages/Introduce/Introduce"));
 const ProductsPage = lazy(() => import("../pages/ProductsPage/ProductsPage"));
+const ProductDetailPage = lazy(() =>
+  import("../pages/ProductDetailPage/ProductDetailPage")
+);
 const ServicesPage = lazy(() => import("../pages/ServicesPage/ServicesPage"));
+const ServiceDetailPage = lazy(() =>
+  import("../pages/ServiceDetailPage/ServiceDetailPage")
+);
 const Contact = lazy(() => import("../pages/Contact/Contact"));
 const NewsPage = lazy(() => import("../pages/NewsPage/NewsPage"));
 const NewsDetailPage = lazy(() => import("../pages/NewsPage/NewsDetailPage"));
 const CareersPage = lazy(() => import("../pages/CareersPage/CareersPage"));
 const EventsPage = lazy(() => import("../pages/EventsPage/EventsPage"));
-const LoginAdmin = lazy(() => import("../pages/admin/LoginAdmin/LoginAdmin"));
-const ProductDetailPage = lazy(() =>
-  import("../pages/ProductDetailPage/ProductDetailPage")
-);
-const ServiceDetailPage = lazy(() =>
-  import("../pages/ServiceDetailPage/ServiceDetailPage")
-);
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
-//Admin
-const DashboardLayout = lazy(() =>
-  import("../pages/admin/Dashboard/DashboardLayout")
-);
-const ForgotPassword = lazy(() =>
-  import("../pages/admin/ForgotPassword/ForgotPassword")
-);
-const ResetPassword = lazy(() =>
-  import("../pages/admin/ResetPassword/ResetPassword")
-);
-const Auth = () => {
+export default function Auth() {
   return (
     <Routes>
+      {/* Routes frontend - sẽ nằm trong FramePage */}
       <Route
-        path="/"
+        index
         element={
           <Suspense fallback={<div></div>}>
             <HomePage />
@@ -43,7 +32,7 @@ const Auth = () => {
         }
       />
       <Route
-        path="/gioi-thieu"
+        path="gioi-thieu"
         element={
           <Suspense fallback={<div></div>}>
             <Introduce />
@@ -51,7 +40,7 @@ const Auth = () => {
         }
       />
       <Route
-        path="/san-pham"
+        path="san-pham"
         element={
           <Suspense fallback={<div></div>}>
             <ProductsPage />
@@ -59,57 +48,7 @@ const Auth = () => {
         }
       />
       <Route
-        path="/dich-vu"
-        element={
-          <Suspense fallback={<div></div>}>
-            <ServicesPage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="/lien-he"
-        element={
-          <Suspense fallback={<div></div>}>
-            <Contact />
-          </Suspense>
-        }
-      />
-      <Route
-        path="/tin-tuc"
-        element={
-          <Suspense fallback={<div></div>}>
-            <NewsPage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="/tin-tuc/:id"
-        element={
-          <Suspense fallback={<div></div>}>
-            <NewsDetailPage />
-          </Suspense>
-        }
-      />
-      <Route
-        path="/tuyen-dung"
-        element={
-          <Suspense fallback={<div></div>}>
-            <CareersPage />
-          </Suspense>
-        }
-      />
-
-      <Route
-        path="/su-kien"
-        element={
-          <Suspense fallback={<div></div>}>
-            <EventsPage />
-          </Suspense>
-        }
-      />
-
-      <Route
-        path="/san-pham/:id"
+        path="san-pham/:id"
         element={
           <Suspense fallback={<div></div>}>
             <ProductDetailPage />
@@ -117,67 +56,64 @@ const Auth = () => {
         }
       />
       <Route
-        path="/dich-vu/:id"
+        path="dich-vu"
+        element={
+          <Suspense fallback={<div></div>}>
+            <ServicesPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="dich-vu/:id"
         element={
           <Suspense fallback={<div></div>}>
             <ServiceDetailPage />
           </Suspense>
         }
       />
-
-      {/* Admin */}
       <Route
-        path="/admin/login"
-        element={
-          <AuthRoute>
-            <Suspense fallback={<div></div>}>
-              <LoginAdmin />
-            </Suspense>
-          </AuthRoute>
-        }
-      />
-      <Route
-        path="/admin/forgot-password"
-        element={
-          <AuthRoute>
-            <Suspense fallback={<div></div>}>
-              <ForgotPassword />
-            </Suspense>
-          </AuthRoute>
-        }
-      />
-      <Route
-        path="/admin/reset-password/:token"
-        element={
-          <AuthRoute>
-            <Suspense fallback={<div></div>}>
-              <ResetPassword />
-            </Suspense>
-          </AuthRoute>
-        }
-      />
-      <Route
-        path="*"
+        path="lien-he"
         element={
           <Suspense fallback={<div></div>}>
-            <NotFoundPage />
+            <Contact />
           </Suspense>
         }
       />
-
       <Route
-        path="/admin/dashboard/*"
+        path="tin-tuc"
         element={
-          <AuthRoute>
-            <Suspense fallback={<div></div>}>
-              <DashboardLayout />
-            </Suspense>
-          </AuthRoute>
+          <Suspense fallback={<div></div>}>
+            <NewsPage />
+          </Suspense>
         }
       />
+      <Route
+        path="tin-tuc/:id"
+        element={
+          <Suspense fallback={<div></div>}>
+            <NewsDetailPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="tuyen-dung"
+        element={
+          <Suspense fallback={<div></div>}>
+            <CareersPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="su-kien"
+        element={
+          <Suspense fallback={<div></div>}>
+            <EventsPage />
+          </Suspense>
+        }
+      />
+      <Route path="/*" element={<NotFoundPage />} />
     </Routes>
   );
-};
-
+}
 export default Auth;
 
