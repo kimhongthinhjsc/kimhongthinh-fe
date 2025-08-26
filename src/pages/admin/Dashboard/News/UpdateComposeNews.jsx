@@ -399,7 +399,6 @@ export default function UpdateComposeNews({ initialData, onContentChange }) {
   };
 
   CustomUploadAdapter.prototype.abort = function () {
-    console.log("Upload aborted");
   };
 
   function CustomUploadAdapterPlugin(editor) {

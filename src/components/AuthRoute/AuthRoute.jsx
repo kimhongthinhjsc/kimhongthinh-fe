@@ -7,7 +7,6 @@ export default function AuthRoute({ children }) {
   const [isAuth, setIsAuth] = useState(null);
   const accessToken = localStorage.getItem("accessToken");
   const location = useLocation();
-  console.log(location);
   useEffect(() => {
     const verifyAuth = async () => {
       if (accessToken) {

@@ -12,7 +12,6 @@ export default function BehaviorRulesAdmin({ data, onChange }) {
     onChange({ ...data, vision: { ...data.vision, [field]: value } });
   const handleBannerChange = (val) => onChange({ ...data, banner: val });
 
-  console.log("BehaviorRulesAdmin data:", data);
   return (
     <section className="space-y-12">
       {/* Banner */}

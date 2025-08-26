@@ -389,14 +389,12 @@ export default function ComposeNews({ onContentChange }) {
   CustomUploadAdapter.prototype.upload = function () {
     return this.loader.file
       .then(async (file) => {
-        console.log("Uploading file:", file);
         const data = await uploadImage(file);
         return { default: data.url };
       });
   };
 
   CustomUploadAdapter.prototype.abort = function () {
-    console.log("Upload aborted");
   };
 
   function CustomUploadAdapterPlugin(editor) {
@@ -420,7 +418,6 @@ export default function ComposeNews({ onContentChange }) {
                   const wordCount = editor.plugins.get('WordCount');
                   editorWordCountRef.current.appendChild(wordCount.wordCountContainer);
                   editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-                    console.log("Creating custom upload adapter");
                     return new CustomUploadAdapter(loader);
                   }
                 }}
