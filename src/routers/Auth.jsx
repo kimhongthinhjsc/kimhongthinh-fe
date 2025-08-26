@@ -42,6 +42,7 @@ const Auth = () => {
             <FramePage>
               <Suspense fallback={<div></div>}>
                 <Routes>
+                  <Route index element={<HomePage />} />
                   <Route path="/" element={<HomePage />} />
                   <Route path="/gioi-thieu" element={<Introduce />} />
                   <Route path="/san-pham" element={<ProductsPage />} />

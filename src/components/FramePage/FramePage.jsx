@@ -5,6 +5,7 @@ import Phone from "../Phone/Phone";
 import ChatZalo from "../ChatZalo/ChatZalo";
 import { getCompanyProfile } from "~/services/publicAPI";
 import React, { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 
 export default function FramePage({ children }) {
   const [profile, setProfile] = useState(null);
