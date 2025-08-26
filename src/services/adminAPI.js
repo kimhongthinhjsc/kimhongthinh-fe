@@ -50,7 +50,6 @@ export const createNews = async (news) => {
 
 export const updateNews = async (news) => {
   if (typeof news.image !== "string") {
-    console.log("Uploading new image...");
     const formData = new FormData();
     formData.append("file", news.image);
     const resImage = await api.post(`/upload/image`, formData);
