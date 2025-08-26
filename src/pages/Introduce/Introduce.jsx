@@ -1,6 +1,5 @@
 import "./Introduce.scss";
 import React, { useEffect, useState } from "react";
-import FramePage from "~/components/FramePage/FramePage";
 import SomethingAbout from "./SomethingAbout";
 import VideoSection from "./VideoSection";
 import RoadSection from "./RoadSection";
@@ -32,14 +31,14 @@ export default function Introduce() {
 
   if (loading) {
     return (
-      <FramePage>
+      <>
         <IntroduceSkeleton />
-      </FramePage>
+      </>
     );
   }
 
   return (
-    <FramePage>
+    <>
       <div className="w-full">
         <FadeInWhenVisible>
           <section id="sds_banner">
@@ -69,6 +68,6 @@ export default function Introduce() {
           <ClientsTestimonials data={introduceData?.testimonials} />
         </FadeInWhenVisible>
       </div>
-    </FramePage>
+    </>
   );
 }

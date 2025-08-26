@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import FramePage from "~/components/FramePage/FramePage";
 import posts from "~/mock/Posts.js";
 import Pagination from "~/components/Pagination/Pagination";
 import { getNewsList } from "~/services/publicAPI";
@@ -36,7 +35,7 @@ export default function NewsPage() {
   }, [currentPage]);
 
   return (
-    <FramePage>
+    <>
       <div className="w-full">
         {/* Banner */}
         <section id="sds_banner" className="w-full">
@@ -119,6 +118,6 @@ export default function NewsPage() {
           </div>
         </section>
       </div >
-    </FramePage >
+    </ >
   );
 }

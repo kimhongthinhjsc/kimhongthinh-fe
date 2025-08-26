@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import FramePage from "~/components/FramePage/FramePage";
 import jobs from "~/mock/Jobs.js";
 import WhySoftdreams from "~/components/WhySoftdreams/WhySoftdreams";
 import RecruitmentProcess from "~/components/RecruitmentProcess/RecruitmentProcess";
@@ -17,7 +16,7 @@ export default function CareersPage() {
   const currentJobs = jobs.slice(startIndex, startIndex + jobsPerPage);
 
   return (
-    <FramePage>
+    <>
       <div className="w-full">
         {/* Banner */}
         <CareersBanner />
@@ -42,6 +41,6 @@ export default function CareersPage() {
         {/* Recruitment FAQ */}
         <RecruitmentFAQ />
       </div>
-    </FramePage>
+    </>
   );
 }

@@ -34,12 +34,13 @@ export default function EditHeroSection({ data, onChange }) {
       className="relative w-full bg-cover bg-center bg-no-repeat text-white rounded-xl overflow-hidden"
       style={{ backgroundImage: `url('${hero.background || ""}')` }}
     >
-      <div className="absolute inset-0 bg-black/40" />
+      <EditableImage
+        src={hero.background}
+        onChange={(val) => setHero({ logo: val })}
+        label="background"
+      />
 
       <div className="relative z-10 p-6 md:p-10">
-        <div className="mb-4 bg-white/10 backdrop-blur-sm rounded-lg p-3 inline-flex items-center gap-3">
-          <span className="text-sm opacity-80">Ảnh nền:</span>
-        </div>
         <h2 className="text-3xl md:text-5xl font-bold mb-4">
           <EditableField
             value={hero.title}

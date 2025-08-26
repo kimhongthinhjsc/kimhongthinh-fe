@@ -30,7 +30,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <FramePage>
+    <>
       {loading ? (
         <HomePageSkeleton />
       ) : (
@@ -62,6 +62,6 @@ export default function HomePage() {
           </FadeInWhenVisible>
         </>
       )}
-    </FramePage>
+    </>
   );
 }

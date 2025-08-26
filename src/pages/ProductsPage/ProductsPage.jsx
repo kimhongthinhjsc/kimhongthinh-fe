@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import FramePage from "~/components/FramePage/FramePage";
 import Pagination from "~/components/Pagination/Pagination";
 import { fetchProducts, searchProductsbyKeyword } from "~/services/publicAPI";
 import { getCategories } from "~/services/categorieAPI";
@@ -91,7 +90,7 @@ const ProductsPage = () => {
   }, [currentPage, keyword, selectedCategory]);
 
   return (
-    <FramePage>
+    <>
       <div className="bg-bgPrimary p-4 md:p-6 space-y-6 min-h-screen">
         {/* Filter + Search */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 flex-wrap">
@@ -188,7 +187,7 @@ const ProductsPage = () => {
           />
         )}
       </div>
-    </FramePage>
+    </>
   );
 };
 

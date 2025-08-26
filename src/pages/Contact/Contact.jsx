@@ -1,11 +1,10 @@
 import "./Contact.scss";
-import FramePage from "~/components/FramePage/FramePage";
 import React from "react";
 import { profile } from "~/mock/CompanyProfile.js";
 
 export default function Contact() {
   return (
-    <FramePage>
+    <>
       <div className="contact">
         <h1 className="contact__title">LIÊN HỆ</h1>
         <div className="contact__container">
@@ -102,6 +101,6 @@ export default function Contact() {
           </div>
         </div>
       </div>
-    </FramePage>
+    </>
   );
 }

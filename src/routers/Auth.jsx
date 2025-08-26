@@ -2,6 +2,7 @@
 import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import AuthRoute from "~/components/AuthRoute/AuthRoute";
+import FramePage from "~/components/FramePage/FramePage";
 
 const HomePage = lazy(() => import("../pages/HomePage/HomePage"));
 const Introduce = lazy(() => import("../pages/Introduce/Introduce"));
@@ -35,14 +36,31 @@ const Auth = () => {
   return (
     <Routes>
       <Route
-        path="/"
+        path="/*"
         element={
           <Suspense fallback={<div></div>}>
-            <HomePage />
+            <FramePage>
+              <Suspense fallback={<div></div>}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/gioi-thieu" element={<Introduce />} />
+                  <Route path="/san-pham" element={<ProductsPage />} />
+                  <Route path="/san-pham/:id" element={<ProductDetailPage />} />
+                  <Route path="/dich-vu" element={<ServicesPage />} />
+                  <Route path="/dich-vu/:id" element={<ServiceDetailPage />} />
+                  <Route path="/lien-he" element={<Contact />} />
+                  <Route path="/tin-tuc" element={<NewsPage />} />
+                  <Route path="/tin-tuc/:id" element={<NewsDetailPage />} />
+                  <Route path="/tuyen-dung" element={<CareersPage />} />
+                  <Route path="/su-kien" element={<EventsPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
+            </FramePage>
           </Suspense>
         }
       />
-      <Route
+      {/* <Route
         path="/gioi-thieu"
         element={
           <Suspense fallback={<div></div>}>
@@ -156,15 +174,6 @@ const Auth = () => {
           </AuthRoute>
         }
       />
-      <Route
-        path="*"
-        element={
-          <Suspense fallback={<div></div>}>
-            <NotFoundPage />
-          </Suspense>
-        }
-      />
-
       <Route
         path="/admin/dashboard/*"
         element={
