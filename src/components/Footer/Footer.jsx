@@ -4,23 +4,8 @@ import { Link } from "react-router-dom";
 import { FaFacebook, FaYoutube, FaTiktok } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiZalo } from "react-icons/si";
-import { getCompanyProfile } from "~/services/publicAPI";
 
-export default function Footer() {
-  const [profile, setProfile] = useState(null);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const data = await getCompanyProfile();
-      setProfile(data);
-    };
-    fetchProfile();
-  }, []);
-
-  if (!profile) {
-    return null; // hoặc có thể trả ra skeleton loading
-  }
-
+export default function Footer({ profile }) {
   return (
     <footer
       className="bg-[#F0F1F4] text-[#363F69] pt-8 px-6 md:px-20"
