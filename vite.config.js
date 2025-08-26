@@ -9,9 +9,6 @@ export default defineConfig({
       "~": path.resolve(__dirname, "src"),
     },
   },
-  build: {
-    sourcemap: true, // ✅ bật sourcemap để trace lỗi về file gốc
-  },
   server: {
     proxy: {
       "/api": "http://localhost:5000", // mọi request /api sẽ chuyển đến backend

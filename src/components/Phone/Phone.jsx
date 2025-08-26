@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import phone from "~/assets/icon/phone.svg";
 
-export default function Phone({phone = ""}) {
+export default function Phone({phoneNumber = ""}) {
   const [hover, setHover] = useState(false);
 
   return (
     <a
-      href={`tel:${phone}`}
+      href={`tel:${phoneNumber}`}
       className="relative w-12 h-12 cursor-pointer rounded-full bg-green-500 flex items-center justify-center shadow-md transition-transform duration-200 ease-in-out hover:scale-110 hover:shadow-xl"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
