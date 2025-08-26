@@ -15,14 +15,12 @@ export default function MyEditor() {
     CustomUploadAdapter.prototype.upload = function () {
         return this.loader.file
             .then(async (file) => {
-                console.log(file);
                 const data = await uploadImage(file);
                 return { default: data.url };
             });
     };
 
     CustomUploadAdapter.prototype.abort = function () {
-        console.log("Upload aborted");
     };
 
     function CustomUploadAdapterPlugin(editor) {

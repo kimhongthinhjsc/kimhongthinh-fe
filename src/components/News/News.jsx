@@ -7,7 +7,6 @@ export default function News() {
 
   useEffect(async () => {
     const data = await getNewsList(1, 4);
-    console.log(data);
     setNewsList(data.news);
   }, []);
 

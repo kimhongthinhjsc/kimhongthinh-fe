@@ -22,7 +22,6 @@ export default function DashboardProducts() {
   const loadProducts = async () => {
     setLoading(true);
     if (search.trim()) {
-      console.log("Searching for:", search);
       const data = await searchProductsbyKeyword({
         keyword: search,
         currentPage,
