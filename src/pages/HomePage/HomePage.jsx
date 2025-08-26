@@ -1,4 +1,3 @@
-import FramePage from "~/components/FramePage/FramePage";
 import HeroSection from "./HeroSection";
 import Ecosystem from "~/components/Ecosystem/Ecosystem";
 import Testimonial from "~/components/Testimonial/Testimonial";
