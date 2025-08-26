@@ -1,11 +1,9 @@
 // src/pages/admin/DashboardServiceCreate.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import { createService } from "~/services/adminAPI";
 import { getCategories } from "~/services/categorieAPI";
 import EditableImage from "~/components/EditableImage/EditableImage";
-
 import InputField from "./InputField";
 import TextAreaField from "./TextAreaField";
 import ProcessList from "./ProcessList";
