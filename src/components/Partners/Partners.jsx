@@ -5,7 +5,6 @@ export default function Partners({ data }) {
   if (!data) return null;
 
   const { title, images } = data;
-
   return (
     <section className="bg-gray-50 py-12 px-4 md:px-8 overflow-hidden">
       <div className="w-full text-center">
