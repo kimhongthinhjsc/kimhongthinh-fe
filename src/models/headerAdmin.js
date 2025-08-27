@@ -32,6 +32,11 @@ const headerAdminDetail = [
   {
     path: "/admin/dashboard/news/create",
     name: "Thêm mới tin tức",
+  },
+  { path: "/admin/dashboard/events/update", name: "Cập nhật sự kiện" },
+  {
+    path: "/admin/dashboard/events/create",
+    name: "Thêm mới sự kiện",
   }
 ];
 

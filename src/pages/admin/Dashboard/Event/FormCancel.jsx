@@ -28,15 +28,16 @@ export default function CancelButton() {
                 Hủy
               </button>
               <button
-                onClick={() => navigate("/admin/dashboard/news")}
+                onClick={() => navigate("/admin/dashboard/events")}
                 className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition"
               >
                 Đồng ý
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </div >
+      )
+      }
     </>
   );
 }
