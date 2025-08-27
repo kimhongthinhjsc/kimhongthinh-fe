@@ -14,7 +14,6 @@ export default function EditableImage({
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    console.log("src changed:", src);
     if (typeof src === "object" ) {
       handleFileChange(src);
     }

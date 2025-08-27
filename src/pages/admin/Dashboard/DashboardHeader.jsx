@@ -10,24 +10,32 @@ export default function DashboardHeader({ onMenuClick }) {
   const dropdownRef = useRef(null);
   const location = useLocation();
 
-  // Tìm route chi tiết
+  // Tìm route chi tiết (route khớp chính xác)
   const detailRoute = headerAdminDetail.find((item) =>
     matchPath({ path: item.path, end: true }, location.pathname)
   );
 
-  // Nếu là route con, tìm route cha trong functionAdmin
-  const parentRoute =
-    detailRoute &&
-    headerAdminDetail.find(
-      (item) =>
-        location.pathname.startsWith(item.path) &&
-        location.pathname !== item.path // loại bỏ route chính
-    );
+  // Tìm route cha gần nhất
+  let parentRoute = null;
+  if (detailRoute) {
+    const pathParts = location.pathname.split("/").filter(Boolean);
 
-  // Tiêu đề hiện tại
-  const currentTitle = detailRoute?.name || parentRoute?.name || "Nội dung chính";
+    // bỏ bớt phần cuối và tìm lại trong headerAdminDetail
+    for (let i = pathParts.length - 1; i > 0; i--) {
+      const parentPath = "/" + pathParts.slice(0, i).join("/");
+      const match = headerAdminDetail.find((item) => item.path === parentPath);
+      if (match) {
+        parentRoute = match;
+        break;
+      }
+    }
+  }
 
-  // Hiển thị nút quay lại chỉ khi route là con
+  // Tiêu đề
+  const currentTitle =
+    detailRoute?.name || parentRoute?.name || "Nội dung chính";
+
+  // Nút quay lại
   const showBack = !!parentRoute;
   const handleBack = () => parentRoute && navigate(parentRoute.path);
 
@@ -57,7 +65,7 @@ export default function DashboardHeader({ onMenuClick }) {
           onClick={handleBack}
           className="text-gray-500 hover:text-gray-700 font-bold"
         >
-         <IoMdArrowRoundBack size={32}/>
+          <IoMdArrowRoundBack size={32} />
         </button>
       )}
       {currentTitle}
