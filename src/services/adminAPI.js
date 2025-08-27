@@ -81,6 +81,51 @@ export const deleteNews = async (id) => {
   return res.data;
 };
 
+export const createEvent = async (event) => {
+  const formData = new FormData();
+  formData.append("file", event.image);
+  const resImage = await api.post(`/upload/image`, formData);
+
+  if (resImage.status === 200) {
+    event.image = resImage.data.url; // Lưu URL ảnh đã upload
+  }
+  const res = await api.post(`/events`, event);
+  return res.data;
+};
+
+export const updateEvent = async (event) => {
+  if (typeof event.image !== "string") {
+    const formData = new FormData();
+    formData.append("file", event.image);
+    const resImage = await api.post(`/upload/image`, formData);
+    if (resImage.status === 200) {
+      event.image = resImage.data.url; // Lưu URL ảnh đã upload
+    }
+  }
+  const res = await api.put(`/events/${event._id}`, event);
+  return res.data;
+};
+
+export const getEventList = async (page, limit) => {
+  const res = await api.get(`/events/find/all?page=${page}&limit=${limit}`);
+  return res.data;
+};
+
+export const getOneEventById = async (id) => {
+  const res = await api.get(`/events/findId/${id}`);
+  return res.data;
+};
+
+export const getOneEvent = async (titleLink) => {
+  const res = await api.get(`/events/${titleLink}`);
+  return res.data;
+};
+
+export const deleteEvent = async (id) => {
+  const res = await api.delete(`/events/${id}`);
+  return res.data;
+};
+
 export const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);

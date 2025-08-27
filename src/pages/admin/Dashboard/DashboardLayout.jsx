@@ -10,7 +10,9 @@ const DashboardServices = lazy(() => import("./DashboardService/DashboardService
 const DashboardNews = lazy(() => import("./News/ListNews"));
 const DashboardCreateNews = lazy(() => import("./News/News"));
 const DashboardUpdateNews = lazy(() => import("./News/UpdateNews"));
-const DashboardEvents = lazy(() => import("./Events"));
+const DashboardEvent = lazy(() => import("./Event/ListEvents"));
+const DashboardCreateEvent = lazy(() => import("./Event/Event"));
+const DashboardUpdateEvent = lazy(() => import("./Event/UpdateEvent"));
 const DashboardCareers = lazy(() => import("./Careers"));
 const DashboardActivities = lazy(() => import("./Activities"));
 const DashboardContact = lazy(() => import("./Contact"));
@@ -27,7 +29,7 @@ export default function DashboardLayout() {
 
 
 
-  return (  
+  return (
     <div className="flex h-screen">
       <DashboardSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
       {isOpen && (
@@ -54,7 +56,9 @@ export default function DashboardLayout() {
               <Route path="/news" element={<DashboardNews />} />
               <Route path="/news/create" element={<DashboardCreateNews />} />
               <Route path="/news/update" element={<DashboardUpdateNews />} />
-              <Route path="/events" element={<DashboardEvents />} />
+              <Route path="/events" element={<DashboardEvent />} />
+              <Route path="/events/create" element={<DashboardCreateEvent />} />
+              <Route path="/events/update" element={<DashboardUpdateEvent />} />
               <Route path="/careers" element={<DashboardCareers />} />
               <Route path="/activities" element={<DashboardActivities />} />
               <Route path="/contact" element={<DashboardContact />} />

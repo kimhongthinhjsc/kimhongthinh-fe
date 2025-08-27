@@ -8,10 +8,10 @@ import EventForm from "~/components/EventForm/EventForm";
 export default function EventsPage({ events = [] }) {
   return (
     <>
-      <EventHeader events={events} />
+      <EventHeader />
       <EventSearch />
-      <EventComing events={events} />
-      <EventFinish events={events} />
+      <EventComing />
+      <EventFinish />
       <EventForm />
     </>
   );
