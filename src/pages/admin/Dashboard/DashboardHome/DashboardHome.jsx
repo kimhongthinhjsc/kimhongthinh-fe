@@ -49,7 +49,6 @@ export default function DashboardHome() {
   };
 
   if (isLoading || !draft) return <DashboardHomeSkeleton />;
-
   return (
     <div>
       <EditHeroSection data={draft} onChange={handleChange} />
