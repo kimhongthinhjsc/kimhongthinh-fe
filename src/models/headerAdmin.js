@@ -1,6 +1,7 @@
 // model/headerAdmin.js
 
 const headerAdminDetail = [
+  { name: "Tổng quan", path: "/admin/dashboard" },
   { name: "Tổng quan", path: "/admin/dashboard/stats" },
   { name: "Trang chủ", path: "/admin/dashboard/home" },
   { name: "Giới thiệu", path: "/admin/dashboard/introduce" },
