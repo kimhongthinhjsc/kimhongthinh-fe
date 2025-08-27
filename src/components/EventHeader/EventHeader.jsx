@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import { getEventList } from "~/services/adminAPI";
+import { getEventUpcoming } from "~/services/publicAPI";
 
 // Skeleton component
 function EventHeaderSkeleton() {
@@ -24,7 +24,7 @@ export default function EventHeader() {
 
   const getData = async () => {
     try {
-      const data = await getEventList(1, 10);
+      const data = await getEventUpcoming(1, 10);
       setEvents(data.events || []);
     } finally {
       setLoading(false);
