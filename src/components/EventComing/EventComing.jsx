@@ -1,6 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getEventUpcoming } from "~/services/publicAPI";
 
-export default function EventComing({ events }) {
+// Skeleton Card
+function EventCardSkeleton() {
+  return (
+    <div className="bg-gray-50 rounded-xl shadow p-4 animate-pulse">
+      <div className="w-full h-48 bg-gray-300 rounded-lg"></div>
+      <div className="mt-4 h-5 bg-gray-300 rounded w-3/4"></div>
+      <div className="mt-2 h-4 bg-gray-200 rounded w-1/2"></div>
+      <div className="mt-4 h-10 bg-gray-300 rounded-lg w-28"></div>
+    </div>
+  );
+}
+
+export default function EventComing() {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const data = await getEventUpcoming(1, 10);
+      setEvents(data.events || []);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section id="event_coming" className="py-12 bg-white">
       <div className="container mx-auto px-4">
@@ -8,7 +37,14 @@ export default function EventComing({ events }) {
           Sắp diễn ra
         </h2>
 
-        {events.length === 0 ? (
+        {loading ? (
+          // Skeleton khi đang load
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <EventCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : events.length === 0 ? (
           <h1 className="text-center text-gray-600">
             Hiện chưa có sự kiện nào sắp diễn ra!
           </h1>
@@ -16,7 +52,7 @@ export default function EventComing({ events }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => (
               <div
-                key={event.id}
+                key={event._id}
                 className="bg-gray-50 rounded-xl shadow hover:shadow-lg transition p-4"
               >
                 <img
@@ -30,23 +66,18 @@ export default function EventComing({ events }) {
                 <p className="text-sm text-gray-500 mt-2">
                   {new Date(event.date).toLocaleDateString("vi-VN")}
                 </p>
-                <a
-                  href={event.link}
-                  className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
-                  Xem chi tiết
-                </a>
+                {event.titleLink && (
+                  <a
+                    href={`/su-kien/${event.titleLink}`}
+                    className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    Xem chi tiết
+                  </a>
+                )}
               </div>
             ))}
           </div>
         )}
-
-        {/* Load more button (nếu cần sau này) */}
-        {/* <div className="flex justify-center mt-8">
-          <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Xem thêm &gt;
-          </button>
-        </div> */}
       </div>
     </section>
   );

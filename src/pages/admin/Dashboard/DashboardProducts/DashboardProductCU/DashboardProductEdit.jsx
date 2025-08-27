@@ -199,7 +199,7 @@ export default function DashboardProductEdit() {
         <label className="block font-semibold">Hình ảnh</label>
         <ImageUploader
           images={product.images || []}
-          setImages={(imgs) => setProduct({ ...product, images: imgs })}
+          onChange={(imgs) => setProduct({ ...product, images: imgs })}
         />
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Pencil, Check, Loader2 } from "lucide-react";
 import { uploadImage } from "~/services/adminAPI";
 
@@ -13,8 +13,13 @@ export default function EditableImage({
   const [preview, setPreview] = useState(src);
   const fileInputRef = useRef(null);
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files?.[0];
+  useEffect(() => {
+    if (typeof src === "object" ) {
+      handleFileChange(src);
+    }
+  }, [src]);
+
+  const handleFileChange = async (file) => {
     if (!file) return;
 
     setPreview(URL.createObjectURL(file));
@@ -40,7 +45,10 @@ export default function EditableImage({
   };
 
   return (
-    <div className={`relative ${className} cursor-pointer`} onClick={() => fileInputRef.current?.click()}>
+    <div
+      className={`relative ${className} cursor-pointer`}
+      onClick={() => fileInputRef.current?.click()}
+    >
       <img
         src={preview || "https://via.placeholder.com/300x200?text=No+Image"}
         alt="preview"
@@ -71,7 +79,7 @@ export default function EditableImage({
         accept="image/*"
         className="hidden"
         ref={fileInputRef}
-        onChange={handleFileChange}
+        onChange={(e) => handleFileChange(e.target.files?.[0])}
       />
     </div>
   );

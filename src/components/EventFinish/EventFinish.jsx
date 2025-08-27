@@ -1,13 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getEventPast } from "~/services/publicAPI";
 import EventCard from "../EventCard/EventCard";
-import events from "~/mock/Events";
 
+// Skeleton cho card sự kiện
+function EventCardSkeleton() {
+  return (
+    <div className="bg-white rounded-xl shadow p-4 animate-pulse">
+      <div className="w-full h-48 bg-gray-300 rounded-lg"></div>
+      <div className="mt-4 h-5 bg-gray-300 rounded w-3/4"></div>
+      <div className="mt-2 h-4 bg-gray-200 rounded w-1/2"></div>
+      <div className="mt-4 h-10 bg-gray-300 rounded-lg w-28"></div>
+    </div>
+  );
+}
 
 export default function EventFinish() {
-  // Lọc ra những sự kiện đã qua
-  const finishedEvents = events.filter(
-    (event) => new Date(event.date) < new Date()
-  );
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const data = await getEventPast(1, 10);
+      setEvents(data.events || []);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section id="event_finish" className="py-12 bg-gray-100">
@@ -16,12 +38,19 @@ export default function EventFinish() {
           Sự kiện đã diễn ra
         </h2>
 
-        {finishedEvents.length === 0 ? (
+        {loading ? (
+          // Hiện skeleton 6 cái cho đẹp
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <EventCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : events.length === 0 ? (
           <p className="text-gray-600">Chưa có sự kiện nào đã diễn ra.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {finishedEvents.map((event) => (
-              <EventCard key={event.id} event={event} />
+            {events.map((event) => (
+              <EventCard key={event._id || event.id} event={event} />
             ))}
           </div>
         )}

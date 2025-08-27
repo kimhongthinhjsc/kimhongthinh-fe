@@ -8,28 +8,11 @@ import CoreValue from "./CoreValue";
 import ClientsTestimonials from "./ClientsTestimonials";
 import IntroduceSkeleton from "./IntroduceSkeleton";
 import FadeInWhenVisible from "~/components/FramerMotion/FadeInWhenVisible";
-import { getIntroduce } from "~/services/publicAPI";
+import { useIntroduce } from "~/hooks/usePublic";
 
 export default function Introduce() {
-  const [introduceData, setIntroduceData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchIntroduceData = async () => {
-      try {
-        const data = await getIntroduce();
-        setIntroduceData(data);
-      } catch (error) {
-        console.error("Failed to fetch introduce data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchIntroduceData();
-  }, []);
-
-  if (loading) {
+  const { data: introduceData, isLoading } = useIntroduce();
+  if (isLoading) {
     return (
       <>
         <IntroduceSkeleton />
@@ -43,7 +26,7 @@ export default function Introduce() {
         <FadeInWhenVisible>
           <section id="sds_banner">
             <img
-              src={introduceData?.banner || null}
+              src={introduceData?.banner || ""}
               alt="Kim Hồng Thịnh JSC"
               className="w-full h-28 sm:h-40 md:h-48 lg:h-60 object-cover"
             />
