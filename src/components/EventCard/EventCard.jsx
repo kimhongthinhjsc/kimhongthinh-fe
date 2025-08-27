@@ -22,9 +22,9 @@ export default function EventCard({ event }) {
       </p>
 
       {/* Link xem chi tiết */}
-      {event.link && (
+      {event.titleLink && (
         <a
-          href={event.link}
+          href={`/su-kien/${event.titleLink}`}
           className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
         >
           Xem chi tiết

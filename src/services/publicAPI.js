@@ -121,3 +121,27 @@ export const getOneNews = async (titleLink) => {
     return { success: false, news: null };
   }
 };
+
+export const getEventList = async (page, limit) => {
+  const res = await api.get(`/events/find/all?page=${page}&limit=${limit}`);
+  return res.data;
+};
+
+export const getEventUpcoming = async (page, limit) => {
+  const res = await api.get(`/events/find/upcoming?page=${page}&limit=${limit}`);
+  return res.data;
+};
+
+export const getEventPast = async (page, limit) => {
+  const res = await api.get(`/events/find/past?page=${page}&limit=${limit}`);
+  return res.data;
+};
+
+export const getOneEvent = async (titleLink) => {
+  try {
+    const res = await api.get(`/events/${titleLink}`);
+    return res.data;
+  } catch (error) {
+    return { success: false, event: null };
+  }
+};

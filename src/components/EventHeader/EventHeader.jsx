@@ -1,11 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import { getEventUpcoming } from "~/services/publicAPI";
 
+// Skeleton component
+function EventHeaderSkeleton() {
+  return (
+    <div className="w-full h-[400px] flex items-center justify-center animate-pulse bg-gray-200">
+      <div className="bg-gray-300 w-2/3 h-20 rounded-lg"></div>
+    </div>
+  );
+}
 
-export default function EventHeader({ events }) {
+export default function EventHeader() {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const data = await getEventUpcoming(1, 10);
+      setEvents(data.events || []);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section
       id="event_header"
@@ -15,7 +40,9 @@ export default function EventHeader({ events }) {
           "url('https://softdreams.vn/wp-content/uploads/2024/02/banner.png')",
       }}
     >
-      {events.length === 0 ? (
+      {loading ? (
+        <EventHeaderSkeleton />
+      ) : events.length === 0 ? (
         <div className="flex items-center justify-center h-full">
           <h1 className="text-2xl md:text-3xl font-semibold text-white text-center">
             Hiện chưa có sự kiện nào sắp diễn ra!
@@ -30,7 +57,7 @@ export default function EventHeader({ events }) {
           className="w-full h-full"
         >
           {events.map((event) => (
-            <SwiperSlide key={event.id}>
+            <SwiperSlide key={event._id || event.id}>
               <div
                 className="w-full h-[400px] flex items-center justify-center bg-cover bg-center"
                 style={{ backgroundImage: `url(${event.image})` }}

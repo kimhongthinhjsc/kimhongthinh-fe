@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import ComposeNewsUpdate from "./UpdateComposeNews";
+import ComposeEventUpdate from "./UpdateComposeEvent";
 import { useLocation, useNavigate } from "react-router-dom";
-import './News.scss';
-import { getOneNewsById, updateNews } from "~/services/adminAPI";
+import './Event.scss';
+import { getOneEventById, updateEvent } from "~/services/adminAPI";
 import CancelButton from "./FormCancel";
 import FormSubmit from "./FormSubmit";
 import UpdateNewsSkeleton from "../../../../components/News/NewsSkeleton";
@@ -12,8 +12,11 @@ export default function UpdateNews() {
   const [titleLink, setTitleLink] = useState("");
   const [preview, setPreview] = useState(null);
   const [image, setImage] = useState(null);
-  const [date, setDate] = useState("");
+  const [updatedAt, setUpdatedAt] = useState("");
   const [author, setAuthor] = useState("");
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
+  const [datePreview, setDatePreview] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const { state } = useLocation();
@@ -27,12 +30,14 @@ export default function UpdateNews() {
     setTimeout(() => setToast(null), 5000); // 3 giây tự biến mất
   };
 
-  const newsData = {
+  const eventData = {
     _id: state?.id,
     title,
     titleLink,
     author,
     content,
+    location,
+    updatedAt,
     date,
     image: image // hoặc URL ảnh sau khi upload
   };
@@ -40,20 +45,32 @@ export default function UpdateNews() {
   const getNews = async () => {
     try {
       setLoadingData(true);
-      const data = await getOneNewsById(state?.id);
-      setAuthor(data.news.author);
-      setContent(data.news.content);
-      setImage(data.news.image);
-      setPreview(data.news.image ? data.news.image : null);
-      setTitle(data.news.title);
-      setTitleLink(data.news.titleLink);
-      setDate(new Date().toLocaleString("vi-VN"));
+      const data = await getOneEventById(state?.id);
+      setAuthor(data.event.author);
+      setContent(data.event.content);
+      setImage(data.event.image);
+      setPreview(data.event.image ? data.event.image : null);
+      setTitle(data.event.title);
+      setTitleLink(data.event.titleLink);
+      setLocation(data.event.location);
+      setLocation(data.event.location || "");
+      setDate(data.event.date);
+      setDatePreview(toISOString(new Date(data.event.date).getTime() - 7 * 60 * 60 * 1000));
+      setUpdatedAt(new Date().toLocaleString("vi-VN"));
     } catch (error) {
-      console.error("Lỗi khi lấy tin tức:", error);
+      console.error("Lỗi khi lấy sự kiện:", error);
     } finally {
       setLoadingData(false);
     }
   };
+
+  // luôn trả về local string cho datetime-local
+  function isoToLocalString(isoString) {
+    if (!isoString) return "";
+    const d = new Date(isoString);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 16); // YYYY-MM-DDTHH:mm
+  }
 
   useEffect(() => {
     getNews();
@@ -74,14 +91,14 @@ export default function UpdateNews() {
     }
   };
   const handleSubmit = async () => {
-    if (!title || !image || !author || !content) {
+    if (!title || !image || !author || !content || !location || !date) {
       setError("⚠️ Vui lòng nhập đầy đủ thông tin!");
       return;
     }
     setError("");
     try {
       setLoading(true); // ✅ bật loading
-      await updateNews(newsData);
+      await updateEvent(eventData);
       showToast("Cập nhật thành công!", "success"); // ✅ dùng toast
       setTimeout(() => {
         navigate(-1); // quay lại trang trước đó
@@ -111,6 +128,17 @@ export default function UpdateNews() {
     setTitle(newTitle);
     setTitleLink(generateSlug(newTitle)); // tự động sinh slug
   };
+
+  function toLocalInputValue(isoString) {
+    if (!isoString) return "";
+    const d = new Date(isoString);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 16); // YYYY-MM-DDTHH:mm
+  }
+
+  function toISOString(value) {
+    return new Date(value).toISOString(); // convert local -> UTC
+  }
 
   return (
     <div className="news-admin-container">
@@ -163,11 +191,32 @@ export default function UpdateNews() {
           </div>
 
           <div className="news-admin-date">
-            <strong>Ngày cập nhật:</strong> {date}
+            <strong>Ngày cập nhật:</strong> {updatedAt}
+          </div>
+
+          <div>
+            <label>Địa điểm *</label>
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Nhập địa điểm tổ chức..."
+              required
+            />
+          </div>
+
+          <div className="news-admin-date">
+            <strong>Ngày tổ chức:</strong>{" "}
+            <input
+              type="datetime-local"
+              value={toLocalInputValue(datePreview)}
+              onChange={(e) => { setDate(e.target.value); setDatePreview(isoToLocalString(e.target.value)); }} // lưu tạm theo dạng YYYY-MM-DDTHH:mm
+              className="border rounded p-1"
+            />
           </div>
 
           {image ? (
-            <ComposeNewsUpdate onContentChange={setContent} initialData={content} />
+            <ComposeEventUpdate onContentChange={setContent} initialData={content} />
           ) : (
             <p className="text-gray-500">Không có dữ liệu, vui lòng quay lại danh sách.</p>
           )}

@@ -6,13 +6,15 @@ export default function EventSearch() {
       <div className="container mx-auto px-4 flex justify-center">
         <div className="max-w-3xl text-center">
           <p className="text-lg md:text-xl font-medium text-gray-700 leading-relaxed">
-            SoftDreams - Với sứ mệnh{" "}
+            <span className="font-bold text-red-600">KIM HỒNG THỊNH JSC</span> - Với sứ mệnh{" "}
             <span className="font-semibold text-blue-600">
               “Nâng tầm quản trị doanh nghiệp”
-            </span>{" "}
-            chúng tôi luôn mong muốn đem đến những giá trị hữu ích tới Quý
-            khách hàng qua các sự kiện
+            </span>
+            <br />
+            Hãy cùng chúng tôi theo dõi và tham gia các sự kiện sắp tới để không
+            bỏ lỡ những cơ hội quý giá!
           </p>
+
         </div>
       </div>
     </section>
