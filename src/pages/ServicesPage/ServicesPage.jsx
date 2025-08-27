@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SearchBar from "~/components/SearchBar/SearchBar";
-import { getAllService, getServiceByKeyword } from "~/services/publicAPI";
 import { Link } from "react-router-dom";
+import { useServices } from "~/hooks/usePublic";
 
 // Skeleton component
 const ServiceSkeleton = () => (
@@ -14,28 +14,13 @@ const ServiceSkeleton = () => (
 
 export default function ServicesPage() {
   const [keyword, setKeyword] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [services, setServices] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const limit = 12;
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      setLoading(true);
-      let data;
-      if (keyword.trim() === "") {
-        data = await getAllService();
-        setServices(data.services || []);
-        setTotalPages(1);
-      } else {
-        data = await getServiceByKeyword(keyword, page, 12);
-        setServices(data.services || []);
-        setTotalPages(data.totalPages);
-      }
-      setLoading(false);
-    };
-    fetchServices();
-  }, [keyword, page]);
+  const { data, isLoading } = useServices({ keyword, page, limit });
+
+  const services = data?.services || [];
+  const totalPages = data?.totalPages || 1;
 
   return (
     <div className="bg-bgPrimary p-6 space-y-6 min-h-screen">
@@ -52,8 +37,8 @@ export default function ServicesPage() {
 
       {/* Lưới dịch vụ */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {loading
-          ? Array.from({ length: 12 }).map((_, i) => <ServiceSkeleton key={i} />)
+        {isLoading
+          ? Array.from({ length: limit }).map((_, i) => <ServiceSkeleton key={i} />)
           : services.map((item) => (
               <div
                 key={item._id}
@@ -72,7 +57,7 @@ export default function ServicesPage() {
                 {/* Tên dịch vụ */}
                 <h3
                   className="font-semibold text-lg text-gray-800 mb-4 line-clamp-2"
-                  style={{ minHeight: "3.5rem" }} // giữ cố định chiều cao ~2 dòng
+                  style={{ minHeight: "3.5rem" }}
                 >
                   {item.name}
                 </h3>
@@ -84,12 +69,29 @@ export default function ServicesPage() {
               </div>
             ))}
 
-        {!loading && services.length === 0 && (
+        {!isLoading && services.length === 0 && (
           <div className="col-span-full text-center text-gray-500 mt-6">
             Không tìm thấy dịch vụ nào.
           </div>
         )}
       </div>
+
+      {/* Pagination nếu cần */}
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-6 gap-2">
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setPage(i + 1)}
+              className={`px-4 py-2 rounded-lg ${
+                page === i + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -5,32 +5,16 @@ import ContactHotline from "~/components/ContactHotline/ContactHotline";
 import CulturePeople from "~/components/CulturePeople/CulturePeople";
 import Partners from "~/components/Partners/Partners";
 import News from "~/components/News/News";
-import { useEffect, useState } from "react";
-import { fetchHomeData } from "~/services/publicAPI";
 import HomePageSkeleton from "./HomePageSkeleton";
 import FadeInWhenVisible from "~/components/FramerMotion/FadeInWhenVisible";
+import { useHome } from "~/hooks/usePublic";
 
 export default function HomePage() {
-  const [homeData, setHomeData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const data = await fetchHomeData();
-        setHomeData(data);
-      } catch (err) {
-        console.error("Failed to fetch home data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
-  }, []);
+  const { data: homeData, isLoading } = useHome();
 
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <HomePageSkeleton />
       ) : (
         <>
@@ -59,6 +43,7 @@ export default function HomePage() {
           <FadeInWhenVisible delay={0.6} direction="bottom">
             <ContactHotline data={homeData?.contact} />
           </FadeInWhenVisible>
+         
         </>
       )}
     </>
