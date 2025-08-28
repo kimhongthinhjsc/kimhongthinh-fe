@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { createProduct } from "~/services/adminAPI";
 import { getCategories } from "~/services/categorieAPI";
 import { getSubcategories } from "~/services/publicAPI";
-
-import EditableImage from "~/components/EditableImage/EditableImage";
 import InputField from "~/components/InputField/InputField";
 import TextAreaField from "~/components/TextAreaField/TextAreaField";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
@@ -13,6 +11,7 @@ import SpecList from "./SpecList";
 import { globalLoading } from "~/context/LoadingContext";
 import { handleContent } from "~/utils/handleContent";
 import ImageUploader from "~/components/ImageUploader/ImageUploader";
+import CategorySelector from "./CategorySelector";
 export default function DashboardProductCreate() {
   const navigate = useNavigate();
 
@@ -31,24 +30,6 @@ export default function DashboardProductCreate() {
     highlights: [],
     specifications: [],
   });
-
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
-
-  useEffect(() => {
-    loadCategories();
-    loadSubcategories();
-  }, []);
-
-  const loadCategories = async () => {
-    const res = await getCategories();
-    setCategories(res.categories || res);
-  };
-
-  const loadSubcategories = async () => {
-    const res = await getSubcategories();
-    setSubcategories(res.subcategories || res);
-  };
 
   const handleSave = async () => {
     globalLoading(true);
@@ -133,43 +114,7 @@ export default function DashboardProductCreate() {
       </div>
 
       {/* Category & Subcategory */}
-      <div className="bg-white p-4 rounded-lg shadow grid grid-cols-2 gap-4">
-        <div>
-          <label className="block font-semibold">Danh mục</label>
-          <select
-            className="border rounded p-2 w-full"
-            value={product.categoryId}
-            onChange={(e) =>
-              setProduct({ ...product, categoryId: e.target.value })
-            }
-          >
-            <option value="">-- Chọn danh mục --</option>
-            {categories.map((c) => (
-              <option key={c._id} value={c._id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className="block font-semibold">Danh mục con</label>
-          <select
-            className="border rounded p-2 w-full"
-            value={product.subcategoryId}
-            onChange={(e) =>
-              setProduct({ ...product, subcategoryId: e.target.value })
-            }
-          >
-            <option value="">-- Chọn danh mục con --</option>
-            {subcategories.map((s) => (
-              <option key={s._id} value={s._id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+      <CategorySelector product={product} setProduct={setProduct} />
 
       {/* Images */}
       <div className="bg-white p-4 rounded-lg shadow space-y-3">

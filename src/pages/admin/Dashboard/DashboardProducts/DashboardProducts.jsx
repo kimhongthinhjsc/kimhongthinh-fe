@@ -4,21 +4,26 @@ import SearchBar from "~/components/SearchBar/SearchBar";
 import ProductTable from "./ProductTable";
 import ProductTableSkeleton from "./ProductTableSkeleton";
 import Pagination from "~/components/Pagination/Pagination";
-import { useProducts } from "~/hooks/usePublic";
+import { useProducts, useCategory } from "~/hooks/usePublic";
+import CategoryFilter from "~/pages/ProductsPage/CategoryFilter";
 
 export default function DashboardProducts() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const itemsPerPage = 10;
 
   const navigate = useNavigate();
+
+  const { data: categoryData } = useCategory();
+  const categories = categoryData?.categories || [];
 
   // Dùng hook useProducts
   const { data, isLoading, isFetching } = useProducts({
     page: currentPage,
     limit: itemsPerPage,
     keyword: search,
-    categoryId: null, // không filter theo category
+    categoryId: selectedCategory, // không filter theo category
   });
 
   const products = data?.products || [];
@@ -50,6 +55,11 @@ export default function DashboardProducts() {
           setSearch(k);
           setCurrentPage(1); // reset trang khi search
         }}
+      />
+      <CategoryFilter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onSelect={setSelectedCategory}
       />
 
       {/* Danh sách sản phẩm */}
