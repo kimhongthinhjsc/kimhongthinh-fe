@@ -19,7 +19,6 @@ function App() {
             </FramePage>
           }
         />
-
         {/* Admin routes */}
         <Route path="/admin/*" element={<AuthAdmin />} />
       </Routes>

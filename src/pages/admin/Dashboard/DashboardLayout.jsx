@@ -8,11 +8,9 @@ const DashboardIntroduce = lazy(() => import("./DashboardIntroduce/DashboardIntr
 const DashboardProducts = lazy(() => import("./DashboardProducts/DashboardProducts"));
 const DashboardServices = lazy(() => import("./DashboardService/DashboardService"));
 const DashboardNews = lazy(() => import("./News/ListNews"));
-const DashboardCreateNews = lazy(() => import("./News/News"));
-const DashboardUpdateNews = lazy(() => import("./News/UpdateNews"));
+const DashboardEditNews = lazy(() => import("./News/News"));
 const DashboardEvent = lazy(() => import("./Event/ListEvents"));
-const DashboardCreateEvent = lazy(() => import("./Event/Event"));
-const DashboardUpdateEvent = lazy(() => import("./Event/UpdateEvent"));
+const DashboardEditEvent = lazy(() => import("./Event/Event"));
 const DashboardCareers = lazy(() => import("./Careers"));
 const DashboardActivities = lazy(() => import("./Activities"));
 const DashboardContact = lazy(() => import("./Contact"));
@@ -54,11 +52,11 @@ export default function DashboardLayout() {
               <Route path="/products" element={<DashboardProducts />} />
               <Route path="/services" element={<DashboardServices />} />
               <Route path="/news" element={<DashboardNews />} />
-              <Route path="/news/create" element={<DashboardCreateNews />} />
-              <Route path="/news/update" element={<DashboardUpdateNews />} />
+              <Route path="/news/create" element={<DashboardEditNews />} />
+              <Route path="/news/update" element={<DashboardEditNews />} />
               <Route path="/events" element={<DashboardEvent />} />
-              <Route path="/events/create" element={<DashboardCreateEvent />} />
-              <Route path="/events/update" element={<DashboardUpdateEvent />} />
+              <Route path="/events/create" element={<DashboardEditEvent />} />
+              <Route path="/events/update" element={<DashboardEditEvent />} />
               <Route path="/careers" element={<DashboardCareers />} />
               <Route path="/activities" element={<DashboardActivities />} />
               <Route path="/contact" element={<DashboardContact />} />
