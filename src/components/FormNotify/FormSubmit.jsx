@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-export default function FormSubmit({ handle, update, children, fields }) {
+export default function FormSubmit({ handle, update, isDisabled }) {
     const [showModal, setShowModal] = useState(false);
-    const isDisabled = !fields.title || !fields.image || !fields.author || !fields.content;
 
     return (
         <>
@@ -14,7 +13,7 @@ export default function FormSubmit({ handle, update, children, fields }) {
                 className={`px-6 py-2 rounded-lg font-semibold text-white transition
           ${isDisabled ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`}
             >
-                {children || (update ? "Cập nhật" : "Đăng tin")}
+                {(update ? "Cập nhật" : "Đăng tin")}
             </button>
 
             {/* Modal xác nhận */}

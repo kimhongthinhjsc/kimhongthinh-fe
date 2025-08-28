@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function CancelButton() {
+export default function CancelButton({urlBack}) {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ export default function CancelButton() {
                 Hủy
               </button>
               <button
-                onClick={() => navigate("/admin/dashboard/events")}
+                onClick={() => navigate(urlBack)}
                 className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition"
               >
                 Đồng ý
