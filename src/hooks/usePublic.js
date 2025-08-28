@@ -21,7 +21,8 @@ export const useHome = () => {
   return useQuery({
     queryKey: ["home"],
     queryFn: fetchHomeData,
-    staleTime: 1000 * 60 * 1, // dữ liệu giữ tươi 5 phút
+    keepPreviousData: true,
+    staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 2, // dữ liệu giữ trong cache 10 phút
   });
 };
@@ -31,7 +32,8 @@ export const useIntroduce = () => {
   return useQuery({
     queryKey: ["introduce"],
     queryFn: getIntroduce,
-    staleTime: 1000 * 60 * 1,
+    keepPreviousData: true,
+    staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 2,
   });
 };
@@ -48,7 +50,7 @@ export const useProducts = ({ page, limit, categoryId, keyword }) => {
       return fetchProducts(page, limit, categoryId);
     },
     keepPreviousData: true, // giữ data cũ khi page đổi
-    staleTime: 1000 * 60 * 10, // 10 phút
+    staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 60, // 1 giờ
     initialData: () => {
       // lấy cache từ queryClient nếu có
@@ -75,7 +77,7 @@ export const useServices = ({ keyword, page, limit = 12 }) => {
       return getServiceByKeyword(keyword, page, limit);
     },
     keepPreviousData: true,
-    staleTime: 1000 * 60 * 5, // 5 phút
+    staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 10, // 10 phút
   });
 };
@@ -84,7 +86,7 @@ export const useNews = ({ page, limit }) => {
     queryKey: ["news", page, limit],
     queryFn: () => getNewsList(page, limit),
     keepPreviousData: true, // giữ dữ liệu cũ khi chuyển trang
-    staleTime: 1000 * 30, // tin tức có thể đổi nhưng không quá nhanh
+    staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 1,
   });
 };
@@ -102,7 +104,8 @@ export const useProductsInfinite = ({ limit = 8, categoryId, keyword }) => {
       if (lastPage.products.length < limit) return undefined;
       return allPages.length + 1;
     },
-    staleTime: 1000 * 60 * 10,
+    keepPreviousData: true,
+    staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 60,
   });
 };
@@ -112,7 +115,7 @@ export const useCategory = () => {
     queryKey: ["categories"],
     queryFn: getCategories,
     keepPreviousData: true,
-    staleTime: 1000 * 60 * 10, // giữ tươi 10 phút
+    staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 60, // cache 1 giờ
   });
 };
@@ -121,7 +124,7 @@ export const useCompanyInfo = () => {
     queryKey: ["companyProfile"],
     queryFn: getCompanyProfile,
     keepPreviousData: true,
-    staleTime: 1000 * 60 * 5, // cache 5 phút
+    staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 10,
   });
 };

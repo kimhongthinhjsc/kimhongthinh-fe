@@ -8,7 +8,8 @@ export const useStatsVisits = () => {
   return useQuery({
     queryKey: ["statsVisits"],
     queryFn: fetchStatsVisits,
-    staleTime: 1000 * 60 * 1, // giữ tươi 1 phút
+    keepPreviousData: true,
+   staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 5, // cache 5 phút
     retry: 1, // thử lại 1 lần nếu lỗi
   });
@@ -20,7 +21,8 @@ export const useCompanyProfile = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["companyProfile"],
     queryFn: getCompanyProfile,
-    staleTime: 1000 * 60 * 5, // 5 phút
+    keepPreviousData: true,
+ staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 10, // 10 phút
   });
 
