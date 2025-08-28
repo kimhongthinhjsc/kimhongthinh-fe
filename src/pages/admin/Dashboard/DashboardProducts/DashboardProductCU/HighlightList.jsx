@@ -61,3 +61,4 @@ export default function HighlightList({ highlights, onChange }) {
     </div>
   );
 }
+
