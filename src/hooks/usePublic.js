@@ -1,5 +1,5 @@
 // src/hooks/usePublic.js
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient , useInfiniteQuery } from "@tanstack/react-query";
 import {
   fetchHomeData,
   getIntroduce,
@@ -7,8 +7,10 @@ import {
   searchProductsbyKeyword,
   getAllService,
   getServiceByKeyword,
-  getNewsList 
+  getNewsList,
+
 } from "~/services/publicAPI";
+import { getCategories } from "~/services/categorieAPI";
 
 // Trang chủ
 export const useHome = () => {
@@ -30,21 +32,31 @@ export const useIntroduce = () => {
   });
 };
 
-// Sản phẩm
 export const useProducts = ({ page, limit, categoryId, keyword }) => {
+  const queryClient = useQueryClient(); // ⚡ cần khai báo ở đây
+
   return useQuery({
-    queryKey: ["products", { page, limit, categoryId, keyword }],
+    queryKey: ["products", { page, categoryId, keyword }],
     queryFn: async () => {
       if (keyword) {
         return searchProductsbyKeyword({ keyword, page, limit });
       }
       return fetchProducts(page, limit, categoryId);
     },
-    keepPreviousData: true, // giữ data cũ khi chuyển trang
-    staleTime: 0, // luôn fresh khi đổi filter
-    cacheTime: 1000 * 60 * 1,
+    keepPreviousData: true, // giữ data cũ khi page đổi
+    staleTime: 1000 * 60 * 10, // 10 phút
+    cacheTime: 1000 * 60 * 60, // 1 giờ
+    initialData: () => {
+      // lấy cache từ queryClient nếu có
+      const cached = queryClient.getQueryData([
+        "products",
+        { page, categoryId, keyword },
+      ]);
+      return cached || undefined;
+    },
   });
 };
+
 export const useServices = ({ keyword, page, limit = 12 }) => {
   return useQuery({
     queryKey: ["services", { keyword, page, limit }],
@@ -67,7 +79,35 @@ export const useNews = ({ page, limit }) => {
     queryKey: ["news", page, limit],
     queryFn: () => getNewsList(page, limit),
     keepPreviousData: true, // giữ dữ liệu cũ khi chuyển trang
-    staleTime: 1000 * 30,   // tin tức có thể đổi nhưng không quá nhanh
+    staleTime: 1000 * 30, // tin tức có thể đổi nhưng không quá nhanh
     cacheTime: 1000 * 60 * 1,
+  });
+};
+
+export const useProductsInfinite = ({ limit = 8, categoryId, keyword }) => {
+  return useInfiniteQuery({
+    queryKey: ["products", { categoryId, keyword }],
+    queryFn: async ({ pageParam = 1 }) => {
+      if (keyword) {
+        return searchProductsbyKeyword({ keyword, page: pageParam, limit });
+      }
+      return fetchProducts(pageParam, limit, categoryId);
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.products.length < limit) return undefined;
+      return allPages.length + 1;
+    },
+    staleTime: 1000 * 60 * 10,
+    cacheTime: 1000 * 60 * 60,
+  });
+};
+
+export const useCategory = () => {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+     keepPreviousData: true,
+    staleTime: 1000 * 60 * 10, // giữ tươi 10 phút
+    cacheTime: 1000 * 60 * 60, // cache 1 giờ
   });
 };

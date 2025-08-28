@@ -26,21 +26,21 @@ export default function HomePage() {
             <Ecosystem data={homeData?.ecosystem} />
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.4}>
+          <FadeInWhenVisible delay={0.3}>
             <Testimonial data={homeData?.testimonial} />
           </FadeInWhenVisible>
 
           <CulturePeople data={homeData?.culture} />
 
-          <FadeInWhenVisible delay={0.6}>
+          <FadeInWhenVisible delay={0.3}>
             <Partners data={homeData?.partners} />
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.6}>
+          <FadeInWhenVisible delay={0.3}>
             <News data={homeData?.news} />
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.6} direction="bottom">
+          <FadeInWhenVisible delay={0.3} direction="bottom">
             <ContactHotline data={homeData?.contact} />
           </FadeInWhenVisible>
          

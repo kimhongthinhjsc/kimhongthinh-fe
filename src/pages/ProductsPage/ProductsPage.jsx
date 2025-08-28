@@ -1,35 +1,45 @@
-import React, { useEffect, useState } from "react";
-import Pagination from "~/components/Pagination/Pagination";
-import { getCategories } from "~/services/categorieAPI";
+import React, { useEffect, useState, useRef } from "react";
+
 import SearchBar from "~/components/SearchBar/SearchBar";
-import { useProducts } from "~/hooks/usePublic";
+import { useProductsInfinite, useCategory  } from "~/hooks/usePublic";
 import CategoryFilter from "./CategoryFilter";
 import ProductGrid from "./ProductGrid";
+import ProductSkeleton from "./ProductSkeleton";
 
 const ProductsPage = () => {
-  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [keyword, setKeyword] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const limit = 12;
 
+  const observerRef = useRef(null);
+  const limit = 8;
+
+ const { data: categoryData } = useCategory();
+  const categories = categoryData?.categories || [];
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useProductsInfinite({ limit, categoryId: selectedCategory, keyword });
+
+  const allProducts = data?.pages.flatMap((page) => page.products) || [];
+
+  // Intersection Observer: load thêm khi sản phẩm cuối xuất hiện
   useEffect(() => {
-    const loadCategories = async () => {
-      const data = await getCategories();
-      setCategories(data.categories || []);
-    };
-    loadCategories();
-  }, []);
+    if (!hasNextPage) return;
+    const el = observerRef.current;
+    if (!el) return;
 
-  const { data, isLoading } = useProducts({
-    page: currentPage,
-    limit,
-    categoryId: selectedCategory,
-    keyword,
-  });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 }
+    );
 
-  const products = data?.products || [];
-  const totalPages = data?.totalPages || 1;
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage]);
 
   return (
     <div className="bg-bgPrimary p-4 md:p-6 space-y-6 min-h-screen">
@@ -38,32 +48,38 @@ const ProductsPage = () => {
         <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
-          onSelect={(catId) => {
-            setSelectedCategory(catId);
-            setCurrentPage(1);
-          }}
+          onSelect={setSelectedCategory}
         />
         <div className="w-full md:flex-1 md:max-w-sm min-w-0">
-          <SearchBar
-            value={keyword}
-            onSearch={(k) => {
-              setKeyword(k);
-              setCurrentPage(1);
-            }}
-          />
+          <SearchBar value={keyword} onSearch={setKeyword} />
         </div>
       </div>
 
       {/* Products grid */}
-      <ProductGrid products={products} isLoading={isLoading} limit={limit} />
+      <ProductGrid products={allProducts} isLoading={isLoading} limit={limit} />
 
-      {/* Pagination */}
-      {!isLoading && totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+      {/* Skeleton loading khi load thêm */}
+      {isFetchingNextPage && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <ProductSkeleton key={i} />
+          ))}
+        </div>
+      )}
+
+      {/* Element observe sản phẩm cuối */}
+      {hasNextPage && <div ref={observerRef} className="h-10"></div>}
+
+      {/* Hết dữ liệu */}
+      {!hasNextPage && allProducts.length > 0 && (
+        <p className="text-center text-gray-500 py-6">Đã tải hết sản phẩm</p>
+      )}
+
+      {/* Không có sản phẩm */}
+      {!isLoading && allProducts.length === 0 && (
+        <p className="text-center text-gray-500 py-6">
+          Không tìm thấy sản phẩm nào.
+        </p>
       )}
     </div>
   );
