@@ -1,29 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { fetchStatsVisits } from "~/services/adminAPI";
+import React from "react";
 import StatsSkeleton from "./StatsSkeleton";
+import { useStatsVisits } from "~/hooks/useAdmin";
+import VisitsChart from "./VisitsChart";
 
 export default function DashboardStatsSection() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, error } = useStatsVisits();
 
-  useEffect(() => {
-    const loadStats = async () => {
-      setLoading(true);
-      try {
-        const res = await fetchStatsVisits();
-        setData(res);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadStats();
-  }, []);
+  if (isLoading || !data) return <StatsSkeleton />;
+  if (error) return <div className="text-red-500">Lỗi tải số liệu</div>;
 
-  if (loading || !data) return <StatsSkeleton />;
-
-  const { total, today, week, month, uniqueVisitors, topPages } = data;
+  const { total, today, week, month, year, uniqueVisitors, topPages,
+          hourlyChartToday, dailyChartWeek, dailyChartMonth, monthlyChartYear } = data;
 
   const pageNames = {
     "/api/v1/home": "Trang chủ",
@@ -31,6 +18,8 @@ export default function DashboardStatsSection() {
     "/api/v1/introduce": "Giới thiệu",
     "/api/v1/services": "Dịch vụ",
     "/api/v1/news": "Tin tức",
+    "/api/v1/company-profile": "Thông tin công ty",
+    "/api/v1/news/find/all": "Tin tức",
   };
 
   return (
@@ -53,16 +42,27 @@ export default function DashboardStatsSection() {
           <div className="text-2xl font-bold">{month}</div>
         </div>
         <div className="p-4 bg-red-50 rounded">
+          <div className="text-gray-500">Năm này</div>
+          <div className="text-2xl font-bold">{year}</div>
+        </div>
+        <div className="p-4 bg-pink-50 rounded">
           <div className="text-gray-500">Người truy cập duy nhất</div>
           <div className="text-2xl font-bold">{uniqueVisitors}</div>
         </div>
       </div>
 
+      <VisitsChart
+        hourlyChartToday={hourlyChartToday}
+        dailyChartWeek={dailyChartWeek}
+        dailyChartMonth={dailyChartMonth}
+        monthlyChartYear={monthlyChartYear}
+      />
+
       <div>
         <h3 className="text-lg font-semibold mt-4 mb-2">Các trang hàng đầu</h3>
         <ul className="space-y-1">
           {topPages
-            .filter((page) => pageNames[page._id]) // chỉ lấy các api có trong mapping
+            .filter((page) => pageNames[page._id])
             .map((page) => (
               <li key={page._id} className="flex justify-between border-b py-1">
                 <span>{pageNames[page._id]}</span>

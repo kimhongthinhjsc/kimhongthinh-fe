@@ -3,7 +3,7 @@ import { Pencil } from "lucide-react";
 
 export default function ProductTable({ products, onEdit }) {
   const formatPrice = (price) => {
-    if (!price) return "0₫";
+    if (!price) return "—"; // dấu gạch ngang dài
     return price.toLocaleString("vi-VN") + "₫";
   };
 

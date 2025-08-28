@@ -1,5 +1,9 @@
 // src/hooks/usePublic.js
-import { useQuery, useQueryClient , useInfiniteQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueryClient,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 import {
   fetchHomeData,
   getIntroduce,
@@ -8,7 +12,7 @@ import {
   getAllService,
   getServiceByKeyword,
   getNewsList,
-
+  getCompanyProfile,
 } from "~/services/publicAPI";
 import { getCategories } from "~/services/categorieAPI";
 
@@ -62,16 +66,17 @@ export const useServices = ({ keyword, page, limit = 12 }) => {
     queryKey: ["services", { keyword, page, limit }],
     queryFn: async () => {
       if (!keyword || keyword.trim() === "") {
-        // không có keyword → lấy tất cả
         const data = await getAllService();
-        return { services: data.services || [], totalPages: 1 };
+        const totalPages = Math.ceil((data.services?.length || 0) / limit);
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        return { services: data.services.slice(start, end), totalPages };
       }
-      // có keyword → search
       return getServiceByKeyword(keyword, page, limit);
     },
     keepPreviousData: true,
-    staleTime: 0,
-    cacheTime: 1000 * 60 * 1,
+    staleTime: 1000 * 60 * 5, // 5 phút
+    cacheTime: 1000 * 60 * 10, // 10 phút
   });
 };
 export const useNews = ({ page, limit }) => {
@@ -106,8 +111,17 @@ export const useCategory = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
-     keepPreviousData: true,
+    keepPreviousData: true,
     staleTime: 1000 * 60 * 10, // giữ tươi 10 phút
     cacheTime: 1000 * 60 * 60, // cache 1 giờ
+  });
+};
+export const useCompanyInfo = () => {
+  return useQuery({
+    queryKey: ["companyProfile"],
+    queryFn: getCompanyProfile,
+    keepPreviousData: true,
+    staleTime: 1000 * 60 * 5, // cache 5 phút
+    cacheTime: 1000 * 60 * 10,
   });
 };

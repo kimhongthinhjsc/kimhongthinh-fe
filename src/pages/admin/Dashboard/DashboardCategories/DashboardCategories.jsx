@@ -1,26 +1,21 @@
-// src/pages/admin/DashboardCategories.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import SearchBar from "~/components/SearchBar/SearchBar";
+import CategoryTable from "./CategoryTable";
+import CategoryModal from "./CategoryModal";
+import Pagination from "~/components/Pagination/Pagination";
+import CategoryTableSkeleton from "./CategoryTableSkeleton";
+import { useCategory } from "~/hooks/usePublic";
 import {
-  getCategories,
   createCategory,
   updateCategory,
   deleteCategory,
   createSubcategory,
   deleteSubcategory,
 } from "~/services/categorieAPI";
-import SearchBar from "~/components/SearchBar/SearchBar";
-import CategoryTable from "./CategoryTable";
-import CategoryModal from "./CategoryModal";
-import Pagination from "~/components/Pagination/Pagination";
-import CategoryTableSkeleton from "./CategoryTableSkeleton";
 
 export default function DashboardCategories() {
-  const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
 
   // modal state
@@ -29,26 +24,19 @@ export default function DashboardCategories() {
   const [isAddingSub, setIsAddingSub] = useState(false);
   const [parentId, setParentId] = useState(null);
 
-  useEffect(() => {
-    loadCategories();
-  }, [currentPage, search]);
+  // Dùng hook useCategory
+  const { data, isLoading, refetch } = useCategory();
+  const categoriesAll = data?.categories || [];
 
-  const loadCategories = async () => {
-    try {
-      setLoading(true);
-      const res = await getCategories({
-        page: currentPage,
-        limit: itemsPerPage,
-        search: search || "",
-      });
-      setCategories(res.categories || []);
-      setTotalPages(res.totalPages || 1);
-    } catch (err) {
-      console.error("Lỗi load categories:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Filter theo search và pagination
+  const filteredCategories = categoriesAll.filter((cat) =>
+    cat.name.toLowerCase().includes(search.toLowerCase())
+  );
+  const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
+  const categories = filteredCategories.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handleDelete = async (id, isSub = false) => {
     if (window.confirm("Xóa danh mục này?")) {
@@ -57,7 +45,7 @@ export default function DashboardCategories() {
       } else {
         await deleteCategory(id);
       }
-      loadCategories();
+      refetch();
     }
   };
 
@@ -85,7 +73,7 @@ export default function DashboardCategories() {
       } else {
         await createCategory({ name: newName });
       }
-      loadCategories();
+      refetch();
     } catch (err) {
       console.error("❌ handleSave error:", err);
     } finally {
@@ -120,7 +108,7 @@ export default function DashboardCategories() {
         }}
       />
 
-      {loading ? (
+      {isLoading ? (
         <CategoryTableSkeleton />
       ) : (
         <CategoryTable
@@ -130,13 +118,13 @@ export default function DashboardCategories() {
           onAddSub={handleAddSub}
         />
       )}
+
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
       />
 
-      {/* Modal thêm/sửa */}
       <CategoryModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}

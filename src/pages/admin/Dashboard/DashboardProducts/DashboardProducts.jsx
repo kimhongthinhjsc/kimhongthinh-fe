@@ -1,48 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchProducts, searchProductsbyKeyword } from "~/services/publicAPI";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import ProductTable from "./ProductTable";
 import ProductTableSkeleton from "./ProductTableSkeleton";
 import Pagination from "~/components/Pagination/Pagination";
+import { useProducts } from "~/hooks/usePublic";
 
 export default function DashboardProducts() {
-  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
-
   const itemsPerPage = 10;
 
-  useEffect(() => {
-    loadProducts();
-  }, [currentPage, search]);
-
-  const loadProducts = async () => {
-    setLoading(true);
-    if (search.trim()) {
-      const data = await searchProductsbyKeyword({
-        keyword: search,
-        currentPage,
-        itemsPerPage,
-      });
-      setProducts(data.products || []);
-      setTotalPages(data.totalPages || 1);
-    } else {
-      const data = await fetchProducts(currentPage, itemsPerPage);
-      setProducts(data.products || []);
-      setTotalPages(data.totalPages || 1);
-    }
-    setLoading(false);
-  };
-
-  const handleAddSuccess = () => {
-    setShowModal(false);
-    loadProducts();
-  };
-
   const navigate = useNavigate();
+
+  // Dùng hook useProducts
+  const { data, isLoading, isFetching } = useProducts({
+    page: currentPage,
+    limit: itemsPerPage,
+    keyword: search,
+    categoryId: null, // không filter theo category
+  });
+
+  const products = data?.products || [];
+  const totalPages = data?.totalPages || 1;
+
   const handleEdit = (id) => {
     navigate(`/admin/dashboard/products/${id}/edit`);
   };
@@ -67,19 +48,19 @@ export default function DashboardProducts() {
         value={search}
         onSearch={(k) => {
           setSearch(k);
-          setCurrentPage(1);
+          setCurrentPage(1); // reset trang khi search
         }}
       />
 
       {/* Danh sách sản phẩm */}
-      {loading ? (
+      {isLoading || isFetching ? (
         <ProductTableSkeleton rows={itemsPerPage} />
       ) : (
         <ProductTable products={products} onEdit={handleEdit} />
       )}
 
       {/* Pagination */}
-      {!loading && (
+      {!isLoading && !isFetching && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

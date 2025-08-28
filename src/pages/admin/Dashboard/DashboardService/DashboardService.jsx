@@ -1,92 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllService, getServiceByKeyword } from "~/services/publicAPI";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import ServiceTable from "./ServiceTable";
-// Table component riêng
+import { useServices } from "~/hooks/usePublic";
+import ServiceTableSkeleton from "./ServiceTableSkeleton";
 
 export default function DashboardServices() {
-  const [services, setServices] = useState([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
-
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadServices();
-  }, [currentPage, search]);
+  const { data, isLoading } = useServices({
+    keyword: search,
+    page: currentPage,
+    limit: itemsPerPage,
+  });
 
-  const loadServices = async () => {
-    setLoading(true);
-    let data;
-    if (search) {
-      data = await getServiceByKeyword(search, currentPage, itemsPerPage);
-    } else {
-      const all = await getAllService();
-      // phân trang thủ công nếu API chưa hỗ trợ
-      const total = all.services.length;
-      const start = (currentPage - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
-      data = {
-        services: all.services.slice(start, end),
-        totalPages: Math.ceil(total / itemsPerPage),
-      };
-    }
-    setServices(data.services || []);
-    setTotalPages(data.totalPages || 1);
-    setLoading(false);
-  };
+  const services = data?.services || [];
+  const totalPages = data?.totalPages || 1;
 
-
-  const handleEdit = (id) => {
-    navigate(`/admin/dashboard/services/${id}/edit`);
-  };
-
-  const handleAddService = () => {
-    navigate(`/admin/dashboard/services/create`);
-  };
-
-  // Skeleton
-  const renderSkeleton = () => (
-    <div className="overflow-x-auto border rounded">
-      <table className="w-full border-collapse">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="border p-2 w-20">Ảnh</th>
-            <th className="border p-2">Tên dịch vụ</th>
-            <th className="border p-2 w-36">Danh mục</th>
-            <th className="border p-2 w-28">Giá</th>
-            <th className="border p-2 w-20">Sửa</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.from({ length: itemsPerPage }).map((_, i) => (
-            <tr key={i} className="animate-pulse">
-              <td className="border p-2">
-                <div className="w-12 h-12 bg-gray-200 rounded mx-auto" />
-              </td>
-              <td className="border p-2">
-                <div className="h-4 bg-gray-200 rounded w-40" />
-              </td>
-              <td className="border p-2 text-center">
-                <div className="h-4 bg-gray-200 rounded w-24 mx-auto" />
-              </td>
-              <td className="border p-2 text-center">
-                <div className="h-4 bg-gray-200 rounded w-16 mx-auto" />
-              </td>
-              <td className="border p-2 text-center">
-                <div className="h-4 bg-gray-200 rounded w-10 mx-auto" />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+  const handleEdit = (id) => navigate(`/admin/dashboard/services/${id}/edit`);
+  const handleAddService = () => navigate(`/admin/dashboard/services/create`);
 
   return (
     <div className="p-6 space-y-6">
@@ -107,14 +42,14 @@ export default function DashboardServices() {
         }}
       />
 
-      {loading ? (
-        renderSkeleton()
+      {isLoading ? (
+        <ServiceTableSkeleton rows={itemsPerPage} />
       ) : (
         <ServiceTable services={services} onEdit={handleEdit} />
       )}
 
       {/* Pagination */}
-      {!loading && (
+      {!isLoading && (
         <div className="flex justify-center gap-2 mt-4">
           <button
             disabled={currentPage === 1}
@@ -143,7 +78,6 @@ export default function DashboardServices() {
           </button>
         </div>
       )}
-    
     </div>
   );
 }

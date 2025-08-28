@@ -1,5 +1,5 @@
 // pages/admin/Dashboard/DashboardIntroducePage.jsx
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import SomethingAboutAdmin from "./SomethingAboutAdmin";
 import VideoSectionAdmin from "./VideoSectionAdmin";
 import RoadSectionAdmin from "./RoadSectionAdmin";
@@ -8,29 +8,25 @@ import CoreValueAdmin from "./CoreValueAdmin";
 import ClientsTestimonialsAdmin from "./ClientsTestimonialsAdmin";
 import EditableImage from "~/components/EditableImage/EditableImage";
 import DashboardIntroduceSkeleton from "./DashboardIntroduceSkeleton";
-import { getIntroduce } from "~/services/publicAPI";
+import { useIntroduce } from "~/hooks/usePublic";
 import { updateIntroduceData } from "~/services/adminAPI";
 import { globalLoading } from "~/context/LoadingContext";
 
 export default function DashboardIntroducePage() {
-  const [introduceData, setIntroduceData] = useState({});
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, refetch } = useIntroduce();
+  const [introduceData, setIntroduceData] = useState(null);
 
+  // Khởi tạo state để edit khi data từ hook useIntroduce về
   useEffect(() => {
-    const fetchIntroduce = async () => {
-      const data = await getIntroduce();
-      setIntroduceData(data);
-      setLoading(false);
-    };
-    fetchIntroduce();
-  }, []);
+    if (data) setIntroduceData(data);
+  }, [data]);
 
   const handleSave = async () => {
-    globalLoading(true);
     if (!introduceData) return;
-
+    globalLoading(true, "Đang lưu...");
     try {
       await updateIntroduceData(introduceData);
+      refetch(); // cập nhật lại cache của useIntroduce
       globalLoading(false);
     } catch (err) {
       console.error(err);
@@ -40,7 +36,7 @@ export default function DashboardIntroducePage() {
     }
   };
 
-  if (loading) return <DashboardIntroduceSkeleton />;
+  if (isLoading || !introduceData) return <DashboardIntroduceSkeleton />;
 
   return (
     <div className="w-full space-y-12 p-6">
@@ -104,7 +100,7 @@ export default function DashboardIntroducePage() {
       <div className="flex justify-end">
         <button
           onClick={handleSave}
-          className={`bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition `}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
         >
           Lưu
         </button>
