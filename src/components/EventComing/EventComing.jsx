@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getEventUpcoming } from "~/services/publicAPI";
+import { Eye, Calendar } from "lucide-react";
 
 // Skeleton Card
 function EventCardSkeleton() {
@@ -28,6 +29,16 @@ export default function EventComing() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getDaysLeft = (date) => {
+    const today = new Date();
+    const eventDate = new Date(date);
+    const diffTime = eventDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays > 0) return `(${diffDays} ngày nữa)`;
+    if (diffDays === 0) return `(Hôm nay)`;
+    return `(Đã diễn ra)`;
   };
 
   return (
@@ -63,9 +74,28 @@ export default function EventComing() {
                 <h3 className="mt-4 text-lg font-semibold text-gray-800 line-clamp-2">
                   {event.title}
                 </h3>
-                <p className="text-sm text-gray-500 mt-2">
-                  {new Date(event.date).toLocaleDateString("vi-VN")}
-                </p>
+                <div className="flex items-center gap-6 text-sm text-gray-500 mt-2">
+                  {/* Ngày diễn ra */}
+                  {event.date && (
+                    <div className="flex items-center gap-1">
+                      <Calendar size={16} className="text-blue-600" />
+                      <span className="text-gray-700">
+                        {new Date(event.date).toLocaleDateString("vi-VN")}
+                      </span>
+                      <span className="text-red-500 font-medium">
+                        {getDaysLeft(event.date)}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Lượt xem */}
+                  {typeof event.views !== "undefined" && (
+                    <div className="flex items-center gap-1">
+                      <Eye size={16} className="text-purple-600" />
+                      <span className="text-gray-800">{event.views}</span>
+                    </div>
+                  )}
+                </div>
                 {event.titleLink && (
                   <a
                     href={`/su-kien/${event.titleLink}`}
