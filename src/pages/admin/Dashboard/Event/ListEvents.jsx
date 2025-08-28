@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteEvent, getEventList } from "~/services/adminAPI";
+import { deleteEvent, getEventList, getOneEventById } from "~/services/adminAPI";
 import FormDelete from "./FormDelete";
 import './Event.scss';
 
@@ -19,7 +19,7 @@ export default function EventList() {
   };
 
   // Gọi API
-  const getNews = async () => {
+  const getEvents = async () => {
     try {
       setLoading(true); // ✅ bật loading
       const data = await getEventList(currentPage, itemsPerPage);
@@ -51,7 +51,7 @@ export default function EventList() {
   };
 
   useEffect(() => {
-    getNews();
+    getEvents();
   }, [currentPage]);
 
   // Tính trang để hiển thị

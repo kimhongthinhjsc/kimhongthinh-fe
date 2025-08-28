@@ -35,7 +35,7 @@ export default function NewsList() {
   const handleEdit = (id) => {
     const news = newsList.find((item) => item._id === id);
     if (news) {
-      navigate(`/admin/dashboard/news/update`, { state: { id: news._id } });
+      navigate(`/admin/dashboard/news/update`, { state: { id: news._id  } });
     }
   };
 
