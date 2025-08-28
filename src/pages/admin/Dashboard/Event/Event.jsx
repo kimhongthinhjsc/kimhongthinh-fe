@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import './ComposeEvent.scss';
+import './Event.scss';
 import { createEvent, getOneEventById, updateEvent } from "~/services/adminAPI";
 import { useNavigate, useLocation } from "react-router-dom";
-import CancelButton from "./FormCancel";
-import FormSubmit from "./FormSubmit";
+import CancelButton from "~/components/FormNotify/FormCancel";
+import FormSubmit from "~/components/FormNotify/FormSubmit";
 import NewsSkeleton from "../../../../components/News/NewsSkeleton";
 import { generateSlug } from "~/utils/constants";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
@@ -42,8 +42,8 @@ export default function EventsAdmin() {
       if (state != null) {
         setLoadingData(true);
         const data = await getOneEventById(state?.id);
-        setEvents(data.events);
-        setPreview(data.events.image ? data.events.image : null);
+        setEvents(data.event);
+        setPreview(data.event.image ? data.event.image : null);
         setDatePreview(toISOString(new Date(data.event.date).getTime() - 7 * 60 * 60 * 1000));
       }
     }
@@ -210,8 +210,12 @@ export default function EventsAdmin() {
 
           <div className="preview-container">
             <div className="button-group" style={{ marginLeft: '200px' }}>
-              <FormSubmit handle={handleSubmit} update={false} fields={{ title: events.title, image: events.image, author: events.author, content: events.content }}>{state?.id ? 'Cập nhật tin' : 'Đăng tin'}</FormSubmit>
-              <CancelButton>Hủy</CancelButton>
+              <FormSubmit
+                handle={handleSubmit}
+                update={false}
+                isDisabled={events?.title === '' || events?.image === '' || events?.author === '' || events?.content === '' || events?.location === '' || events?.date === ''}>
+                {state?.id ? 'Cập nhật tin' : 'Đăng tin'}</FormSubmit>
+              <CancelButton urlBack="/admin/dashboard/events">Hủy</CancelButton>
             </div>
           </div>
         </div>)}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function FormDelete({ handleDelete, children }) {
+export default function FormDelete({ handleDelete }) {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -12,7 +12,7 @@ export default function FormDelete({ handleDelete, children }) {
         onClick={() => setShowModal(true)}
         className="px-6 py-2 rounded-lg font-semibold text-white bg-red-600 hover:bg-red-700 transition"
       >
-        {children || "Xóa"}
+        Xóa
       </button>
 
       {/* Modal xác nhận xóa */}

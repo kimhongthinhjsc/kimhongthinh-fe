@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteNews, getNewsList } from "~/services/adminAPI";
-import FormDelete from "./FormDelete";
+import FormDelete from "~/components/FormNotify/FormDelete";
 import './News.scss';
 
 export default function NewsList() {
@@ -132,8 +132,8 @@ export default function NewsList() {
                   className="w-24 h-16 object-cover rounded"
                 />
                 <div>
-                  <h2 className="font-semibold text-lg">{news.title}</h2>
-                  <p className="text-sm text-gray-500 italic mt-1">
+                  <h2 className="font-semibold text-lg line-clamp-2">{news.title}</h2>
+                  <p className="text-sm text-gray-500 italic mt-1 line-clamp-1">
                     {new Date(news.updatedAt).toLocaleString("vi-VN", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -154,6 +154,7 @@ export default function NewsList() {
                 </button>
                 <FormDelete
                   handleDelete={() => handleDelete(news._id)}
+                  urlBack="/admin/dashboard/news"
                 />
               </div>
             </li>

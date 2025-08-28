@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import './News.scss';
 import { createNews, getOneNewsById, updateNews } from "~/services/adminAPI";
 import { useNavigate, useLocation } from "react-router-dom";
-import CancelButton from "./FormCancel";
-import FormSubmit from "./FormSubmit";
+import CancelButton from "~/components/FormNotify/FormCancel";
+import FormSubmit from "~/components/FormNotify/FormSubmit";
 import NewsSkeleton from "../../../../components/News/NewsSkeleton";
 import { generateSlug } from "~/utils/constants";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
@@ -166,8 +166,8 @@ export default function NewsAdmin() {
 
           <div className="preview-container">
             <div className="button-group" style={{ marginLeft: '200px' }}>
-              <FormSubmit handle={handleSubmit} update={false} fields={{ title: news.title, image: news.image, author: news.author, content: news.content }}>{state?.id ? 'Cập nhật tin' : 'Đăng tin'}</FormSubmit>
-              <CancelButton>Hủy</CancelButton>
+              <FormSubmit handle={handleSubmit} update={false} isDisabled={news?.title === '' || news?.image === '' || news?.author === '' || news?.content === ''}>{state?.id ? 'Cập nhật tin' : 'Đăng tin'}</FormSubmit>
+              <CancelButton urlBack="/admin/dashboard/news">Hủy</CancelButton>
             </div>
           </div>
         </div>)}

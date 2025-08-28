@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteEvent, getEventList, getOneEventById } from "~/services/adminAPI";
-import FormDelete from "./FormDelete";
+import { deleteEvent, getEventList } from "~/services/adminAPI";
+import FormDelete from "~/components/FormNotify/FormDelete";
 import './Event.scss';
 
 export default function EventList() {
@@ -132,8 +132,8 @@ export default function EventList() {
                   className="w-24 h-16 object-cover rounded"
                 />
                 <div>
-                  <h2 className="font-semibold text-lg">{event.title}</h2>
-                  <p className="text-sm text-gray-500 italic mt-1">
+                  <h2 className="font-semibold text-lg line-clamp-1">{event.title}</h2>
+                  <p className="text-sm text-gray-500 italic mt-1 line-clamp-1">
                     {new Date(event.updatedAt).toLocaleString("vi-VN", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -154,6 +154,7 @@ export default function EventList() {
                 </button>
                 <FormDelete
                   handleDelete={() => handleDelete(event._id)}
+                  urlBack="/admin/dashboard/events"
                 />
               </div>
             </li>
