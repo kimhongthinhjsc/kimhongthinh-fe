@@ -35,19 +35,19 @@ export default function Introduce() {
         <FadeInWhenVisible delay={0.2}>
           <SomethingAbout data={introduceData?.somethingAbout} />
         </FadeInWhenVisible>
-        <FadeInWhenVisible delay={0.4}>
+        <FadeInWhenVisible delay={0.3}>
           <VideoSection data={introduceData?.videoSection} />
         </FadeInWhenVisible>
-        <FadeInWhenVisible delay={0.6}>
+        <FadeInWhenVisible delay={0.3}>
           <RoadSection data={introduceData?.roadSection} />
         </FadeInWhenVisible>
-        <FadeInWhenVisible delay={0.8}>
+        <FadeInWhenVisible delay={0.3}>
           <BehaviorRules data={introduceData?.behaviorRules} />
         </FadeInWhenVisible>
-        <FadeInWhenVisible delay={1.0}>
+        <FadeInWhenVisible delay={0.3}>
           <CoreValue data={introduceData?.coreValue} />
         </FadeInWhenVisible>
-        <FadeInWhenVisible delay={1.2}>
+        <FadeInWhenVisible delay={0.3}>
           <ClientsTestimonials data={introduceData?.testimonials} />
         </FadeInWhenVisible>
       </div>

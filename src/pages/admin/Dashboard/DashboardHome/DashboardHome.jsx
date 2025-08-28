@@ -10,6 +10,7 @@ import EditCulturePeople from "./EditCulturePeople";
 import EditContact from "./EditContact";
 import DashboardHomeSkeleton from "./DashboardHomeSkeleton";
 import { globalLoading } from "~/context/LoadingContext";
+import EditPartners from "./EditPartners";
 
 export default function DashboardHome() {
   const queryClient = useQueryClient();
@@ -48,7 +49,6 @@ export default function DashboardHome() {
   };
 
   if (isLoading || !draft) return <DashboardHomeSkeleton />;
-
   return (
     <div>
       <EditHeroSection data={draft} onChange={handleChange} />
@@ -56,6 +56,7 @@ export default function DashboardHome() {
       <EditTestimonial data={draft} onChange={handleChange} />
       <EditCulturePeople data={draft} onChange={handleChange} />
       <EditContact data={draft} onChange={handleChange} />
+      <EditPartners data={draft} onChange={handleChange} />
 
       <div className="flex gap-4 mt-4">
         <button
