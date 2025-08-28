@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchProductById, getSubcategories } from "~/services/publicAPI";
+import { fetchProductById } from "~/services/publicAPI";
 import { updateProduct, deleteProduct } from "~/services/adminAPI";
-import EditableImage from "~/components/EditableImage/EditableImage";
-import { getCategories } from "~/services/categorieAPI";
 
 import HighlightList from "./HighlightList";
 import InputField from "~/components/InputField/InputField";
@@ -13,6 +11,7 @@ import SpecList from "./SpecList";
 import { globalLoading } from "~/context/LoadingContext";
 import { handleContent } from "~/utils/handleContent";
 import ImageUploader from "~/components/ImageUploader/ImageUploader";
+import CategorySelector from "./CategorySelector";
 
 export default function DashboardProductEdit() {
   const { id } = useParams();
@@ -21,29 +20,14 @@ export default function DashboardProductEdit() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [categories, setCategories] = useState([]);
-  const [subcategories, setSubcategories] = useState([]);
-
   useEffect(() => {
     loadProduct();
-    loadCategories();
-    loadSubcategories();
   }, [id]);
 
   const loadProduct = async () => {
     const data = await fetchProductById(id);
     setProduct(data);
     setLoading(false);
-  };
-
-  const loadCategories = async () => {
-    const res = await getCategories();
-    setCategories(res.categories || res); // API có thể trả object {categories} hoặc array
-  };
-
-  const loadSubcategories = async () => {
-    const res = await getSubcategories();
-    setSubcategories(res.subcategories || res);
   };
 
   const handleSave = async () => {
@@ -154,45 +138,8 @@ export default function DashboardProductEdit() {
       </div>
 
       {/* Category & Subcategory */}
-      <div className="bg-white p-4 rounded-lg shadow grid grid-cols-2 gap-4">
-        <div>
-          <label className="block font-semibold">Danh mục</label>
-          <select
-            className="border rounded p-2 w-full"
-            value={product.categoryId || ""}
-            onChange={(e) => {
-              const categoryId = e.target.value;
-              setProduct({ ...product, categoryId, subcategoryId: "" });
-              loadSubcategories(categoryId);
-            }}
-          >
-            <option value="">-- Chọn danh mục --</option>
-            {categories.map((c) => (
-              <option key={c._id} value={c._id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
 
-        <div>
-          <label className="block font-semibold">Danh mục con</label>
-          <select
-            className="border rounded p-2 w-full"
-            value={product.subcategoryId || ""}
-            onChange={(e) =>
-              setProduct({ ...product, subcategoryId: e.target.value })
-            }
-          >
-            <option value="">-- Chọn danh mục con --</option>
-            {subcategories.map((s) => (
-              <option key={s._id} value={s._id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+      <CategorySelector product={product} setProduct={setProduct} />
 
       {/* Images */}
       <div className="bg-white p-4 rounded-lg shadow space-y-3">
