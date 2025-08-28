@@ -17,6 +17,7 @@ const NewsPage = lazy(() => import("../pages/NewsPage/NewsPage"));
 const NewsDetailPage = lazy(() => import("../pages/NewsPage/NewsDetailPage"));
 const CareersPage = lazy(() => import("../pages/CareersPage/CareersPage"));
 const EventsPage = lazy(() => import("../pages/EventsPage/EventsPage"));
+const EventDetailPage = lazy(() => import("../pages/EventsPage/EventDetailPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
 
 export default function Auth() {
@@ -108,6 +109,14 @@ export default function Auth() {
         element={
           <Suspense fallback={<div></div>}>
             <EventsPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="su-kien/:id"
+        element={
+          <Suspense fallback={<div></div>}>
+            <EventDetailPage />
           </Suspense>
         }
       />
