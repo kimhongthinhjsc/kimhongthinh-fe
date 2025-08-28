@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getServiceById } from "~/services/publicAPI";
 import ServiceDetailSkeleton from "./ServiceDetailSkelention";
-import '@ckeditor/ckeditor5-build-classic/build/ckeditor';
+import "@ckeditor/ckeditor5-build-classic/build/ckeditor";
 
 export default function ServiceDetailPage() {
   const { id } = useParams();
@@ -41,7 +41,9 @@ export default function ServiceDetailPage() {
             />
           )}
           <div className="flex-1 space-y-4">
-            <h1 className="text-3xl font-bold text-[#EF5627]">{service.name}</h1>
+            <h1 className="text-3xl font-bold text-[#EF5627]">
+              {service.name}
+            </h1>
             <p className="text-gray-700">
               {service.shortDescription || service.description}
             </p>
@@ -74,13 +76,13 @@ export default function ServiceDetailPage() {
         {service.process?.length > 0 && (
           <section>
             <h2 className="text-2xl font-semibold mb-2">Quy trình thực hiện</h2>
-            <ol className="list-decimal list-inside space-y-2 border-l-4 border-orange-400 pl-4">
+            <div className="space-y-2 border-l-4 border-orange-400 pl-4">
               {service.process.map((step) => (
-                <li key={step._id}>
+                <div key={step._id}>
                   <strong>{step.step}:</strong> {step.detail}
-                </li>
+                </div>
               ))}
-            </ol>
+            </div>
           </section>
         )}
 
