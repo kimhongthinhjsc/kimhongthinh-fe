@@ -163,12 +163,12 @@ export default function EventsAdmin() {
           </div>
 
           <div>
-            <label>Người đăng *</label>
+            <label>Người tham gia *</label>
             <input
               type="text"
               value={events?.author}
               onChange={(e) => setEvents({ ...events, author: e.target.value })}
-              placeholder="Nhập tên người đăng..."
+              placeholder="Người tham gia (có thể nhiều người)"
               required
             />
           </div>
