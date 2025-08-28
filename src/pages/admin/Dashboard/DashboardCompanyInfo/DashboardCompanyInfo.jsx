@@ -1,28 +1,19 @@
 // src/pages/admin/Dashboard/CompanyInfo.jsx
 import React, { useState, useEffect } from "react";
 import EditableImage from "~/components/EditableImage/EditableImage";
-import { getCompanyProfile } from "~/services/publicAPI";
 import { updateCompanyProfile } from "~/services/adminAPI";
 import CompanyInfoSkeleton from "./CompanyInfoSkeleton";
 import { globalLoading } from "~/context/LoadingContext";
+import { useCompanyInfo } from "~/hooks/usePublic";
 
 export default function DashboardCompanyInfo() {
+  const { data, isLoading } = useCompanyInfo(); // chỉ GET thông tin
   const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const data = await getCompanyProfile();
-      setFormData(data);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Khi dữ liệu từ hook về, khởi tạo state local
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (data) setFormData(data);
+  }, [data]);
 
   const handleChange = (e, key, nestedKey) => {
     const value = e.target.value;
@@ -54,16 +45,19 @@ export default function DashboardCompanyInfo() {
     }
   };
 
-  const handleReset = async () => {
-    await fetchData();
+  const handleReset = () => {
+    if (data) setFormData(data);
     alert("🔄 Đã tải lại dữ liệu từ máy chủ");
   };
 
-  if (loading) return <CompanyInfoSkeleton />;
+  if (isLoading) return <CompanyInfoSkeleton />;
 
+  console.log("formData", formData);
   return (
     <div className="p-6 space-y-6 max-w-5xl mx-auto">
+      {/* Logo */}
       <EditableImage
+        key={formData.logo} // thêm key để reset ảnh về src ban đầu khi bấm Đặt lại
         src={formData.logo}
         onChange={(val) => setFormData((prev) => ({ ...prev, logo: val }))}
         label="Logo"
@@ -158,7 +152,7 @@ export default function DashboardCompanyInfo() {
             className="w-full border rounded p-2"
           />
         </div>
-        {/* <div>
+        <div>
           <label className="block font-semibold">Thương mại điện tử</label>
           <input
             type="text"
@@ -172,7 +166,7 @@ export default function DashboardCompanyInfo() {
             onChange={(e) => handleChange(e, "ecommerce", "link")}
             className="w-full border rounded p-2"
           />
-        </div> */}
+        </div>
       </div>
 
       {/* Social */}
