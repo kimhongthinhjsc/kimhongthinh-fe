@@ -139,7 +139,7 @@ export default function JobDetail() {
                                             <FileText className="text-indigo-500" size={18} />
                                             Mô tả công việc
                                         </h3>
-                                        <p className="text-gray-600 leading-relaxed">
+                                        <p className="text-gray-600 leading-relaxed whitespace-pre-line">
                                             {job?.description}
                                         </p>
                                     </div>
@@ -148,18 +148,18 @@ export default function JobDetail() {
                                     <div className="bg-gray-50 rounded-xl p-5 space-y-2 border">
                                         <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
                                             <Target className="text-pink-500" size={18} />
-                                            Kỹ năng yêu cầu
+                                            Kỹ năng/Yêu cầu
                                         </h3>
-                                        <p className="text-gray-600 leading-relaxed">{job?.skills}</p>
+                                        <p className="text-gray-600 leading-relaxed whitespace-pre-line">{job?.skills}</p>
                                     </div>
 
                                     {/* Quyền lợi */}
                                     <div className="bg-gray-50 rounded-xl p-5 space-y-2 border">
                                         <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                                            <Gift className="text-emerald-500" size={18} />
+                                            <Gift className="text-emerald-500 " size={18} />
                                             Quyền lợi
                                         </h3>
-                                        <p className="text-gray-600 leading-relaxed">{job?.benefits}</p>
+                                        <p className="text-gray-600 leading-relaxed whitespace-pre-line">{job?.benefits}</p>
                                     </div>
                                 </div>
                             </div>

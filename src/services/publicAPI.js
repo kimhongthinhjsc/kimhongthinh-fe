@@ -146,9 +146,9 @@ export const getOneEvent = async (titleLink) => {
   }
 };
 
-export const getCareerList = async (page = 1, limit = 10) => {
+export const getCareerList = async (page, limit) => {
+  console.log("Fetching career list:", { page, limit });
   const res = await api.get(`/career/find/no-expire?page=${page}&limit=${limit}`);
-  console.log(res.data)
   return res.data;
 };
 
