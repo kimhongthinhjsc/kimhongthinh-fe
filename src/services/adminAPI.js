@@ -62,7 +62,7 @@ export const updateNews = async (news) => {
 };
 
 export const getNewsList = async (page, limit) => {
-  const res = await api.get(`/news/find/all?page=${page}&limit=${limit}`);
+  const res = await api.get(`/news/find/admin?page=${page}&limit=${limit}`);
   return res.data;
 };
 
