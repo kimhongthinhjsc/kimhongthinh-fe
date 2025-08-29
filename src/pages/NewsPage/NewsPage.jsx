@@ -20,9 +20,9 @@ export default function NewsPage() {
       {/* Banner */}
       <section id="sds_banner" className="w-full">
         <img
-          src="http://softdreams.vn/wp-content/uploads/2023/11/Group-2609280-1-1.png"
+          src="https://res.cloudinary.com/dpd6zrdcx/image/upload/v1756448949/uploads/sflueab689tlid0um54l.png"
           alt="Banner"
-          className="w-full object-cover"
+           className="w-full h-28 sm:h-40 md:h-48 lg:h-60 object-cover"
         />
       </section>
 

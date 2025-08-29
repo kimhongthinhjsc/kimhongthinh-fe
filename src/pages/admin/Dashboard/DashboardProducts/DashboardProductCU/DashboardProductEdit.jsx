@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchProductById } from "~/services/publicAPI";
 import { updateProduct, deleteProduct } from "~/services/adminAPI";
-import HighlightList from "./HighlightList";
+import DynamicInputList from "~/components/DynamicInputList/DynamicInputList";
 import InputField from "~/components/InputField/InputField";
 import TextAreaField from "~/components/TextAreaField/TextAreaField";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
@@ -162,9 +162,12 @@ export default function DashboardProductEdit() {
       />
 
       {/* Highlights */}
-      <HighlightList
-        highlights={product.highlights || []}
-        onChange={(list) => setProduct({ ...product, highlights: list })}
+      <DynamicInputList
+        label="Điểm nổi bật"
+        addText="+ Thêm điểm nổi bật"
+        placeholder="Nhập điểm nổi bật..."
+        values={product.highlights}
+        onChange={(vals) => setProduct({ ...product, highlights: vals })}
       />
 
       {/* Specifications */}

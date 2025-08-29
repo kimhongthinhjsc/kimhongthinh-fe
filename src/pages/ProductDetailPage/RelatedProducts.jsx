@@ -1,7 +1,8 @@
+// RelatedProducts.jsx
 import React, { useEffect, useState } from "react";
 import { fetchProducts } from "~/services/publicAPI";
 import { Link } from "react-router-dom";
-import { Phone } from "lucide-react"; // Icon liên hệ
+import { Phone } from "lucide-react";
 
 const RelatedProducts = ({ categoryId, subcategoryId, currentProductId }) => {
   const [products, setProducts] = useState([]);
@@ -10,9 +11,7 @@ const RelatedProducts = ({ categoryId, subcategoryId, currentProductId }) => {
     const loadRelated = async () => {
       try {
         const data = await fetchProducts(1, 6, categoryId, subcategoryId);
-        const filtered = data.products.filter(
-          (p) => p._id !== currentProductId
-        );
+        const filtered = data.products.filter((p) => p._id !== currentProductId);
         setProducts(filtered);
       } catch (error) {
         console.error("❌ Lỗi khi tải sản phẩm liên quan:", error);
@@ -33,7 +32,7 @@ const RelatedProducts = ({ categoryId, subcategoryId, currentProductId }) => {
           <Link
             to={`/san-pham/${product._id}`}
             key={product._id}
-            className="group block bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-100"
+            className="group flex flex-col bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-100 hover:-translate-y-1"
           >
             <div className="relative overflow-hidden h-44 flex items-center justify-center bg-gray-50">
               <img
@@ -42,13 +41,13 @@ const RelatedProducts = ({ categoryId, subcategoryId, currentProductId }) => {
                 className="object-contain h-full w-full transform transition-transform duration-300 group-hover:scale-105"
               />
             </div>
-            <div className="p-4 flex flex-col">
-              <h3 className="font-semibold text-gray-800 text-sm mb-2 truncate">
+            <div className="p-4 flex flex-col flex-1">
+              <h3 className="font-semibold text-gray-800 text-sm mb-2 line-clamp-2 min-h-[36px]">
                 {product.name}
               </h3>
 
-              {/* Giữ cùng chiều cao cho cả giá và Liên hệ */}
-              <div className="h-6 flex items-center mb-2">
+              {/* Giá hoặc Liên hệ */}
+              <div className="h-7 flex items-center mb-3">
                 {product.price > 0 ? (
                   <p className="text-primary font-bold text-base">
                     {product.price.toLocaleString("vi-VN", {
@@ -58,12 +57,12 @@ const RelatedProducts = ({ categoryId, subcategoryId, currentProductId }) => {
                   </p>
                 ) : (
                   <div className="flex items-center gap-1 text-green-600 font-medium text-sm">
-                    <Phone size={14} /> Giá: Liên hệ
+                    <Phone size={14} /> Liên hệ
                   </div>
                 )}
               </div>
 
-              <button className="mt-auto w-full bg-primary text-white text-xs font-medium py-1 rounded hover:bg-primary-dark transition">
+              <button className="mt-auto w-full bg-gradient-to-r from-primary to-primary-dark text-white text-xs font-medium py-2 rounded-lg shadow hover:opacity-90 transition">
                 Xem chi tiết
               </button>
             </div>

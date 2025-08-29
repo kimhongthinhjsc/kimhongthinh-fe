@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { createService } from "~/services/adminAPI";
 import { getCategories } from "~/services/categorieAPI";
 import EditableImage from "~/components/EditableImage/EditableImage";
-import InputField from "./InputField";
+import InputField from "~/components/InputField/InputField";
 import TextAreaField from "./TextAreaField";
 import ProcessList from "./ProcessList";
-import DocumentsList from "./DocumentsList";
+import DynamicInputList from "~/components/DynamicInputList/DynamicInputList";
 import FeaturesList from "./FeaturesList";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import { handleContent } from "~/utils/handleContent";
@@ -94,10 +94,9 @@ export default function DashboardServiceCreate() {
         <InputField
           label="Giá"
           type="number"
+          isMoney
           value={service.price}
-          onChange={(e) =>
-            setService({ ...service, price: Number(e.target.value) })
-          }
+          onChange={(val) => setService({ ...service, price: val })}
         />
         <TextAreaField
           label="Mô tả ngắn"
@@ -151,7 +150,14 @@ export default function DashboardServiceCreate() {
       <div className="bg-white p-6 rounded-lg shadow space-y-6">
         <h2 className="text-lg font-semibold border-b pb-2">Chi tiết khác</h2>
         <ProcessList service={service} setService={setService} />
-        <DocumentsList service={service} setService={setService} />
+        {/* <DocumentsList service={service} setService={setService} /> */}
+        <DynamicInputList
+          label="Hồ sơ cần chuẩn bị"
+          placeholder="Nhập hồ sơ cần chuẩn bị..."
+          addText="+ Thêm hồ sơ"
+          values={service.documentsRequired}
+          onChange={(vals) => setService({ ...service, documentsRequired: vals })}
+        />
         <FeaturesList service={service} setService={setService} />
       </div>
 

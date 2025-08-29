@@ -72,7 +72,7 @@ export default function CategoryTable({ categories, onDelete, onEdit, onAddSub }
                     className="flex items-center space-x-2 text-green-600 hover:text-green-800"
                   >
                     <FaPlus className="w-4 h-4" />
-                    <span>Thêm subcategory</span>
+                    <span>Thêm danh mục con</span>
                   </button>
                 </td>
                 <td className="border p-2"></td>
