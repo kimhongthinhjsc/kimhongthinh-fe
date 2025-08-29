@@ -51,10 +51,10 @@ export default function WhySoftdreams() {
     <section id="why_softdreams" className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-6">
-          Tại sao nên chọn <span className="text-blue-600">Softdreams?</span>
+          Tại sao nên chọn <span className="text-blue-600">Kim Hồng Thịnh?</span>
         </h2>
         <p className="text-gray-600 text-center max-w-3xl mx-auto mb-12">
-          Softdreams không chỉ là nơi làm việc, đây là hành trình khám phá vô số
+          Kim Hồng Thịnh không chỉ là nơi làm việc, đây là hành trình khám phá vô số
           cơ hội sáng tạo và trải nghiệm phúc lợi độc đáo, nơi mỗi thành viên
           được đón nhận và phát triển toàn diện trong một môi trường ấm cúng và
           đầy năng lượng.

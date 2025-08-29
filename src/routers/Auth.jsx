@@ -16,6 +16,7 @@ const Contact = lazy(() => import("../pages/Contact/Contact"));
 const NewsPage = lazy(() => import("../pages/NewsPage/NewsPage"));
 const NewsDetailPage = lazy(() => import("../pages/NewsPage/NewsDetailPage"));
 const CareersPage = lazy(() => import("../pages/CareersPage/CareersPage"));
+const CareerDetailPage = lazy(() => import("../pages/CareersPage/CareerDetail"));
 const EventsPage = lazy(() => import("../pages/EventsPage/EventsPage"));
 const EventDetailPage = lazy(() => import("../pages/EventsPage/EventDetailPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage/NotFoundPage"));
@@ -101,6 +102,14 @@ export default function Auth() {
         element={
           <Suspense fallback={<div></div>}>
             <CareersPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="tuyen-dung/:id"
+        element={
+          <Suspense fallback={<div></div>}>
+            <CareerDetailPage />
           </Suspense>
         }
       />

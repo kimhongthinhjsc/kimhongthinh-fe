@@ -122,17 +122,17 @@ export const getOneNews = async (titleLink) => {
   }
 };
 
-export const getEventList = async (page=1, limit=10) => {
+export const getEventList = async (page = 1, limit = 10) => {
   const res = await api.get(`/events/find/all?page=${page}&limit=${limit}`);
   return res.data;
 };
 
-export const getEventUpcoming = async (page=1, limit=10) => {
+export const getEventUpcoming = async (page = 1, limit = 10) => {
   const res = await api.get(`/events/find/upcoming?page=${page}&limit=${limit}`);
   return res.data;
 };
 
-export const getEventPast = async (page=1, limit=10) => {
+export const getEventPast = async (page = 1, limit = 10) => {
   const res = await api.get(`/events/find/past?page=${page}&limit=${limit}`);
   return res.data;
 };
@@ -143,5 +143,20 @@ export const getOneEvent = async (titleLink) => {
     return res.data;
   } catch (error) {
     return { success: false, event: null };
+  }
+};
+
+export const getCareerList = async (page = 1, limit = 10) => {
+  const res = await api.get(`/career/find/no-expire?page=${page}&limit=${limit}`);
+  console.log(res.data)
+  return res.data;
+};
+
+export const getOneCareerById = async (id) => {
+  try {
+    const res = await api.get(`/career/${id}`);
+    return res.data;
+  } catch (error) {
+    return { success: false, career: null };
   }
 };
