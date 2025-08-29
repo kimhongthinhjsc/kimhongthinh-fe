@@ -31,11 +31,11 @@ const ProductDetailPage = () => {
   return (
     <div className="p-4 md:p-6 lg:px-24">
       {/* Breadcrumb */}
-      <nav className="text-sm text-gray-600 mb-6">
+      {/* <nav className="text-sm text-gray-600 mb-6">
         <Link to="/" className="hover:text-primary">Trang chủ</Link> /{" "}
         <Link to="/san-pham" className="hover:text-primary">Sản phẩm</Link> /{" "}
         <span className="text-gray-800 font-semibold">{product.name}</span>
-      </nav>
+      </nav> */}
 
       {/* Thông tin chính */}
       <div className="rounded-2xl shadow-lg bg-white p-6">
