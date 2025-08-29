@@ -148,7 +148,9 @@ export default function CareerAdmin() {
                       <Users size={15} className="text-green-500" />
                       {career.quantity} người |
                       <Briefcase size={15} className="text-purple-500 ml-1" />
-                      {career.experience}
+                      {career.experience?.length > 25
+                        ? career.experience.slice(0, 25) + "..."
+                        : career.experience}
                     </p>,
 
                     <p className="flex items-center gap-2" key="salary">
