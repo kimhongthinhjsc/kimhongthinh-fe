@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { getEventPast } from "~/services/publicAPI";
+import React from "react";
 import EventCard from "../EventCard/EventCard";
 
 // Skeleton cho card sự kiện
@@ -14,23 +13,7 @@ function EventCardSkeleton() {
   );
 }
 
-export default function EventFinish() {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    try {
-      const data = await getEventPast(1, 10);
-      setEvents(data.events || []);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function EventFinish({events, isLoading}) {
   return (
     <section id="event_finish" className="py-12 bg-gray-100">
       <div className="container mx-auto px-4">
@@ -38,14 +21,14 @@ export default function EventFinish() {
           Sự kiện đã diễn ra
         </h2>
 
-        {loading ? (
+        {isLoading ? (
           // Hiện skeleton 6 cái cho đẹp
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <EventCardSkeleton key={i} />
             ))}
           </div>
-        ) : events.length === 0 ? (
+        ) : events?.length === 0 ? (
           <p className="text-gray-600">Chưa có sự kiện nào đã diễn ra.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import { getEventUpcoming } from "~/services/publicAPI";
 
 // Skeleton component
 function EventHeaderSkeleton() {
@@ -14,23 +13,7 @@ function EventHeaderSkeleton() {
   );
 }
 
-export default function EventHeader() {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    try {
-      const data = await getEventUpcoming(1, 10);
-      setEvents(data.events || []);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function EventHeader({ events, isLoading }) {
   return (
     <section
       id="event_header"
@@ -40,7 +23,7 @@ export default function EventHeader() {
           "url('https://softdreams.vn/wp-content/uploads/2024/02/banner.png')",
       }}
     >
-      {loading ? (
+      {isLoading ? (
         <EventHeaderSkeleton />
       ) : events.length === 0 ? (
         <div className="flex items-center justify-center h-full">

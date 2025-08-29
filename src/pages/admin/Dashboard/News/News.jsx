@@ -166,7 +166,7 @@ export default function NewsAdmin() {
 
           <div className="preview-container">
             <div className="button-group" style={{ marginLeft: '200px' }}>
-              <FormSubmit handle={handleSubmit} update={false} isDisabled={news?.title === '' || news?.image === '' || news?.author === '' || news?.content === ''}>{state?.id ? 'Cập nhật tin' : 'Đăng tin'}</FormSubmit>
+              <FormSubmit handle={handleSubmit} update={state !== null ? true : false} isDisabled={news?.title === '' || news?.image === '' || news?.author === '' || news?.content === ''}>{state !== null ? 'Cập nhật tin' : 'Đăng tin'}</FormSubmit>
               <CancelButton urlBack="/admin/dashboard/news">Hủy</CancelButton>
             </div>
           </div>

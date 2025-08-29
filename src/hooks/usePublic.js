@@ -13,6 +13,8 @@ import {
   getServiceByKeyword,
   getNewsList,
   getCompanyProfile,
+  getEventPast,
+  getEventUpcoming
 } from "~/services/publicAPI";
 import { getCategories } from "~/services/categorieAPI";
 
@@ -126,5 +128,27 @@ export const useCompanyInfo = () => {
     keepPreviousData: true,
     staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 10,
+  });
+};
+
+// Trang chủ
+export const useEventUpcoming = () => {
+  return useQuery({
+    queryKey: ["eventUpComing"],
+    queryFn: getEventUpcoming,
+    keepPreviousData: true,
+    staleTime: 0, //call khi quay lại trang
+    cacheTime: 1000 * 60 * 2, // dữ liệu giữ trong cache 10 phút
+  });
+};
+
+// Trang chủ
+export const useEventPast = () => {
+  return useQuery({
+    queryKey: ["eventPast"],
+    queryFn: getEventPast,
+    keepPreviousData: true,
+    staleTime: 0, //call khi quay lại trang
+    cacheTime: 1000 * 60 * 2, // dữ liệu giữ trong cache 10 phút
   });
 };

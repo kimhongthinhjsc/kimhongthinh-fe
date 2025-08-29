@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { getEventUpcoming } from "~/services/publicAPI";
+import React from "react";
 import { Eye, Calendar } from "lucide-react";
 
 // Skeleton Card
@@ -14,23 +13,7 @@ function EventCardSkeleton() {
   );
 }
 
-export default function EventComing() {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    try {
-      const data = await getEventUpcoming(1, 10);
-      setEvents(data.events || []);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function EventComing({events, isLoading}) {
   const getDaysLeft = (date) => {
     const today = new Date();
     const eventDate = new Date(date);
@@ -48,7 +31,7 @@ export default function EventComing() {
           Sắp diễn ra
         </h2>
 
-        {loading ? (
+        {isLoading ? (
           // Skeleton khi đang load
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
