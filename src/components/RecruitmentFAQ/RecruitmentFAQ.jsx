@@ -6,7 +6,7 @@ const faqs = [
   {
     question: "Có bao nhiêu vòng phỏng vấn trực tiếp?",
     answer:
-      "Số lượng vòng phỏng vấn sẽ tùy thuộc vào loại công việc và thâm niên của vị trí. Bạn sẽ được nhân viên tuyển dụng thông báo số vòng phỏng vấn. Hiring Manager của chúng tôi chỉ muốn hiểu rõ hơn về bạn và đây cũng sẽ là cơ hội để bạn hiểu hơn về Softdreams cũng như vai trò của bạn trong công ty.",
+      "Số lượng vòng phỏng vấn sẽ tùy thuộc vào loại công việc và thâm niên của vị trí. Bạn sẽ được nhân viên tuyển dụng thông báo số vòng phỏng vấn. Hiring Manager của chúng tôi chỉ muốn hiểu rõ hơn về bạn và đây cũng sẽ là cơ hội để bạn hiểu hơn về Kim Hồng Thịnh cũng như vai trò của bạn trong công ty.",
   },
   {
     question: "Tôi sẽ nhận được phản hồi kết quả công việc trong bao lâu?",
@@ -14,9 +14,9 @@ const faqs = [
       "- Vòng screen CV: Nhân viên tuyển dụng sẽ liên hệ với bạn trong vòng 1-3 ngày nếu qua vòng duyệt CV của leader, nhân viên tuyển dụng sẽ trao đổi với bạn qua điện thoại về kỹ năng, kinh nghiệm của bạn và hẹn bạn lịch trao đổi với các Hiring Manager.\n- Vòng phỏng vấn trực tiếp: Kết quả trao đổi với Hiring Manager sẽ được phản hồi tới email của bạn hoặc nhân viên tuyển dụng liên hệ với bạn trong vòng 5 ngày.",
   },
   {
-    question: "Tôi cần chuẩn bị gì khi tham gia phỏng vấn tại Softdreams?",
+    question: "Tôi cần chuẩn bị gì khi tham gia phỏng vấn tại Kim Hồng Thịnh?",
     answer:
-      "Chuẩn bị cho buổi phỏng vấn, bạn cần tìm hiểu về Softdreams và vị trí ứng tuyển. Hiring Manager sẽ trao đổi sâu những kỹ năng, kinh nghiệm của bạn, bạn hãy chuẩn bị một số câu hỏi để hỏi về công việc và vai trò của bạn tại Softdreams. Hãy tự tin và lựa chọn trang phục lịch sự, phù hợp với bạn.",
+      "Chuẩn bị cho buổi phỏng vấn, bạn cần tìm hiểu về Kim Hồng Thịnh và vị trí ứng tuyển. Hiring Manager sẽ trao đổi sâu những kỹ năng, kinh nghiệm của bạn, bạn hãy chuẩn bị một số câu hỏi để hỏi về công việc và vai trò của bạn tại Kim Hồng Thịnh. Hãy tự tin và lựa chọn trang phục lịch sự, phù hợp với bạn.",
   },
 ];
 

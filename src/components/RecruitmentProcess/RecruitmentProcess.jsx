@@ -14,12 +14,12 @@ export default function RecruitmentProcess() {
     {
       img: "https://softdreams.vn/wp-content/uploads/2024/07/Group-2609359.png",
       title: "Bước 3: Phỏng vấn",
-      desc: "Giám đốc Khối/ Trưởng bộ phận/Chuyên viên/HR sẽ phỏng vấn bạn để đánh giá về kỹ năng, kinh nghiệm, chuyên môn và sự phù hợp công việc với vị trí ứng tuyển và văn hóa của Softdreams",
+      desc: "Giám đốc Khối/ Trưởng bộ phận/Chuyên viên/HR sẽ phỏng vấn bạn để đánh giá về kỹ năng, kinh nghiệm, chuyên môn và sự phù hợp công việc với vị trí ứng tuyển và văn hóa của Kim Hồng Thịnh.",
     },
     {
       img: "https://softdreams.vn/wp-content/uploads/2024/07/Group-2609360.png",
       title: "Bước 4: Offer & Onboarding",
-      desc: "Chuyên viên tuyển dụng của Softdreams sẽ liên hệ với bạn để trao đổi về thỏa thuận mức lương, cơ chế đãi ngộ và thời gian bắt đầu công việc tại Softdreams.",
+      desc: "Chuyên viên tuyển dụng của Kim Hồng Thịnh sẽ liên hệ với bạn để trao đổi về thỏa thuận mức lương, cơ chế đãi ngộ và thời gian bắt đầu công việc tại Kim Hồng Thịnh.",
     },
   ];
 

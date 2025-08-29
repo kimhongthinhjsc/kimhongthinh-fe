@@ -11,7 +11,8 @@ const DashboardNews = lazy(() => import("./News/ListNews"));
 const DashboardEditNews = lazy(() => import("./News/News"));
 const DashboardEvent = lazy(() => import("./Event/ListEvents"));
 const DashboardEditEvent = lazy(() => import("./Event/Event"));
-const DashboardCareers = lazy(() => import("./Careers"));
+const DashboardCareers = lazy(() => import("./Career/CareersList"));
+const DashboardEditCareers = lazy(() => import("./Career/Careers"));
 const DashboardActivities = lazy(() => import("./Activities"));
 const DashboardContact = lazy(() => import("./Contact"));
 const DashboardCompanyInfo = lazy(() => import("./DashboardCompanyInfo/DashboardCompanyInfo"));
@@ -58,6 +59,8 @@ export default function DashboardLayout() {
               <Route path="/events/create" element={<DashboardEditEvent />} />
               <Route path="/events/update" element={<DashboardEditEvent />} />
               <Route path="/careers" element={<DashboardCareers />} />
+              <Route path="/careers/create" element={<DashboardEditCareers />} />
+              <Route path="/careers/update" element={<DashboardEditCareers />} />
               <Route path="/activities" element={<DashboardActivities />} />
               <Route path="/contact" element={<DashboardContact />} />
               <Route path="/products/:id/edit" element={<DashboardProductEdit />} />
