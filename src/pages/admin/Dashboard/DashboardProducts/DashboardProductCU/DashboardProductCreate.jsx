@@ -12,6 +12,7 @@ import ImageUploader from "~/components/ImageUploader/ImageUploader";
 import CategorySelector from "./CategorySelector";
 import { productModel } from "~/models/product";
 import { validateProduct } from "~/utils/validateProduct";
+import DynamicInputList from "~/components/DynamicInputList/DynamicInputList";
 export default function DashboardProductCreate() {
   const navigate = useNavigate();
 
@@ -125,9 +126,16 @@ export default function DashboardProductCreate() {
       />
 
       {/* Highlights & Specs */}
-      <HighlightList
+      {/* <HighlightList
         highlights={product.highlights}
         onChange={(list) => setProduct({ ...product, highlights: list })}
+      /> */}
+      <DynamicInputList
+        label="Điểm nổi bật"
+        addText="+ Thêm điểm nổi bật"
+        placeholder="Nhập điểm nổi bật..."
+        values={product.highlights}
+        onChange={(vals) => setProduct({ ...product, highlights: vals })}
       />
       <SpecList
         specifications={product.specifications}

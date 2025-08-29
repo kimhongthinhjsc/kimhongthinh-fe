@@ -14,7 +14,7 @@ export default function EditableImage({
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (typeof src === "object" ) {
+    if (typeof src === "object") {
       handleFileChange(src);
     }
   }, [src]);
@@ -50,8 +50,8 @@ export default function EditableImage({
       onClick={() => fileInputRef.current?.click()}
     >
       <img
-        src={preview || "https://via.placeholder.com/300x200?text=No+Image"}
-        alt="preview"
+        src={preview || ""}
+        alt="Tải ảnh"
         className="w-full h-full object-cover rounded border bg-white"
       />
 
