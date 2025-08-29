@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchProductById } from "~/services/publicAPI";
 import { updateProduct, deleteProduct } from "~/services/adminAPI";
-
 import HighlightList from "./HighlightList";
 import InputField from "~/components/InputField/InputField";
 import TextAreaField from "~/components/TextAreaField/TextAreaField";
@@ -85,11 +84,9 @@ export default function DashboardProductEdit() {
         <div className="grid grid-cols-2 gap-4">
           <InputField
             label="Giá"
-            type="number"
             value={product.price}
-            onChange={(e) =>
-              setProduct({ ...product, price: Number(e.target.value) })
-            }
+            onChange={(val) => setProduct({ ...product, price: val })} // val là số
+            isMoney
           />
           <InputField
             label="Thương hiệu"
