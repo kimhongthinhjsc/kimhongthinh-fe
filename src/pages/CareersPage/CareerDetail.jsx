@@ -21,6 +21,7 @@ import JobDetailSkeleton from "./SkeletonCareerDetail";
 export default function JobDetail() {
     const [job, setJob] = React.useState(null);
     const [deadlineDate, setDeadlineDate] = React.useState(null);
+    const [daysLeft, setDaysLeft] = useState(null);
 
     const [showContact, setShowContact] = useState(false);
     const { id } = useParams();
@@ -28,12 +29,18 @@ export default function JobDetail() {
     // Fetch job details by ID
     const fetchJobDetail = async (id) => {
         const response = await getOneCareerById(id);
-        console.log(response.career);
         setJob(response.career);
-        setDeadlineDate(
-            new Date(response.career.deadline).toLocaleDateString("vi-VN")
-        );
+
+        const deadline = new Date(response.career.deadline);
+        setDeadlineDate(deadline.toLocaleDateString("vi-VN"));
+
+        // Tính số ngày còn lại
+        const today = new Date();
+        const diffTime = deadline - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        setDaysLeft(diffDays);
     };
+
 
     useEffect(() => {
         fetchJobDetail(id);
@@ -118,6 +125,11 @@ export default function JobDetail() {
                                             <div className="flex-1">
                                                 <span className="font-medium">Hạn nộp:</span>{" "}
                                                 <span className="break-words">{deadlineDate}</span>
+                                                {daysLeft !== null && (
+                                                    <span className={`ml-2 font-medium ${daysLeft > 0 ? "text-green-600" : "text-red-600"}`}>
+                                                        {daysLeft > 0 ? `(Còn ${daysLeft} ngày)` : "(Đã hết hạn)"}
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

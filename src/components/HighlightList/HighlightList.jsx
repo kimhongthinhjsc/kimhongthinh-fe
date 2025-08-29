@@ -8,7 +8,6 @@ const HighlightList = ({ highlights = [], className = "" }) => {
     <div className={`space-y-2 ${className}`}>
       {highlights.map((h, i) => (
         <div key={i} className="flex items-center text-gray-700">
-          <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
           {h}
         </div>
       ))}

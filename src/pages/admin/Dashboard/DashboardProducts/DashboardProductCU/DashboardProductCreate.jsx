@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createProduct } from "~/services/adminAPI";
-import { getCategories } from "~/services/categorieAPI";
-import { getSubcategories } from "~/services/publicAPI";
 import InputField from "~/components/InputField/InputField";
 import TextAreaField from "~/components/TextAreaField/TextAreaField";
 import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
@@ -12,26 +10,21 @@ import { globalLoading } from "~/context/LoadingContext";
 import { handleContent } from "~/utils/handleContent";
 import ImageUploader from "~/components/ImageUploader/ImageUploader";
 import CategorySelector from "./CategorySelector";
+import { productModel } from "~/models/product";
+import { validateProduct } from "~/utils/validateProduct";
+import DynamicInputList from "~/components/DynamicInputList/DynamicInputList";
 export default function DashboardProductCreate() {
   const navigate = useNavigate();
 
-  const [product, setProduct] = useState({
-    name: "",
-    price: 0,
-    brand: "",
-    warranty: "",
-    stock: 0,
-    description: "",
-    content: "",
-    bestSeller: false,
-    categoryId: "",
-    subcategoryId: "",
-    images: [],
-    highlights: [],
-    specifications: [],
-  });
+  const [product, setProduct] = useState(productModel);
 
   const handleSave = async () => {
+    const { isValid, errors } = validateProduct(product);
+    if (!isValid) {
+      alert("❌ Lỗi:\n" + errors.join("\n"));
+      return;
+    }
+
     globalLoading(true);
     try {
       const newContent = await handleContent(product.content);
@@ -63,9 +56,8 @@ export default function DashboardProductCreate() {
             label="Giá"
             type="number"
             value={product.price}
-            onChange={(e) =>
-              setProduct({ ...product, price: Number(e.target.value) })
-            }
+            isMoney
+            onChange={(val) => setProduct({ ...product, price: val })}
           />
           <InputField
             label="Thương hiệu"
@@ -134,9 +126,16 @@ export default function DashboardProductCreate() {
       />
 
       {/* Highlights & Specs */}
-      <HighlightList
+      {/* <HighlightList
         highlights={product.highlights}
         onChange={(list) => setProduct({ ...product, highlights: list })}
+      /> */}
+      <DynamicInputList
+        label="Điểm nổi bật"
+        addText="+ Thêm điểm nổi bật"
+        placeholder="Nhập điểm nổi bật..."
+        values={product.highlights}
+        onChange={(vals) => setProduct({ ...product, highlights: vals })}
       />
       <SpecList
         specifications={product.specifications}
