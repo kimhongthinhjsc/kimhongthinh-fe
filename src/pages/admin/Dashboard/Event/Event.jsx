@@ -212,9 +212,9 @@ export default function EventsAdmin() {
             <div className="button-group" style={{ marginLeft: '200px' }}>
               <FormSubmit
                 handle={handleSubmit}
-                update={false}
+                update={state !== null ? true : false}
                 isDisabled={events?.title === '' || events?.image === '' || events?.author === '' || events?.content === '' || events?.location === '' || events?.date === ''}>
-                {state?.id ? 'Cập nhật tin' : 'Đăng tin'}</FormSubmit>
+                {state !== null ? 'Cập nhật tin' : 'Đăng tin'}</FormSubmit>
               <CancelButton urlBack="/admin/dashboard/events">Hủy</CancelButton>
             </div>
           </div>

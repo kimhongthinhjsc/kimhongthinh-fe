@@ -122,17 +122,17 @@ export const getOneNews = async (titleLink) => {
   }
 };
 
-export const getEventList = async (page, limit) => {
+export const getEventList = async (page=1, limit=10) => {
   const res = await api.get(`/events/find/all?page=${page}&limit=${limit}`);
   return res.data;
 };
 
-export const getEventUpcoming = async (page, limit) => {
+export const getEventUpcoming = async (page=1, limit=10) => {
   const res = await api.get(`/events/find/upcoming?page=${page}&limit=${limit}`);
   return res.data;
 };
 
-export const getEventPast = async (page, limit) => {
+export const getEventPast = async (page=1, limit=10) => {
   const res = await api.get(`/events/find/past?page=${page}&limit=${limit}`);
   return res.data;
 };

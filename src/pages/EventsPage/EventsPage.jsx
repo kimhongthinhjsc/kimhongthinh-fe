@@ -4,14 +4,18 @@ import EventSearch from "~/components/EventSearch/EventSearch";
 import EventComing from "~/components/EventComing/EventComing";
 import EventFinish from "~/components/EventFinish/EventFinish";
 import EventForm from "~/components/EventForm/EventForm";
+import { useEventPast, useEventUpcoming } from "~/hooks/usePublic";
 
-export default function EventsPage({ events = [] }) {
+export default function EventsPage() {
+  const { data: eventPastData, isLoading: isLoadingPast } = useEventPast();
+  const { data: eventUpcomingData, isLoading: isLoadingUpcoming } = useEventUpcoming();
+
   return (
     <>
-      <EventHeader />
+      <EventHeader events={eventUpcomingData?.events} isLoading={isLoadingUpcoming} />
       <EventSearch />
-      <EventComing />
-      <EventFinish />
+      <EventComing events={eventUpcomingData?.events} isLoading={isLoadingUpcoming} />
+      <EventFinish events={eventPastData?.events} isLoading={isLoadingPast} />
       <EventForm />
     </>
   );
