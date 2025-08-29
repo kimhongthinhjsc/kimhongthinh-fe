@@ -14,7 +14,8 @@ import {
   getNewsList,
   getCompanyProfile,
   getEventPast,
-  getEventUpcoming
+  getEventUpcoming,
+  getCareerList
 } from "~/services/publicAPI";
 import { getCategories } from "~/services/categorieAPI";
 
@@ -147,6 +148,17 @@ export const useEventPast = () => {
   return useQuery({
     queryKey: ["eventPast"],
     queryFn: getEventPast,
+    keepPreviousData: true,
+    staleTime: 0, //call khi quay lại trang
+    cacheTime: 1000 * 60 * 2, // dữ liệu giữ trong cache 10 phút
+  });
+};
+
+// Trang chủ
+export const useCareerList = (currentPage, jobsPerPage) => {
+  return useQuery({
+    queryKey: ["careerList", { currentPage, jobsPerPage }],
+    queryFn: () => getCareerList(currentPage, jobsPerPage),
     keepPreviousData: true,
     staleTime: 0, //call khi quay lại trang
     cacheTime: 1000 * 60 * 2, // dữ liệu giữ trong cache 10 phút
