@@ -18,7 +18,6 @@ export default function DashboardStatsSection() {
     "/api/v1/introduce": "Giới thiệu",
     "/api/v1/services": "Dịch vụ",
     "/api/v1/news": "Tin tức",
-    "/api/v1/company-profile": "Thông tin công ty",
     "/api/v1/news/find/all": "Tin tức",
   };
 

@@ -36,7 +36,7 @@ export default function EditHeroSection({ data, onChange }) {
     >
       <EditableImage
         src={hero.background}
-        onChange={(val) => setHero({ logo: val })}
+        onChange={(val) => setHero({ background: val })}
         label="background"
       />
 

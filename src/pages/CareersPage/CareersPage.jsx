@@ -18,29 +18,19 @@ export default function CareersPage() {
   return (
     <>
       <div className="w-full">
-        {/* Banner */}
-        <CareersBanner />
-
-        {/* Job List */}
+        {/* <CareersBanner />
         <JobList
           jobs={currentJobs}
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
-
-        {/* Why Softdreams */}
         <WhySoftdreams />
-
-        {/* Recruitment Process */}
         <RecruitmentProcess />
-
-        {/* Activities */}
         <Activities />
-
-        {/* Recruitment FAQ */}
-        <RecruitmentFAQ />
+        <RecruitmentFAQ /> */}
       </div>
     </>
   );
 }
+
