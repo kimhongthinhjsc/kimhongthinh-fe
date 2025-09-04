@@ -6,8 +6,8 @@ import CancelButton from "~/components/FormNotify/FormCancel";
 import FormSubmit from "~/components/FormNotify/FormSubmit";
 import NewsSkeleton from "../../../../components/News/NewsSkeleton";
 import { generateSlug } from "~/utils/constants";
-import RichTextEditor from "~/components/RichTextEditor/RichTextEditor";
 import { handleContent } from "~/utils/handleContent";
+import WordEditor from "~/components/RichTextEditor/WordEditor";
 
 export default function EventsAdmin() {
   const navigate = useNavigate(); // ✅ khởi tạo navigate
@@ -199,7 +199,7 @@ export default function EventsAdmin() {
           </div>
 
           <div>
-            <RichTextEditor
+            <WordEditor
               label=''
               data={events?.content}
               onChange={(val) => setEvents({ ...events, content: val })}
