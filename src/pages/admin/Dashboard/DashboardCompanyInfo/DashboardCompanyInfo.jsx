@@ -4,7 +4,7 @@ import EditableImage from "~/components/EditableImage/EditableImage";
 import { updateCompanyProfile } from "~/services/adminAPI";
 import CompanyInfoSkeleton from "./CompanyInfoSkeleton";
 import { globalLoading } from "~/context/LoadingContext";
-import { useCompanyInfo } from "~/hooks/usePublic";
+import { useCompanyInfo } from "~/hooks/useCompanyInfo";
 
 export default function DashboardCompanyInfo() {
   const { data, isLoading } = useCompanyInfo(); // chỉ GET thông tin
