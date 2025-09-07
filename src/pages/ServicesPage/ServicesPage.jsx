@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import { Link } from "react-router-dom";
-import { useServices } from "~/hooks/usePublic";
+import { useServices } from "~/hooks/useService";
 
 // Skeleton component
 const ServiceSkeleton = () => (

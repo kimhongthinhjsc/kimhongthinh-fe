@@ -4,7 +4,7 @@ import CategoryTable from "./CategoryTable";
 import CategoryModal from "./CategoryModal";
 import Pagination from "~/components/Pagination/Pagination";
 import CategoryTableSkeleton from "./CategoryTableSkeleton";
-import { useCategory } from "~/hooks/usePublic";
+import { useCategory } from "~/hooks/useProduct";
 import {
   createCategory,
   updateCategory,

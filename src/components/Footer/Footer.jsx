@@ -1,19 +1,19 @@
 // src/components/Footer.jsx
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaFacebook, FaYoutube, FaTiktok } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiZalo } from "react-icons/si";
+import footerBg from "~/assets/images/footer-bg.png";
 import { extractIframeSrc } from "~/utils/extractIframeSrc";
 
 export default function Footer({ profile }) {
-  
+
   return (
     <footer
-      className="bg-[#F0F1F4] text-[#363F69] pt-8 px-6 md:px-20"
+      className="bg-[#F0F1F4] text-[#363F69] pt-8 px-6 md:px-20 bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage:
-          "url('https://softdreams.vn/wp-content/themes/softdreams/assets/img/footer-bg.png')",
+        backgroundImage: `url(${footerBg})`,
       }}
     >
       {/* Logo */}
@@ -22,6 +22,8 @@ export default function Footer({ profile }) {
           src={profile.logo}
           alt="Logo"
           className="h-20 md:h-32 w-auto object-contain"
+          fetchpriority="high"
+          decoding="async"
         />
       </div>
 
@@ -80,7 +82,7 @@ export default function Footer({ profile }) {
           </ul>
         </div>
 
-        {/* Cột 3 */}
+        {/* Cột 3 - Google Map Preview */}
         <div className="flex justify-center md:justify-end">
           <iframe
             src={extractIframeSrc(profile.googleMapsEmbed)}
@@ -104,6 +106,7 @@ export default function Footer({ profile }) {
                 href={profile.social.facebook}
                 target="_blank"
                 rel="noreferrer"
+                aria-label="Facebook"
                 className="hover:text-blue-600"
               >
                 <FaFacebook />
@@ -114,6 +117,7 @@ export default function Footer({ profile }) {
                 href={profile.social.youtube}
                 target="_blank"
                 rel="noreferrer"
+                aria-label="YouTube"
                 className="hover:text-red-600"
               >
                 <FaYoutube />
@@ -124,6 +128,7 @@ export default function Footer({ profile }) {
                 href={profile.social.twitter}
                 target="_blank"
                 rel="noreferrer"
+                aria-label="Twitter / X"
                 className="hover:text-black"
               >
                 <FaXTwitter />
@@ -134,6 +139,7 @@ export default function Footer({ profile }) {
                 href={profile.social.zalo}
                 target="_blank"
                 rel="noreferrer"
+                aria-label="Zalo"
                 className="hover:text-blue-500"
               >
                 <SiZalo />
@@ -144,6 +150,7 @@ export default function Footer({ profile }) {
                 href={profile.social.tiktok}
                 target="_blank"
                 rel="noreferrer"
+                aria-label="TikTok"
                 className="hover:text-black"
               >
                 <FaTiktok />
@@ -173,11 +180,13 @@ export default function Footer({ profile }) {
               src="https://easybooks.vn/wp-content/uploads/2025/02/apk.png"
               alt="Google Play"
               className="h-10"
+              loading="lazy"
             />
             <img
               src="https://easybooks.vn/wp-content/uploads/2025/02/ios.png"
               alt="App Store"
               className="h-10"
+              loading="lazy"
             />
           </div>
         </div>

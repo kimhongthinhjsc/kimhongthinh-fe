@@ -22,25 +22,25 @@ export default function HomePage() {
             <HeroSection data={homeData?.hero} />
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.2}>
+          <FadeInWhenVisible delay={0.1}>
             <Ecosystem data={homeData?.ecosystem} />
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.3}>
+          <FadeInWhenVisible delay={0.1}>
             <Testimonial data={homeData?.testimonial} />
           </FadeInWhenVisible>
 
           <CulturePeople data={homeData?.culture} />
 
-          <FadeInWhenVisible delay={0.3}>
+          <FadeInWhenVisible delay={0.1}>
             <Partners data={homeData?.partners} />
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.3}>
+          <FadeInWhenVisible delay={0.1}>
             <News data={homeData?.news} />
           </FadeInWhenVisible>
 
-          <FadeInWhenVisible delay={0.3} direction="bottom">
+          <FadeInWhenVisible delay={0.1} direction="bottom">
             <ContactHotline data={homeData?.contact} />
           </FadeInWhenVisible>
          

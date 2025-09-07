@@ -4,6 +4,7 @@ import ScrollToTop from "~/components/ScrollToTop/ScrollToTop";
 import { LoadingProvider } from "./context/LoadingContext";
 import FramePage from "./components/FramePage/FramePage";
 import { Route, Routes } from "react-router-dom";
+import { Suspense } from "react";
 
 function App() {
   return (
@@ -13,12 +14,26 @@ function App() {
         {/* Frontend routes */}
         <Route
           path="/*"
-          element={
-            <FramePage>
-              <Auth />
-            </FramePage>
-          }
-        />
+          element={<FramePage />} // FramePage luôn bọc ngoài
+        >
+          <Route
+            index
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Auth />
+              </Suspense>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <Auth />
+              </Suspense>
+            }
+          />
+        </Route>
+
         {/* Admin routes */}
         <Route path="/admin/*" element={<AuthAdmin />} />
       </Routes>

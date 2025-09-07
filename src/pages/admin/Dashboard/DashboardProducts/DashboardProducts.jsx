@@ -4,7 +4,7 @@ import SearchBar from "~/components/SearchBar/SearchBar";
 import ProductTable from "./ProductTable";
 import ProductTableSkeleton from "./ProductTableSkeleton";
 import Pagination from "~/components/Pagination/Pagination";
-import { useProducts, useCategory } from "~/hooks/usePublic";
+import { useProducts, useCategory } from "~/hooks/useProduct";
 import CategoryFilter from "~/pages/ProductsPage/CategoryFilter";
 
 export default function DashboardProducts() {

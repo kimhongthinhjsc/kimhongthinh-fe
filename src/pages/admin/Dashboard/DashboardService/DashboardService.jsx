@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "~/components/SearchBar/SearchBar";
 import ServiceTable from "./ServiceTable";
-import { useServices } from "~/hooks/usePublic";
+import { useServices } from "~/hooks/useService";
 import ServiceTableSkeleton from "./ServiceTableSkeleton";
 
 export default function DashboardServices() {
