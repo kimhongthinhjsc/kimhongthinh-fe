@@ -1,11 +1,9 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getCompanyProfile } from "~/services/publicAPI";
 import { mockProfile } from "~/mock/mockProfile";
 
 const CACHE_KEY = "companyProfile";
 export const useCompanyInfo = () => {
-  const queryClient = useQueryClient();
-
   return useQuery({
     queryKey: ["companyProfile"],
     queryFn: async () => {

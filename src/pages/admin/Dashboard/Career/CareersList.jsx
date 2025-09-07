@@ -20,7 +20,7 @@ export default function CareerAdmin() {
       const data = await getCareerList(currentPage, itemsPerPage);
       setCareers(data.careers || []);
       setTotalPages(data.totalPages);
-      console.log(totalPages)
+  
     } catch (error) {
       console.error("Lỗi khi lấy tin tức:", error);
     } finally {
