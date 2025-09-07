@@ -1,38 +1,43 @@
 import React, { useEffect, useState, useRef } from "react";
-
 import SearchBar from "~/components/SearchBar/SearchBar";
-import { useProductsInfinite, useCategory  } from "~/hooks/usePublic";
+import { useProductsInfinite, useCategory } from "~/hooks/useProduct";
 import CategoryFilter from "./CategoryFilter";
 import ProductGrid from "./ProductGrid";
 import ProductSkeleton from "./ProductSkeleton";
 
+const LOCAL_KEY = "products_filter_state";
+
 const ProductsPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [keyword, setKeyword] = useState("");
+  // Load state filter từ localStorage
+  const savedState = JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}");
+  const [selectedCategory, setSelectedCategory] = useState(savedState.selectedCategory || null);
+  const [keyword, setKeyword] = useState(savedState.keyword || "");
 
   const observerRef = useRef(null);
   const limit = 8;
 
- const { data: categoryData } = useCategory();
+  const { data: categoryData } = useCategory();
   const categories = categoryData?.categories || [];
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsInfinite({ limit, categoryId: selectedCategory, keyword });
 
-  const allProducts = data?.pages.flatMap((page) => page.products) || [];
+  const allProducts = data?.pages.flatMap(page => page.products) || [];
 
-  // Intersection Observer: load thêm khi sản phẩm cuối xuất hiện
+  // Lưu state filter vào localStorage mỗi khi thay đổi
+  useEffect(() => {
+    localStorage.setItem(LOCAL_KEY, JSON.stringify({ selectedCategory, keyword }));
+  }, [selectedCategory, keyword]);
+
+  // Intersection Observer để load thêm sản phẩm
   useEffect(() => {
     if (!hasNextPage) return;
     const el = observerRef.current;
     if (!el) return;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting) {
-          fetchNextPage();
-        }
+      entries => {
+        if (entries[0].isIntersecting) fetchNextPage();
       },
       { threshold: 0.1 }
     );
@@ -55,10 +60,10 @@ const ProductsPage = () => {
         </div>
       </div>
 
-      {/* Products grid */}
+      {/* Product grid */}
       <ProductGrid products={allProducts} isLoading={isLoading} limit={limit} />
 
-      {/* Skeleton loading khi load thêm */}
+      {/* Skeleton khi load thêm */}
       {isFetchingNextPage && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -77,9 +82,7 @@ const ProductsPage = () => {
 
       {/* Không có sản phẩm */}
       {!isLoading && allProducts.length === 0 && (
-        <p className="text-center text-gray-500 py-6">
-          Không tìm thấy sản phẩm nào.
-        </p>
+        <p className="text-center text-gray-500 py-6">Không tìm thấy sản phẩm nào.</p>
       )}
     </div>
   );
