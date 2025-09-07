@@ -1,85 +1,124 @@
 // src/hooks/usePublic.js
-import {
-  useQuery,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   fetchHomeData,
   getIntroduce,
-  getAllService,
-  getServiceByKeyword,
   getNewsList,
   getEventPast,
   getEventUpcoming,
+  getCareerList,
 } from "~/services/publicAPI";
 
+// --------------------------------------
+// Helper lưu localStorage
+const setCache = (key, data) => {
+  if (data) localStorage.setItem(key, JSON.stringify(data));
+};
+
+const getCache = (key) => {
+  const cached = localStorage.getItem(key);
+  return cached ? JSON.parse(cached) : undefined;
+};
+
+// --------------------------------------
 // Trang chủ
 export const useHome = () => {
+  const CACHE_KEY = "home";
   return useQuery({
     queryKey: ["home"],
-    queryFn: fetchHomeData,
-    keepPreviousData: true,
-    staleTime: 0, //call khi quay lại trang
-    cacheTime: 1000 * 60 * 2, // dữ liệu giữ trong cache 10 phút
+    queryFn: async () => {
+      const data = await fetchHomeData();
+      setCache(CACHE_KEY, data);
+      return data;
+    },
+    initialData: () => getCache(CACHE_KEY),
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    staleTime: 0,
   });
 };
 
 // Giới thiệu
 export const useIntroduce = () => {
+  const CACHE_KEY = "introduce";
   return useQuery({
     queryKey: ["introduce"],
-    queryFn: getIntroduce,
-    keepPreviousData: true,
-    staleTime: 0, //call khi quay lại trang
-    cacheTime: 1000 * 60 * 2,
+    queryFn: async () => {
+      const data = await getIntroduce();
+      setCache(CACHE_KEY, data);
+      return data;
+    },
+    initialData: () => getCache(CACHE_KEY),
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    staleTime: 0,
   });
 };
 
-export const useServices = ({ keyword, page, limit = 12 }) => {
-  return useQuery({
-    queryKey: ["services", { keyword, page, limit }],
-    queryFn: async () => {
-      if (!keyword || keyword.trim() === "") {
-        const data = await getAllService();
-        const totalPages = Math.ceil((data.services?.length || 0) / limit);
-        const start = (page - 1) * limit;
-        const end = start + limit;
-        return { services: data.services.slice(start, end), totalPages };
-      }
-      return getServiceByKeyword(keyword, page, limit);
-    },
-    keepPreviousData: true,
-    staleTime: 0, //call khi quay lại trang
-    cacheTime: 1000 * 60 * 10, // 10 phút
-  });
-};
+// Tin tức
 export const useNews = ({ page, limit }) => {
+  const CACHE_KEY = `news_${page}_${limit}`;
   return useQuery({
     queryKey: ["news", page, limit],
-    queryFn: () => getNewsList(page, limit),
-    keepPreviousData: true, // giữ dữ liệu cũ khi chuyển trang
-    staleTime: 0, //call khi quay lại trang
-    cacheTime: 1000 * 60 * 1,
+    queryFn: async () => {
+      const data = await getNewsList(page, limit);
+      setCache(CACHE_KEY, data);
+      return data;
+    },
+    initialData: () => getCache(CACHE_KEY),
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    staleTime: 0,
   });
 };
 
-// Trang chủ
+// Sự kiện sắp tới
 export const useEventUpcoming = () => {
+  const CACHE_KEY = "eventUpcoming";
   return useQuery({
-    queryKey: ["eventUpComing"],
-    queryFn: getEventUpcoming,
-    keepPreviousData: true,
-    staleTime: 0, //call khi quay lại trang
-    cacheTime: 1000 * 60 * 2, // dữ liệu giữ trong cache 10 phút
+    queryKey: ["eventUpcoming"],
+    queryFn: async () => {
+      const data = await getEventUpcoming();
+      setCache(CACHE_KEY, data);
+      return data;
+    },
+    initialData: () => getCache(CACHE_KEY),
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    staleTime: 0,
   });
 };
 
-// Trang chủ
+// Sự kiện đã diễn ra
 export const useEventPast = () => {
+  const CACHE_KEY = "eventPast";
   return useQuery({
     queryKey: ["eventPast"],
-    queryFn: getEventPast,
-    keepPreviousData: true,
-    staleTime: 0, //call khi quay lại trang
-    cacheTime: 1000 * 60 * 2, // dữ liệu giữ trong cache 10 phút
+    queryFn: async () => {
+      const data = await getEventPast();
+      setCache(CACHE_KEY, data);
+      return data;
+    },
+    initialData: () => getCache(CACHE_KEY),
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    staleTime: 0,
+  });
+};
+
+// Danh sách công việc / Careers
+export const useCareerList = (currentPage, jobsPerPage) => {
+  const CACHE_KEY = `careerList_${currentPage}_${jobsPerPage}`;
+  return useQuery({
+    queryKey: ["careerList", currentPage, jobsPerPage],
+    queryFn: async () => {
+      const data = await getCareerList(currentPage, jobsPerPage);
+      setCache(CACHE_KEY, data);
+      return data;
+    },
+    initialData: () => getCache(CACHE_KEY),
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    staleTime: 0,
   });
 };

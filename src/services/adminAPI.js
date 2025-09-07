@@ -126,6 +126,33 @@ export const deleteEvent = async (id) => {
   return res.data;
 };
 
+export const createCareer = async (career) => {
+  //loai bỏ _id
+  const { _id, ...data } = career;
+  const res = await api.post(`/career`, data);
+  return res.data;
+};
+
+export const updateCareer = async (career) => {
+  const res = await api.put(`/career/${career._id}`, career);
+  return res.data;
+};
+
+export const getCareerList = async (page, limit) => {
+  const res = await api.get(`/career/find/admin?page=${page}&limit=${limit}`);
+  return res.data;
+};
+
+export const getOneCareerById = async (id) => {
+  const res = await api.get(`/career/${id}`);
+  return res.data;
+};
+
+export const deleteCareer = async (id) => {
+  const res = await api.delete(`/career/${id}`);
+  return res.data;
+};
+
 export const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);

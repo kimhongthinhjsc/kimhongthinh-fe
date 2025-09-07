@@ -1,34 +1,31 @@
-import React, { useState } from "react";
-import jobs from "~/mock/Jobs.js";
+import React, { useEffect, useState } from "react";
 import WhySoftdreams from "~/components/WhySoftdreams/WhySoftdreams";
 import RecruitmentProcess from "~/components/RecruitmentProcess/RecruitmentProcess";
 import Activities from "~/components/Activities/Activities";
 import RecruitmentFAQ from "~/components/RecruitmentFAQ/RecruitmentFAQ";
 import CareersBanner from "~/components/CareersBanner/CareersBanner";
 import JobList from "~/components/JobList/JobList";
+import { useCareerList } from "~/hooks/usePublic";
 
 export default function CareersPage() {
   const jobsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(jobs.length / jobsPerPage);
-  const startIndex = (currentPage - 1) * jobsPerPage;
-  const currentJobs = jobs.slice(startIndex, startIndex + jobsPerPage);
+  const { data: useCareerData } = useCareerList(currentPage, jobsPerPage);
 
   return (
     <>
       <div className="w-full">
-        {/* <CareersBanner />
+        <CareersBanner />
         <JobList
-          jobs={currentJobs}
-          currentPage={currentPage}
-          totalPages={totalPages}
+          careers={useCareerData?.careers}
+          currentPage={useCareerData?.currentPage}
+          totalPages={useCareerData?.totalPages}
           onPageChange={setCurrentPage}
         />
         <WhySoftdreams />
         <RecruitmentProcess />
         <Activities />
-        <RecruitmentFAQ /> */}
+        <RecruitmentFAQ />
       </div>
     </>
   );

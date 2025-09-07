@@ -33,7 +33,7 @@ export default function Activities() {
           Hoạt động <span className="text-blue-600">nổi bật</span>
         </h2>
         <p className="text-gray-600 mt-3">
-          Softdreams luôn mang đến những trải nghiệm ý nghĩa, gắn kết tập thể
+          Kim Hồng Thịnh luôn mang đến những trải nghiệm ý nghĩa, gắn kết tập thể
           và khuyến khích phát triển cá nhân.
         </p>
       </div>

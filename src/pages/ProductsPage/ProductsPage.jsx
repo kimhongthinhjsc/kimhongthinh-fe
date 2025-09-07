@@ -19,6 +19,18 @@ const ProductsPage = () => {
   const { data: categoryData } = useCategory();
   const categories = categoryData?.categories || [];
 
+  // Reset khi search thay đổi
+  const handleSearch = (value) => {
+    setKeyword(value);
+    setSelectedCategory(null); // reset category khi search
+  };
+
+  // Reset khi chọn category
+  const handleSelectCategory = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setKeyword(""); // reset keyword khi chọn category
+  };
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsInfinite({ limit, categoryId: selectedCategory, keyword });
 
@@ -53,10 +65,10 @@ const ProductsPage = () => {
         <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
-          onSelect={setSelectedCategory}
+          onSelect={handleSelectCategory} // dùng handleSelectCategory
         />
         <div className="w-full md:flex-1 md:max-w-sm min-w-0">
-          <SearchBar value={keyword} onSearch={setKeyword} />
+          <SearchBar value={keyword} onSearch={handleSearch} /> {/* dùng handleSearch */}
         </div>
       </div>
 
