@@ -21,7 +21,6 @@ export const fetchProducts = async (
   }
 };
 
-
 // Lấy chi tiết sản phẩm theo ID
 export const fetchProductById = async (id) => {
   try {
@@ -128,7 +127,9 @@ export const getEventList = async (page = 1, limit = 10) => {
 };
 
 export const getEventUpcoming = async (page = 1, limit = 10) => {
-  const res = await api.get(`/events/find/upcoming?page=${page}&limit=${limit}`);
+  const res = await api.get(
+    `/events/find/upcoming?page=${page}&limit=${limit}`
+  );
   return res.data;
 };
 
@@ -147,8 +148,9 @@ export const getOneEvent = async (titleLink) => {
 };
 
 export const getCareerList = async (page, limit) => {
-  console.log("Fetching career list:", { page, limit });
-  const res = await api.get(`/career/find/no-expire?page=${page}&limit=${limit}`);
+  const res = await api.get(
+    `/career/find/no-expire?page=${page}&limit=${limit}`
+  );
   return res.data;
 };
 

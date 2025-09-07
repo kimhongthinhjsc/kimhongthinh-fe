@@ -51,8 +51,6 @@ export default function DashboardCompanyInfo() {
   };
 
   if (isLoading) return <CompanyInfoSkeleton />;
-
-  console.log("formData", formData);
   return (
     <div className="p-6 space-y-6 max-w-5xl mx-auto">
       {/* Logo */}

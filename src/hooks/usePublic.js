@@ -9,6 +9,9 @@ import {
   getCareerList,
 } from "~/services/publicAPI";
 
+import { mockHome } from "~/mock/mockHome";
+import { mockIntroduce } from "~/mock/mockIntroduce";
+
 // --------------------------------------
 // Helper lưu localStorage
 const setCache = (key, data) => {
@@ -31,8 +34,7 @@ export const useHome = () => {
       setCache(CACHE_KEY, data);
       return data;
     },
-    initialData: () => getCache(CACHE_KEY),
-    placeholderData: undefined, 
+    initialData: () => getCache(CACHE_KEY) || mockHome,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
@@ -49,8 +51,7 @@ export const useIntroduce = () => {
       setCache(CACHE_KEY, data);
       return data;
     },
-    initialData: () => getCache(CACHE_KEY),
-    placeholderData: undefined, 
+    initialData: () => getCache(CACHE_KEY) || mockIntroduce,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
@@ -68,7 +69,7 @@ export const useNews = ({ page, limit }) => {
       return data;
     },
     initialData: () => getCache(CACHE_KEY),
-    placeholderData: undefined, 
+    placeholderData: undefined,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,

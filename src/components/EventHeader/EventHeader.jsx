@@ -18,10 +18,7 @@ export default function EventHeader({ events, isLoading }) {
     <section
       id="event_header"
       className="relative w-full h-[400px] bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url('https://softdreams.vn/wp-content/uploads/2024/02/banner.png')",
-      }}
+      
     >
       {isLoading ? (
         <EventHeaderSkeleton />
