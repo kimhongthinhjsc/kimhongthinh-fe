@@ -32,6 +32,7 @@ export const useHome = () => {
       return data;
     },
     initialData: () => getCache(CACHE_KEY),
+    placeholderData: undefined, 
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
@@ -49,6 +50,7 @@ export const useIntroduce = () => {
       return data;
     },
     initialData: () => getCache(CACHE_KEY),
+    placeholderData: undefined, 
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
@@ -66,6 +68,7 @@ export const useNews = ({ page, limit }) => {
       return data;
     },
     initialData: () => getCache(CACHE_KEY),
+    placeholderData: undefined, 
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
@@ -83,6 +86,7 @@ export const useEventUpcoming = () => {
       return data;
     },
     initialData: () => getCache(CACHE_KEY),
+    placeholderData: undefined,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
@@ -100,6 +104,7 @@ export const useEventPast = () => {
       return data;
     },
     initialData: () => getCache(CACHE_KEY),
+    placeholderData: undefined,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
@@ -117,6 +122,7 @@ export const useCareerList = (currentPage, jobsPerPage) => {
       return data;
     },
     initialData: () => getCache(CACHE_KEY),
+    placeholderData: undefined,
     refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: 0,
