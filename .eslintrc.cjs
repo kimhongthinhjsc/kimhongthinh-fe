@@ -60,10 +60,13 @@ module.exports = {
     'keyword-spacing': 1,
     'comma-dangle': 1,
     'comma-spacing': 1,
-    'arrow-spacing': 1
+    'arrow-spacing': 1,
+    'eslint-disable-next-line no-unused-vars': 'off'
   },
   content: [
     './src/**/*.{js, jsx, ts, tsx, mdx}',
     '../../node_modules/react-tailwindcss-datepicker/dist/index.esm.js'
   ]
 }
+
+// eslint-disable-next-line no-unused-vars
