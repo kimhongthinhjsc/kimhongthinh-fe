@@ -72,6 +72,10 @@ export default function DashboardHeader({ onMenuClick }) {
     </h1>
   );
 
+  const handleChangePassword = () => {
+    navigate("/admin/dashboard/change-password");
+  }
+
   return (
     <>
       {/* Header Mobile */}
@@ -104,6 +108,14 @@ export default function DashboardHeader({ onMenuClick }) {
                 </li>
                 <li className="px-4 py-2 text-gray-400 cursor-not-allowed">
                   Cài đặt (Khóa)
+                </li>
+                  <li>
+                  <button
+                    onClick={handleChangePassword}
+                    className="w-full text-left px-4 py-2 hover:bg-blue-100 hover:text-blue-600"
+                  >
+                    Đổi mật khẩu
+                  </button>
                 </li>
                 <li>
                   <button
@@ -143,6 +155,14 @@ export default function DashboardHeader({ onMenuClick }) {
                 </li>
                 <li className="px-4 py-2 text-gray-400 cursor-not-allowed">
                   Cài đặt (Khóa)
+                </li>
+                <li>
+                  <button
+                    onClick={handleChangePassword}
+                    className="w-full text-left px-4 py-2 hover:bg-blue-100 hover:text-blue-600"
+                  >
+                    Đổi mật khẩu
+                  </button>
                 </li>
                 <li>
                   <button

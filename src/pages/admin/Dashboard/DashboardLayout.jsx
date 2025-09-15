@@ -22,6 +22,7 @@ const DashboardServiceEdit = lazy(() => import("./DashboardService/DashboardServ
 const DashboardServiceCreate = lazy(() => import("./DashboardService/DashboardServiceCU/DashboardServiceCreate"));
 const DashboardStatsSection = lazy(() => import("./DashboardStatsSection/DashboardStatsSection"));
 const DashboardCategories = lazy(() => import("./DashboardCategories/DashboardCategories"));
+const DashboardChangePassword = lazy(() => import("./ChangePassword/ChangePassword"));
 
 export default function DashboardLayout() {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,6 +69,7 @@ export default function DashboardLayout() {
               <Route path="/services/:id/edit" element={<DashboardServiceEdit />} />
               <Route path="/services/create" element={<DashboardServiceCreate />} />
               <Route path="/categories" element={<DashboardCategories />} />
+              <Route path="/change-password" element={<DashboardChangePassword />} />
               <Route index element={<DashboardStatsSection />} />
             </Routes>
             <Outlet />
