@@ -73,11 +73,11 @@ export default function JobDetail() {
                                             </p>
                                             <p className="flex items-center gap-2 text-gray-600">
                                                 <MapPin size={18} className="text-red-500" />
-                                                945/3 Ấp 3, Phường Sơn Đông, Vĩnh Long
+                                                A4.19 Đường D3, Khu dân cư Phương Nam, Phường Sơn Đông, Tỉnh Vĩnh Long
                                             </p>
                                             <p className="flex items-center gap-2 text-gray-600">
                                                 <Clock size={18} className="text-green-500" />
-                                                Giờ làm việc: Thứ 2 - Thứ 6 (8h00 - 17h00) | Thứ 7 (8h00 -
+                                                Giờ làm việc: Thứ 2 - Thứ 6 (8h00 - 17h30) | Thứ 7 (8h00 -
                                                 12h00)
                                             </p>
                                         </div>
