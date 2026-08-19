@@ -9,9 +9,8 @@ import {
 } from "~/services/publicAPI";
 import { getCategories } from "~/services/categorieAPI";
 
-
 export const useProducts = ({ page, limit, categoryId, keyword }) => {
-  const queryClient = useQueryClient(); // ⚡ cần khai báo ở đây
+  const queryClient = useQueryClient();
 
   return useQuery({
     queryKey: ["products", { page, categoryId, keyword }],
@@ -21,33 +20,30 @@ export const useProducts = ({ page, limit, categoryId, keyword }) => {
       }
       return fetchProducts(page, limit, categoryId);
     },
-    keepPreviousData: true, // giữ data cũ khi page đổi
-    staleTime: 0, //call khi quay lại trang
-    cacheTime: 1000 * 60 * 60, // 1 giờ
-    initialData: () => {
-      // lấy cache từ queryClient nếu có
-      const cached = queryClient.getQueryData([
-        "products",
-        { page, categoryId, keyword },
-      ]);
-      return cached || undefined;
-    },
+    staleTime: 1000 * 60 * 5, // Cache 5 phút
+    cacheTime: 1000 * 60 * 60,
   });
 };
+
 export const useProductsInfinite = ({ limit = 8, categoryId, keyword }) => {
   return useInfiniteQuery({
-    queryKey: ["products", { categoryId, keyword }],
+    // Đảm bảo queryKey phản ánh chính xác khi filter thay đổi
+    queryKey: ["products-infinite", { categoryId: categoryId || "all", keyword: keyword || "" }],
     queryFn: async ({ pageParam = 1 }) => {
-      if (keyword) return searchProductsbyKeyword({ keyword, page: pageParam, limit });
+      if (keyword) {
+        return searchProductsbyKeyword({ keyword, page: pageParam, limit });
+      }
       return fetchProducts(pageParam, limit, categoryId);
     },
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.products.length < limit) return undefined;
+      // Kiểm tra an toàn xem mảng products có tồn tại hay không
+      const products = lastPage?.products || [];
+      if (products.length < limit) return undefined;
       return allPages.length + 1;
     },
-    keepPreviousData: true,
     staleTime: 0,
-    cacheTime: 1000 * 60 * 60,
+    cacheTime: 1000 * 60 * 5,
+    // Loại bỏ keepPreviousData để reset sạch trang khi đổi category
   });
 };
 
@@ -55,7 +51,6 @@ export const useCategory = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
-    keepPreviousData: true,
     staleTime: Infinity,
     cacheTime: 1000 * 60 * 60,
   });

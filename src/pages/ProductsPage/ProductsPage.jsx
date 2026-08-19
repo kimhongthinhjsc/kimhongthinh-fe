@@ -19,44 +19,53 @@ const ProductsPage = () => {
   const { data: categoryData } = useCategory();
   const categories = categoryData?.categories || [];
 
-  // Reset khi search thay đổi
+  // Reset khi search thay đổi + Cuộn lên đầu
   const handleSearch = (value) => {
     setKeyword(value);
-    setSelectedCategory(null); // reset category khi search
+    setSelectedCategory(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Reset khi chọn category
+  // Reset khi chọn category + Cuộn lên đầu
   const handleSelectCategory = (categoryId) => {
     setSelectedCategory(categoryId);
-    setKeyword(""); // reset keyword khi chọn category
+    setKeyword("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useProductsInfinite({ limit, categoryId: selectedCategory, keyword });
 
-  const allProducts = data?.pages.flatMap(page => page.products) || [];
+  // Lấy toàn bộ sản phẩm và lọc trùng lặp ID (nếu có)
+  const rawProducts = data?.pages.flatMap((page) => page.products) || [];
+  const allProducts = Array.from(
+    new Map(rawProducts.map((p) => [p._id || p.id, p])).values()
+  );
 
-  // Lưu state filter vào localStorage mỗi khi thay đổi
+  // Lưu state filter vào localStorage
   useEffect(() => {
     localStorage.setItem(LOCAL_KEY, JSON.stringify({ selectedCategory, keyword }));
   }, [selectedCategory, keyword]);
 
-  // Intersection Observer để load thêm sản phẩm
+  // Intersection Observer chuẩn - Chặn gọi trùng khi đang fetching
   useEffect(() => {
-    if (!hasNextPage) return;
+    if (!hasNextPage || isFetchingNextPage) return;
+
     const el = observerRef.current;
     if (!el) return;
 
     const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting) fetchNextPage();
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
       },
       { threshold: 0.1 }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
     <div className="bg-bgPrimary p-4 md:p-6 space-y-6 min-h-screen">
@@ -65,10 +74,10 @@ const ProductsPage = () => {
         <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
-          onSelect={handleSelectCategory} // dùng handleSelectCategory
+          onSelect={handleSelectCategory}
         />
         <div className="w-full md:flex-1 md:max-w-sm min-w-0">
-          <SearchBar value={keyword} onSearch={handleSearch} /> {/* dùng handleSearch */}
+          <SearchBar value={keyword} onSearch={handleSearch} />
         </div>
       </div>
 
@@ -77,18 +86,20 @@ const ProductsPage = () => {
 
       {/* Skeleton khi load thêm */}
       {isFetchingNextPage && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mt-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <ProductSkeleton key={i} />
           ))}
         </div>
       )}
 
-      {/* Element observe sản phẩm cuối */}
-      {hasNextPage && <div ref={observerRef} className="h-10"></div>}
+      {/* Element observe sản phẩm cuối (Chỉ hiển thị khi không phải trang đầu đang load) */}
+      {hasNextPage && !isLoading && (
+        <div ref={observerRef} className="h-10 w-full"></div>
+      )}
 
       {/* Hết dữ liệu */}
-      {!hasNextPage && allProducts.length > 0 && (
+      {!hasNextPage && allProducts.length > 0 && !isLoading && (
         <p className="text-center text-gray-500 py-6">Đã tải hết sản phẩm</p>
       )}
 
