@@ -37,9 +37,6 @@ export default function Footer({ profile }) {
           <p className="mb-2">
             📍 <strong>Trụ sở chính:</strong> {profile.addressMain}
           </p>
-          <p className="mb-2">
-            📍 <strong>Chi nhánh:</strong> {profile.addressBranch}
-          </p>
           <p className="mb-2">✉️ {profile.email}</p>
           <p className="mb-2">📞 Mua hàng: {profile.hotline1}</p>
           <p className="mb-2">📞 CSKH: {profile.hotline2}</p>
