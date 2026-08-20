@@ -48,7 +48,7 @@ export default function BehaviorRulesAdmin({ data, onChange }) {
       </div>
 
       {/* Vision */}
-      <div className="bg-[#FDEEE9] py-8">
+      <div className="bg-white py-8">
         <div className="container mx-auto max-w-4xl grid md:grid-cols-2 gap-6 items-center">
           <EditableImage
             src={data?.vision?.image || null}

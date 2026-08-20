@@ -34,7 +34,7 @@ export default function BehaviorRules({ data }) {
       </div>
 
       {/* Vision */}
-      <div className="bg-[#FDEEE9] py-20 mt-20">
+      <div className="bg-white py-10 mt-10">
         <div className="container mx-auto px-4 max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center order-1 md:order-none">
