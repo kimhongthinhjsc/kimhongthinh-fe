@@ -1,9 +1,9 @@
-// pages/admin/Dashboard/Home.jsx
 import React, { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useHome } from "~/hooks/usePublic";
 import { updateHomeData } from "~/services/adminAPI";
 import EditHeroSection from "./EditHeroSection";
+import EditDualCoreServices from "./EditDualCoreServices";
 import EditEcosystemSection from "./EditEcosystemSection";
 import EditTestimonial from "./EditTestimonial";
 import EditCulturePeople from "./EditCulturePeople";
@@ -35,7 +35,6 @@ export default function DashboardHome() {
     try {
       await updateHomeData(draft);
       alert("✅ Cập nhật thành công!");
-      // Invalidate để reload lại dữ liệu home từ server
       queryClient.invalidateQueries(["home"]);
     } catch (err) {
       alert("❌ Cập nhật thất bại!");
@@ -45,13 +44,16 @@ export default function DashboardHome() {
   };
 
   const handleReset = () => {
-    setDraft(homeData); // reset lại bản draft = dữ liệu gốc
+    setDraft(homeData);
   };
 
+  // Nếu đang tải hoặc chưa có draft, hiển thị Skeleton mượt mà
   if (isLoading || !draft) return <DashboardHomeSkeleton />;
+
   return (
     <div>
       <EditHeroSection data={draft} onChange={handleChange} />
+      <EditDualCoreServices data={draft} onChange={handleChange} />
       <EditEcosystemSection data={draft} onChange={handleChange} />
       <EditTestimonial data={draft} onChange={handleChange} />
       <EditCulturePeople data={draft} onChange={handleChange} />

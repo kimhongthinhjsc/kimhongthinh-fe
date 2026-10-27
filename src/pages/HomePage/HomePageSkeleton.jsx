@@ -2,9 +2,15 @@ import React from "react";
 
 export default function HomePageSkeleton() {
   return (
-    <div className="animate-pulse space-y-10 p-6">
+    <div className="animate-pulse space-y-10 p-6 max-w-7xl mx-auto">
       {/* Hero */}
       <div className="h-[400px] bg-gray-200 rounded-xl" />
+
+      {/* Dual Core Services Skeleton */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="h-64 bg-gray-200 rounded-2xl" />
+        <div className="h-64 bg-gray-200 rounded-2xl" />
+      </div>
 
       {/* Ecosystem */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">

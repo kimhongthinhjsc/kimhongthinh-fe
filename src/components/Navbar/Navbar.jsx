@@ -1,10 +1,18 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // icon menu hamburger
+import { Menu, X, Headset } from "lucide-react";
+
+// Khai báo trực tiếp tại đây
+const CONTACT_INFO = {
+  ZALO_LINK: "https://zalo.me/0366660237",
+};
 
 export default function Navbar({ profile }) {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+
+  // Lấy link Zalo: Ưu tiên profile -> CONTACT_INFO -> fallback
+  const zaloUrl = CONTACT_INFO?.ZALO_LINK || profile?.social?.zalo || "https://zalo.me/0366660237";
 
   const menuItems = [
     { path: "/", label: "Trang chủ" },
@@ -16,7 +24,6 @@ export default function Navbar({ profile }) {
     { path: "/su-kien", label: "Sự kiện" },
   ];
 
-  // tìm label theo pathname
   const basePath = "/" + location.pathname.split("/")[1];
   const currentPage =
     menuItems.find((item) => item.path === basePath)?.label || "404";
@@ -40,22 +47,35 @@ export default function Navbar({ profile }) {
           {currentPage}
         </div>
 
-        {/* Menu desktop */}
-        <nav className="hidden md:flex items-center gap-4 lg:gap-8 font-bold text-gray-700">
-          {menuItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`pb-1 transition-colors ${
-                location.pathname === item.path
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "hover:text-blue-600"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        {/* Menu desktop & Nút bấm */}
+        <div className="hidden md:flex items-center gap-6 lg:gap-8">
+          <nav className="flex items-center gap-4 lg:gap-8 font-bold text-gray-700">
+            {menuItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`pb-1 transition-colors ${
+                  location.pathname === item.path
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "hover:text-blue-600"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* NÚT TƯ VẤN NGAY (DESKTOP) */}
+          <a
+            href={zaloUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-xs lg:text-sm font-semibold rounded-xl shadow-md shadow-blue-500/20 transition-all duration-200 hover:scale-105 active:scale-95"
+          >
+            <Headset size={18} />
+            <span>Tư Vấn Ngay</span>
+          </a>
+        </div>
 
         {/* Nút menu mobile */}
         <button
@@ -83,6 +103,20 @@ export default function Navbar({ profile }) {
               {item.label}
             </Link>
           ))}
+
+          {/* NÚT TƯ VẤN NGAY (MOBILE) */}
+          <div className="pt-2">
+            <a
+              href={zaloUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-center gap-2 w-full py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl shadow-md"
+            >
+              <Headset size={18} />
+              <span>Tư Vấn Ngay</span>
+            </a>
+          </div>
         </nav>
       )}
     </header>

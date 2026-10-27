@@ -1,28 +1,32 @@
-// src/components/Messenger/Messenger.jsx
-import React, { useState } from "react";
-import messenger from "~/assets/icon/messenger.svg";
+import React from "react";
+import { MessageCircle } from "lucide-react"; // Hoặc dùng icon SVG Messenger có sẵn của em
 
-export default function Messenger({chatMessenger=""}) {
-  const [hover, setHover] = useState(false);
+export default function Messenger({ chatMessenger }) {
+  // Chuẩn hóa link Messenger (dùng m.me)
+  const messengerUrl = chatMessenger 
+    ? (chatMessenger.startsWith("http") ? chatMessenger : `https://m.me/${chatMessenger}`)
+    : "https://www.facebook.com/HongThinhTechnology"; // Điền Fanpage ID/Username mặc định
 
   return (
-    <div
-      className="relative w-12 h-12 cursor-pointer rounded-full bg-[#0084ff] flex items-center justify-center shadow-md transition-transform duration-200 ease-in-out hover:scale-110 hover:shadow-xl"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onClick={() =>
-        window.open(chatMessenger, "_blank")
-      }
+    <a
+      href={messengerUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat qua Facebook Messenger"
+      className="relative group flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 text-white shadow-lg hover:scale-110 active:scale-95 transition-all duration-300"
     >
-      {/* Tooltip */}
-      {hover && (
-        <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3 px-3 py-1 rounded-md text-white text-sm bg-gray-800 shadow-md whitespace-nowrap">
-          Liên hệ Messenger
-        </div>
-      )}
+      {/* Vòng sóng lan tỏa hiệu ứng (Pulse Animation) */}
+      <span className="absolute -inset-1 rounded-full bg-blue-500 opacity-75 animate-ping group-hover:opacity-100"></span>
+      
+      {/* Icon Messenger */}
+      <div className="relative z-10">
+        <MessageCircle className="w-6 h-6 fill-current" />
+      </div>
 
-      {/* Icon */}
-      <img src={messenger} className="w-6 h-6 object-contain" alt="Messenger" />
-    </div>
+      {/* Tooltip hiển thị khi hover */}
+      <span className="absolute right-14 bg-slate-900 text-white text-xs px-2.5 py-1.5 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-md">
+        Chat Messenger
+      </span>
+    </a>
   );
 }

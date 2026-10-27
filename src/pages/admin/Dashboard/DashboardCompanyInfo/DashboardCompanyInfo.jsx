@@ -1,4 +1,3 @@
-// src/pages/admin/Dashboard/CompanyInfo.jsx
 import React, { useState, useEffect } from "react";
 import EditableImage from "~/components/EditableImage/EditableImage";
 import { updateCompanyProfile } from "~/services/adminAPI";
@@ -7,12 +6,19 @@ import { globalLoading } from "~/context/LoadingContext";
 import { useCompanyInfo } from "~/hooks/useCompanyInfo";
 
 export default function DashboardCompanyInfo() {
-  const { data, isLoading } = useCompanyInfo(); // chỉ GET thông tin
+  const { data, isLoading } = useCompanyInfo(); // Gọi API lấy thông tin
   const [formData, setFormData] = useState({});
 
-  // Khi dữ liệu từ hook về, khởi tạo state local
+  // Khởi tạo và bọc dữ liệu an toàn khi dữ liệu trả về từ server
   useEffect(() => {
-    if (data) setFormData(data);
+    if (data) {
+      setFormData({
+        ...data,
+        website: data.website || { name: "", link: "" },
+        ecommerce: data.ecommerce || { name: "", link: "" },
+        social: data.social || { facebook: "", zalo: "", youtube: "", linkedin: "" },
+      });
+    }
   }, [data]);
 
   const handleChange = (e, key, nestedKey) => {
@@ -32,7 +38,12 @@ export default function DashboardCompanyInfo() {
     try {
       const updated = await updateCompanyProfile(formData);
       if (updated) {
-        setFormData(updated);
+        setFormData({
+          ...updated,
+          website: updated.website || { name: "", link: "" },
+          ecommerce: updated.ecommerce || { name: "", link: "" },
+          social: updated.social || { facebook: "", zalo: "", youtube: "", linkedin: "" },
+        });
         alert("✅ Đã lưu thông tin công ty");
       } else {
         alert("❌ Lưu thất bại");
@@ -46,16 +57,24 @@ export default function DashboardCompanyInfo() {
   };
 
   const handleReset = () => {
-    if (data) setFormData(data);
+    if (data) {
+      setFormData({
+        ...data,
+        website: data.website || { name: "", link: "" },
+        ecommerce: data.ecommerce || { name: "", link: "" },
+        social: data.social || { facebook: "", zalo: "", youtube: "", linkedin: "" },
+      });
+    }
     alert("🔄 Đã tải lại dữ liệu từ máy chủ");
   };
 
   if (isLoading) return <CompanyInfoSkeleton />;
+
   return (
     <div className="p-6 space-y-6 max-w-5xl mx-auto">
       {/* Logo */}
       <EditableImage
-        key={formData.logo} // thêm key để reset ảnh về src ban đầu khi bấm Đặt lại
+        key={formData.logo} // Giúp cập nhật lại ảnh khi reset
         src={formData.logo}
         onChange={(val) => setFormData((prev) => ({ ...prev, logo: val }))}
         label="Logo"
@@ -133,18 +152,20 @@ export default function DashboardCompanyInfo() {
         </div>
       </div>
 
-      {/* Website & TMĐT */}
+      {/* Website & Thương mại điện tử */}
       <div className="bg-white shadow rounded p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block font-semibold">Website</label>
           <input
             type="text"
+            placeholder="Tên website"
             value={formData.website?.name || ""}
             onChange={(e) => handleChange(e, "website", "name")}
             className="w-full border rounded p-2 mb-2"
           />
           <input
             type="text"
+            placeholder="Đường dẫn (URL)"
             value={formData.website?.link || ""}
             onChange={(e) => handleChange(e, "website", "link")}
             className="w-full border rounded p-2"
@@ -154,12 +175,14 @@ export default function DashboardCompanyInfo() {
           <label className="block font-semibold">Thương mại điện tử</label>
           <input
             type="text"
+            placeholder="Tên trang TMĐT"
             value={formData.ecommerce?.name || ""}
             onChange={(e) => handleChange(e, "ecommerce", "name")}
             className="w-full border rounded p-2 mb-2"
           />
           <input
             type="text"
+            placeholder="Đường dẫn (URL)"
             value={formData.ecommerce?.link || ""}
             onChange={(e) => handleChange(e, "ecommerce", "link")}
             className="w-full border rounded p-2"
@@ -167,7 +190,7 @@ export default function DashboardCompanyInfo() {
         </div>
       </div>
 
-      {/* Social */}
+      {/* Mạng xã hội */}
       <div className="bg-white shadow rounded p-4">
         <h2 className="font-semibold mb-2">Mạng xã hội</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -185,7 +208,7 @@ export default function DashboardCompanyInfo() {
         </div>
       </div>
 
-      {/* Google Maps */}
+      {/* Google Maps Embed */}
       <div className="bg-white shadow rounded p-4">
         <label className="block font-semibold mb-2">Google Maps Embed</label>
         <textarea
@@ -200,13 +223,13 @@ export default function DashboardCompanyInfo() {
       <div className="flex flex-col md:flex-row justify-end gap-4">
         <button
           onClick={handleSave}
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-60"
+          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-60 transition"
         >
           Lưu
         </button>
         <button
           onClick={handleReset}
-          className="bg-gray-400 text-white px-6 py-2 rounded hover:bg-gray-500"
+          className="bg-gray-400 text-white px-6 py-2 rounded hover:bg-gray-500 transition"
         >
           Đặt lại
         </button>

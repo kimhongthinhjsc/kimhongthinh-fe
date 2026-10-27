@@ -170,22 +170,6 @@ export default function Footer({ profile }) {
               Câu hỏi thường gặp
             </Link>
           </div>
-
-          {/* App badges */}
-          <div className="flex justify-center gap-4">
-            <img
-              src="https://easybooks.vn/wp-content/uploads/2025/02/apk.png"
-              alt="Google Play"
-              className="h-10"
-              loading="lazy"
-            />
-            <img
-              src="https://easybooks.vn/wp-content/uploads/2025/02/ios.png"
-              alt="App Store"
-              className="h-10"
-              loading="lazy"
-            />
-          </div>
         </div>
       </div>
     </footer>
