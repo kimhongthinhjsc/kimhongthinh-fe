@@ -1,28 +1,35 @@
-// src/components/ChatZalo/ChatZalo.jsx
-import React, { useState } from "react";
-import chatzalo from "~/assets/icon/zalo.svg";
+import React from "react";
 
-export default function ChatZalo({chatZalo=""}) {
-  const [hover, setHover] = useState(false);
+export default function ChatZalo({ chatZalo }) {
+  // Chuẩn hóa link Zalo sang số điện thoại mới
+  const phone = chatZalo || "0366660237"; // Số điện thoại mặc định nếu không có dữ liệu
+  const cleanPhone = phone.replace(/\s+/g, "");
+  const zaloUrl = cleanPhone.startsWith("http")
+    ? cleanPhone
+    : `https://zalo.me/${cleanPhone}`;
 
   return (
-    <div
-      className="relative w-12 h-12 cursor-pointer rounded-full bg-[#0068FF] flex items-center justify-center shadow-md transition-transform duration-200 ease-in-out hover:scale-110 hover:shadow-xl"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onClick={() =>
-        window.open(chatZalo, "_blank")
-      }
+    <a
+      href={zaloUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat Zalo"
+      className="relative group flex items-center justify-center w-12 h-12 rounded-full bg-[#0068FF] shadow-lg hover:scale-110 active:scale-95 transition-all duration-300"
     >
-      {/* Tooltip */}
-      {hover && (
-        <div className="absolute right-full top-1/2 -translate-y-1/2 mr-3 px-3 py-1 rounded-md text-white text-sm bg-gray-800 shadow-md whitespace-nowrap">
-          Liên hệ Zalo
-        </div>
-      )}
+      {/* Sóng lan tỏa */}
+      <span className="absolute -inset-1 rounded-full bg-[#0068FF] opacity-60 animate-ping group-hover:opacity-90"></span>
 
-      {/* Icon */}
-      <img src={chatzalo} className="w-6 h-6 object-contain" alt="Zalo" />
-    </div>
+      {/* Icon Zalo Badge Chuẩn */}
+      <div className="relative z-10 w-7 h-7 bg-white rounded-lg flex items-center justify-center p-0.5 shadow-sm">
+        <span className="text-[#0068FF] font-black text-[10px] tracking-tighter leading-none select-none">
+          Zalo
+        </span>
+      </div>
+
+      {/* Tooltip */}
+      <span className="absolute right-14 bg-slate-900 text-white text-xs px-2.5 py-1.5 rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-md">
+        Chat qua Zalo ({cleanPhone})
+      </span>
+    </a>
   );
 }

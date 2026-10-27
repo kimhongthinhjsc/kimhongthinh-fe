@@ -39,7 +39,12 @@ export default function CareerForm({ onSubmit, defaultValues }) {
     try {
       setLoading(true);
       const res = await getOneCareerById(id);
-      if (res) setFormData(res.career);
+      if (res?.career) {
+        setFormData({
+          ...res.career,
+          contact: res.career.contact || { name: "", email: "", phone: "" },
+        });
+      }
     } catch (error) {
       showToast("Không thể tải dữ liệu tin tuyển dụng!", "error");
     } finally {

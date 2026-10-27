@@ -33,7 +33,7 @@ export default function RecruitmentFAQ() {
         <div className="grid md:grid-cols-3 gap-8">
           {/* Title */}
           <div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-6 md:mb-0">
+            <h2 className="text-4xl font-bold text-gray-800 mb-6 md:mb-0">
               Câu hỏi <span className="text-blue-600">thường gặp</span>
             </h2>
           </div>
@@ -47,7 +47,7 @@ export default function RecruitmentFAQ() {
               >
                 <button
                   onClick={() => toggleFAQ(index)}
-                  className="w-full flex justify-between items-center p-4 text-left text-gray-800 font-medium hover:bg-gray-100"
+                  className="w-full flex justify-between items-center p-5 text-left text-gray-900 font-semibold text-lg hover:bg-gray-100 transition-colors"
                 >
                   {faq.question}
                   <ChevronRight
@@ -64,7 +64,7 @@ export default function RecruitmentFAQ() {
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="px-4 pb-4 text-gray-600 text-sm leading-relaxed"
+                      className="px-4 pb-4 text-gray-600 text-lg leading-relaxed"
                     >
                       {faq.answer.split("\n").map((line, i) => (
                         <p key={i} className="mb-2">

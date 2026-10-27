@@ -17,6 +17,7 @@ export default function DashboardServices() {
     limit: itemsPerPage,
   });
 
+  // Bọc an toàn dữ liệu danh sách dịch vụ
   const services = data?.services || [];
   const totalPages = data?.totalPages || 1;
 
@@ -28,7 +29,7 @@ export default function DashboardServices() {
       <div className="flex justify-between items-center">
         <button
           onClick={handleAddService}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition font-medium"
         >
           + Thêm dịch vụ
         </button>
@@ -38,7 +39,7 @@ export default function DashboardServices() {
         value={search}
         onSearch={(k) => {
           setSearch(k);
-          setCurrentPage(1);
+          setCurrentPage(1); // Reset lại trang 1 khi tìm kiếm
         }}
       />
 
@@ -48,13 +49,13 @@ export default function DashboardServices() {
         <ServiceTable services={services} onEdit={handleEdit} />
       )}
 
-      {/* Pagination */}
-      {!isLoading && (
+      {/* Pagination an toàn */}
+      {!isLoading && totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-4">
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((p) => p - 1)}
-            className="px-3 py-1 border rounded disabled:opacity-50"
+            className="px-3 py-1 border rounded disabled:opacity-50 transition"
           >
             &lt;
           </button>
@@ -62,8 +63,8 @@ export default function DashboardServices() {
             <button
               key={i}
               onClick={() => setCurrentPage(i + 1)}
-              className={`px-3 py-1 border rounded ${
-                currentPage === i + 1 ? "bg-blue-600 text-white" : ""
+              className={`px-3 py-1 border rounded transition ${
+                currentPage === i + 1 ? "bg-blue-600 text-white" : "hover:bg-gray-100"
               }`}
             >
               {i + 1}
@@ -72,7 +73,7 @@ export default function DashboardServices() {
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((p) => p + 1)}
-            className="px-3 py-1 border rounded disabled:opacity-50"
+            className="px-3 py-1 border rounded disabled:opacity-50 transition"
           >
             &gt;
           </button>

@@ -3,7 +3,7 @@ import logo from "~/assets/images/HongThinhTechnologyServices.png";
 export const profile = {
   logo: logo,
   fanpage: "Công ty Cổ Phần Dịch Vụ Công Nghệ Hồng Thịnh",
-  slogan: "Giải pháp công nghệ toàn diện cho doanh nghiệp & hộ kinh doanh",
+  slogan: "Giải pháp CNTT & Kế Toán Thuế toàn diện cho Doanh nghiệp và Hộ kinh doanh",
 
   googleMapsEmbed: import.meta.env.VITE_EMBED_GOOGLE_MAPS,
   hotline1: "090 707 91 68",

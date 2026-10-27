@@ -18,14 +18,15 @@ export default function DashboardProducts() {
   const { data: categoryData } = useCategory();
   const categories = categoryData?.categories || [];
 
-  // Dùng hook useProducts
+  // Dùng hook useProducts với đầy đủ tham số
   const { data, isLoading, isFetching } = useProducts({
     page: currentPage,
     limit: itemsPerPage,
     keyword: search,
-    categoryId: selectedCategory, // không filter theo category
+    categoryId: selectedCategory,
   });
 
+  // Bọc an toàn mảng sản phẩm và tổng số trang
   const products = data?.products || [];
   const totalPages = data?.totalPages || 1;
 
@@ -42,25 +43,31 @@ export default function DashboardProducts() {
       <div className="flex justify-between items-center">
         <button
           onClick={handleCreate}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition font-medium"
         >
           + Thêm sản phẩm
         </button>
       </div>
 
-      {/* Tìm kiếm */}
+      {/* Tìm kiếm & Lọc danh mục */}
       <SearchBar
         value={search}
         onSearch={(k) => {
           setSearch(k);
-          setCurrentPage(1); // reset trang khi search
+          setCurrentPage(1); // Reset lại trang 1 khi thực hiện tìm kiếm
         }}
       />
-      <CategoryFilter
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onSelect={setSelectedCategory}
-      />
+      
+      {categories.length > 0 && (
+        <CategoryFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onSelect={(catId) => {
+            setSelectedCategory(catId);
+            setCurrentPage(1); // Reset trang khi thay đổi danh mục
+          }}
+        />
+      )}
 
       {/* Danh sách sản phẩm */}
       {isLoading || isFetching ? (
@@ -69,8 +76,8 @@ export default function DashboardProducts() {
         <ProductTable products={products} onEdit={handleEdit} />
       )}
 
-      {/* Pagination */}
-      {!isLoading && !isFetching && (
+      {/* Phân trang */}
+      {!isLoading && !isFetching && totalPages > 1 && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
