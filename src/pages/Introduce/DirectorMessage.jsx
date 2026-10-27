@@ -32,7 +32,7 @@ export default function DirectorMessage() {
               "Đồng hành cùng sự phát triển bền vững của doanh nghiệp"
             </h3>
             <p className="text-slate-100 text-base sm:text-lg leading-relaxed font-normal">
-              "Trong kỷ nguyên số hóa, chúng tôi tin rằng công nghệ chỉ thực sự pháthuy giá trị khi được gắn kết chặt chẽ với chuyên môn quản trị và kế toán - thuế chuẩn xác. Kim Hồng Thịnh cam kết mang đến những giải pháp thực chiến nhất, giúp hộ kinh doanh và doanh nghiệp tối ưu vận hành và an tâm tăng trưởng."
+              "Trong kỷ nguyên số hóa, chúng tôi tin rằng công nghệ chỉ thực sự phát huy giá trị khi được gắn kết chặt chẽ với chuyên môn quản trị và kế toán - thuế chuẩn xác. Kim Hồng Thịnh cam kết mang đến những giải pháp thực chiến nhất, giúp hộ kinh doanh và doanh nghiệp tối ưu vận hành và an tâm tăng trưởng."
             </p>
             <div className="pt-4 border-t border-slate-800">
               <p className="text-base font-bold text-white">Đại diện Ban Giám Đốc</p>
